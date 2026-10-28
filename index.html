@@ -165,8 +165,15 @@ body::before {
   width: 100%;
 }
 
-.config-column,
+.config-column {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .sticky-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   min-width: 0;
   max-width: 100%;
 }
@@ -1085,7 +1092,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   border: 1px solid var(--dark-border);
   position: relative;
   overflow: hidden;
-  margin-bottom: 24px;
+  /* margin-bottom: 24px; */
 }
 
 .result-card::before {
@@ -1149,58 +1156,109 @@ input[type=range]::-webkit-slider-thumb:hover {
   box-shadow: 0 0 10px rgba(248, 113, 113, 0.5) !important;
 }
 
-/* Hero primary highlight */
+/* Hero primary highlight - Twin Column (ยอดจ่ายจริง vs ประหยัดลงได้) */
 .hero-highlight {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding: 14px 16px;
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12px;
+  background-image: radial-gradient(circle at top right, rgba(56, 189, 248, 0.05), transparent 50%),
+                    radial-gradient(circle at bottom left, rgba(52, 211, 153, 0.05), transparent 50%);
 }
 
-.hero-highlight-label {
+.hero-floating-pill {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  z-index: 2;
+}
+
+.hero-twin-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.hero-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.hero-col-divider {
+  width: 0;
+  border-left: 1px dashed rgba(255, 255, 255, 0.15);
+  margin: 2px 0;
+}
+
+.hero-col-label {
   font-size: 13px;
+  font-weight: 600;
   color: #94a3b8;
   display: flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
+  min-height: 20px;
 }
 
-.hero-highlight-val-row {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
+.hero-col-label svg {
+  flex-shrink: 0;
 }
 
-.hero-highlight-val {
+.hero-col-save .hero-col-label {
+  padding-right: 56px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero-col-val {
   font-family: var(--font-display);
-  font-size: clamp(34px, 5vw, 44px);
+  font-size: clamp(24px, 3.4vw, 32px);
   font-weight: 800;
-  letter-spacing: -1px;
-  line-height: 1.1;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
   color: #ffffff;
 }
 
-.hero-highlight-val span.unit {
-  font-size: 18px;
+.hero-col-val.save-val.gain {
+  color: #34d399;
+}
+
+.hero-col-val.save-val.loss {
+  color: #f87171;
+}
+
+.hero-col-val span.unit {
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: normal;
-  margin-left: 4px;
+  margin-left: 3px;
   color: #94a3b8;
+}
+
+.hero-col-sub {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 400;
+  line-height: 1.35;
 }
 
 /* Trend Pill (KPI Indicator like Modern Dashboard) */
 .trend-pill {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-size: 12px;
+  gap: 4px;
+  font-size: 11.5px;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: 9999px;
   line-height: 1.2;
 }
@@ -1221,6 +1279,11 @@ input[type=range]::-webkit-slider-thumb:hover {
   font-size: 12px;
   color: #94a3b8;
   font-weight: 500;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 /* Secondary Metrics Grid */
@@ -1307,9 +1370,8 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 /* Payback & ROI Card (2 Columns) */
 .card-section-title {
-  font-size: 11.5px;
+  font-size: 16px;
   font-weight: 700;
-  color: #94a3b8;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   display: flex;
@@ -1329,8 +1391,9 @@ input[type=range]::-webkit-slider-thumb:hover {
   padding: 14px 16px;
   margin-bottom: 16px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+  gap: 16px;
 }
 
 .payback-col {
@@ -1338,11 +1401,13 @@ input[type=range]::-webkit-slider-thumb:hover {
   flex-direction: column;
   gap: 4px;
   position: relative;
+  min-width: 0;
 }
 
-.payback-col:last-child {
+.payback-col-divider {
+  width: 0;
   border-left: 1px dashed rgba(255, 255, 255, 0.15);
-  padding-left: 14px;
+  margin: 2px 0;
 }
 
 .payback-col small {
@@ -1598,7 +1663,6 @@ input[type=range]::-webkit-slider-thumb:hover {
    CHART SECTION (CLEAN BORDERLESS)
    ========================================= */
 .chart-section {
-  padding-top: 10px;
 }
 
 .charthead {
@@ -1609,12 +1673,10 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 .charthead h3 {
-  font-family: var(--font-display);
-  font-size: 13.5px;
-  letter-spacing: 1px;
+  font-size: 16px;
+  font-weight: 700;
   color: var(--text-primary);
-  font-weight: 800;
-  text-transform: uppercase;
+  letter-spacing: -0.2px;
 }
 
 .charthead p {
@@ -1645,7 +1707,6 @@ input[type=range]::-webkit-slider-thumb:hover {
    ENERGY CONSUMPTION MIX SECTION (SOLAR VS GRID)
    ========================================= */
 .energy-section {
-  padding-top: 6px;
 }
 
 .energy-title-row {
@@ -1741,8 +1802,9 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 .legend-icon-badge.export-badge {
-  background: #ecfdf5;
-  color: #059669;
+  background: #fef9c3;
+  color: #ca8a04;
+  border: 1px solid rgba(234, 179, 8, 0.35);
 }
 
 .legend-indicator {
@@ -1763,8 +1825,8 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 .legend-indicator.export-dot {
-  background: linear-gradient(135deg, #34d399, #059669);
-  box-shadow: 0 0 6px rgba(5, 150, 105, 0.35);
+  background: linear-gradient(135deg, #fde047, #eab308);
+  box-shadow: 0 0 6px rgba(234, 179, 8, 0.35);
 }
 
 .legend-details {
@@ -1795,11 +1857,12 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 .solar-item .legend-pct { color: #d97706; }
 .grid-item .legend-pct { color: #0284c7; }
-.export-item .legend-pct { color: #059669; }
+.export-item .legend-pct { color: #ca8a04; }
 
 .legend-meta {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 6px;
   font-size: 11px;
   color: var(--text-muted);
@@ -1808,6 +1871,12 @@ input[type=range]::-webkit-slider-thumb:hover {
 .legend-units {
   font-weight: 600;
   color: var(--text-secondary);
+}
+
+.legend-income {
+  font-size: 11px;
+  font-weight: 600;
+  color: #059669;
 }
 
 .legend-daily {
@@ -1843,7 +1912,11 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 .bar-segment.solar-segment {
-  background: linear-gradient(90deg, #ea580c 0%, #f59e0b 100%);
+  background: linear-gradient(90deg, #ea580c 0%, #f97316 100%);
+}
+
+.bar-segment.export-segment {
+  background: linear-gradient(90deg, #f59e0b 0%, #eab308 100%);
 }
 
 .bar-segment.grid-segment {
@@ -1853,12 +1926,19 @@ input[type=range]::-webkit-slider-thumb:hover {
 .energy-bar-labels {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 8px;
   font-size: 11px;
   font-weight: 600;
 }
 
 .bar-label.solar {
   color: #d97706;
+}
+
+.bar-label.export {
+  color: #ca8a04;
 }
 
 .bar-label.grid {
@@ -2008,9 +2088,33 @@ input[type=range]::-webkit-slider-thumb:hover {
   }
   .hero-highlight {
     padding: 14px 12px;
+    gap: 10px;
   }
-  .hero-highlight-val {
-    font-size: 32px;
+  .hero-floating-pill {
+    top: 13px;
+    right: 12px;
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+  .hero-twin-grid {
+    gap: 10px;
+  }
+  .hero-col-label {
+    font-size: 11px;
+    gap: 4px;
+    min-height: 18px;
+  }
+  .hero-col-save .hero-col-label {
+    padding-right: 48px;
+  }
+  .hero-col-val {
+    font-size: clamp(19px, 5vw, 24px);
+  }
+  .hero-col-val span.unit {
+    font-size: 11.5px;
+  }
+  .hero-col-sub {
+    font-size: 11px;
   }
   .phase-btn {
     font-size: 11.5px;
@@ -2025,11 +2129,8 @@ input[type=range]::-webkit-slider-thumb:hover {
     font-size: 12px;
   }
   .payback-card {
-    padding: 12px 8px;
-    gap: 8px;
-  }
-  .payback-col:last-child {
-    padding-left: 8px;
+    padding: 12px 10px;
+    gap: 10px;
   }
   .payback-col small {
     font-size: 10.5px;
@@ -2062,11 +2163,24 @@ input[type=range]::-webkit-slider-thumb:hover {
   .slider-ticks span[data-bill-tick="20000"] {
     display: none;
   }
-  .hero-highlight-label {
-    font-size: 12px;
-  }
   .hero-highlight-note {
     font-size: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-twin-grid,
+  .payback-card {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .hero-col-divider,
+  .payback-col-divider {
+    width: 100%;
+    height: 0;
+    border-left: none;
+    border-top: 1px dashed rgba(255, 255, 255, 0.15);
+    margin: 0;
   }
 }
 </style>
@@ -2100,11 +2214,10 @@ input[type=range]::-webkit-slider-thumb:hover {
           
           <div class="bill-amount-row">
             <span id="billDisplay" class="bill-amount-display" title="คลิกเพื่อพิมพ์ตัวเลขเอง">3,500</span>
-            <span class="bill-unit-text">บาท / เดือน</span>
-            
             <div id="billEditWrap" class="bill-input-edit-wrap hidden">
               <input id="bill" type="number" min="500" max="50000" step="100" value="3500" class="bill-inline-input" inputmode="numeric">
             </div>
+            <span class="bill-unit-text">บาท / เดือน</span>
           </div>
 
           <div class="bill-slider-wrap">
@@ -2135,13 +2248,13 @@ input[type=range]::-webkit-slider-thumb:hover {
           <!-- Slider: Left is Sun (Day heavy), Right is Moon (Night heavy) -->
           <div class="daynight-slider-row">
             <div class="daynight-icon sun" title="เน้นใช้ไฟกลางวัน">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z"/><path d="M12 2V3.5M12 20.5V22M19.0708 19.0713L18.0101 18.0106M5.98926 5.98926L4.9286 4.9286M22 12H20.5M3.5 12H2M19.0713 4.92871L18.0106 5.98937M5.98975 18.0107L4.92909 19.0714"/></svg>
             </div>
             
             <input id="day" class="daynight-slider" type="range" min="10" max="90" step="5" value="80" aria-valuemin="10" aria-valuemax="90" aria-valuenow="20" aria-valuetext="กลางวัน 20 เปอร์เซ็นต์, กลางคืน 80 เปอร์เซ็นต์">
             
             <div class="daynight-icon moon" title="เน้นใช้ไฟกลางคืน">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 14.0784C20.3003 14.7189 18.9301 15.0821 17.4751 15.0821C12.7491 15.0821 8.91792 11.2509 8.91792 6.52485C8.91792 5.06986 9.28105 3.69968 9.92163 2.5C5.66765 3.49698 2.5 7.31513 2.5 11.8731C2.5 17.1899 6.8101 21.5 12.1269 21.5C16.6849 21.5 20.503 18.3324 21.5 14.0784Z"/></svg>
             </div>
           </div>
 
@@ -2176,7 +2289,7 @@ input[type=range]::-webkit-slider-thumb:hover {
       <div class="form-section">
         <div class="section-head">
           <span class="step-pill">2</span>
-          <span class="section-title">ขนาดระบบ Solar Cell</span>
+          <span class="section-title">ขนาดระบบโซลาร์เซล</span>
         </div>
 
         <label id="packageLabel">เลือกขนาดการติดตั้ง (ระบบเลือกขนาดที่คุ้มสุดให้อัตโนมัติ)</label>
@@ -2229,7 +2342,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         <div class="toggle-row">
           <div class="toggle-info">
             <label for="subsidy">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--solar-primary)" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--solar-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.01733 15C4.2169 15 6.00001 16.7831 6.00001 18.9827"/><path d="M18 18.9827V18.8908C18 16.742 19.742 15 21.8908 15"/><path d="M6.00001 5.01733C6.00001 7.2169 4.2169 9.00001 2.01733 9.00001"/><path d="M18 5.01733C18 7.19765 19.769 8.96876 21.9423 8.9996"/><path d="M16 5H8C5.17157 5 3.75736 5 2.87868 5.87868C2 6.75736 2 8.17157 2 11V13C2 15.8284 2 17.2426 2.87868 18.1213C3.75736 19 5.17157 19 8 19H16C18.8284 19 20.2426 19 21.1213 18.1213C22 17.2426 22 15.8284 22 13V11C22 8.17157 22 6.75736 21.1213 5.87868C20.2426 5 18.8284 5 16 5Z"/><path d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z"/></svg>
               เงินสมทบภาครัฐ 50,000 บาท
             </label>
             <span class="toggle-sub">โครงการสนับสนุน 50,000 บาทต่อครัวเรือน (หักค่าติดตั้งทันที)</span>
@@ -2244,7 +2357,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         <div class="toggle-row">
           <div class="toggle-info">
             <label for="loan">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--solar-primary)" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="12" y2="16"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--solar-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12C2 8.46252 2 6.69377 3.0528 5.5129C3.22119 5.32403 3.40678 5.14935 3.60746 4.99087C4.86213 4 6.74142 4 10.5 4H13.5C17.2586 4 19.1379 4 20.3925 4.99087C20.5932 5.14935 20.7788 5.32403 20.9472 5.5129C22 6.69377 22 8.46252 22 12C22 15.5375 22 17.3062 20.9472 18.4871C20.7788 18.676 20.5932 18.8506 20.3925 19.0091C19.1379 20 17.2586 20 13.5 20H10.5C6.74142 20 4.86213 20 3.60746 19.0091C3.40678 18.8506 3.22119 18.676 3.0528 18.4871C2 17.3062 2 15.5375 2 12Z"/><path d="M10 16H11.5"/><path d="M14.5 16L18 16"/><path d="M2 9H22"/></svg>
               ต้องการขอสินเชื่อดอกเบี้ยต่ำ (ผ่อนชำระ)
             </label>
             <span class="toggle-sub">สินเชื่อโครงการสนับสนุน 2.5% ต่อปี ไม่ต้องใช้เงินก้อน ผ่อนสบายเทียบกับค่าไฟที่ลด</span>
@@ -2283,7 +2396,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         <div class="toggle-row">
           <div class="toggle-info">
             <label for="sell">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--solar-primary)" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--solar-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C7.89936 2 4.3752 4.46819 2.83209 8M2 4.5L2.5 8.5L6.5 7.5"/><path d="M14.7257 10.0603C14.6268 9.29765 13.7528 8.06543 12.1812 8.0654C10.3551 8.06537 9.58672 9.07867 9.43081 9.58532C9.18758 10.263 9.23622 11.6563 11.3766 11.8082C14.0522 11.9982 15.124 12.3146 14.9877 13.9552C14.8513 15.5957 13.3599 15.9502 12.1812 15.9121C11.0024 15.8742 9.07398 15.3317 8.99915 13.8725M11.9941 6.49921V8.06902M11.9941 15.9023V17.4992"/></svg>
               ขายไฟฟ้าส่วนเกินคืน (2.20 บาท/หน่วย)
             </label>
             <span class="toggle-sub">ส่งกระแสไฟที่เหลือใช้ช่วงกลางวันขายคืนเข้าการไฟฟ้า (โครงการโซลาร์ภาคประชาชน 20 ปี)</span>
@@ -2298,7 +2411,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         <div class="toggle-row">
           <div class="toggle-info">
             <label for="battery">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--solar-primary)" stroke-width="2"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--solar-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12C2 9.17157 2 7.75736 2.87868 6.87868C3.75736 6 5.17157 6 8 6H13C15.8284 6 17.2426 6 18.1213 6.87868C19 7.75736 19 9.17157 19 12C19 14.8284 19 16.2426 18.1213 17.1213C17.2426 18 15.8284 18 13 18H8C5.17157 18 3.75736 18 2.87868 17.1213C2 16.2426 2 14.8284 2 12Z"/><path d="M10.8282 9L9.08572 11.1749C8.89899 11.4079 9.03283 11.7433 9.33733 11.8053L11.1627 12.1773C11.4873 12.2434 11.6111 12.6147 11.3842 12.8413L9.22216 15"/><path d="M19 9.5L20.0272 9.6712C20.7085 9.78475 21.0491 9.84152 21.3076 10.0067C21.5618 10.1691 21.7612 10.4044 21.8796 10.6819C22 10.964 22 11.3093 22 12C22 12.6907 22 13.036 21.8796 13.3181C21.7612 13.5956 21.5618 13.8309 21.3076 13.9933C21.0491 14.1585 20.7085 14.2153 20.0272 14.3288L19 14.5"/></svg>
               ติดตั้งแบตเตอรี่สำรอง (Energy Storage)
             </label>
             <span class="toggle-sub">สำหรับกักเก็บไฟไว้ใช้ช่วงค่ำหรือกลางคืน</span>
@@ -2347,7 +2460,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         <!-- Advanced accordion button -->
         <button id="advbtn" class="advanced-toggle" type="button" aria-expanded="false" aria-controls="advanced">
           <span>ปรับสมมติฐานทางเทคนิค &amp; สภาพบ้าน (ขั้นสูง)</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9"/></svg>
         </button>
 
         <div id="advanced" class="advanced-box hidden">
@@ -2413,11 +2526,109 @@ input[type=range]::-webkit-slider-thumb:hover {
 
     <!-- RIGHT COLUMN: STICKY RESULTS DASHBOARD (DISTINCT HIGHLIGHTED CARD) -->
     <div class="sticky-sidebar">
+
+      <!-- ENERGY CONSUMPTION MIX CHART SECTION (SOLAR VS GRID) -->
+      <section class="energy-section" id="energySection">
+        <div class="charthead">
+          <div class="energy-title-row">
+            <h3>สัดส่วนการใช้ไฟ: โซลาร์เซล vs การไฟฟ้า</h3>
+            <span id="solarCoveragePill" class="energy-pill">โซลาร์เซล ผลิตจ่าย 58%</span>
+          </div>
+          <!-- <p>แหล่งที่มาของไฟฟ้าที่ใช้จริงต่อเดือน (หน่วย / kWh)</p> -->
+        </div>
+
+        <div class="energy-card">
+          <div class="energy-visual-row">
+            <div class="energy-donut-wrap">
+              <svg id="energyDonutChart" viewBox="0 0 160 160" class="energy-donut-svg" role="img" aria-label="กราฟวงกลมสัดส่วนการใช้ไฟ Solar เทียบการไฟฟ้า"></svg>
+            </div>
+
+            <div class="energy-legend-list">
+              <!-- Item 1: Solar Self-consumption -->
+              <div class="energy-legend-item solar-item">
+                <div class="legend-icon-badge solar-badge">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z"/><path d="M12 2V3.5M12 20.5V22M19.0708 19.0713L18.0101 18.0106M5.98926 5.98926L4.9286 4.9286M22 12H20.5M3.5 12H2M19.0713 4.92871L18.0106 5.98937M5.98975 18.0107L4.92909 19.0714"/></svg>
+                </div>
+                <div class="legend-details">
+                  <div class="legend-header">
+                    <span class="legend-name">ใช้ไฟจากโซลาร์เซล</span>
+                    <strong id="energySolarPct" class="legend-pct">58%</strong>
+                  </div>
+                  <div class="legend-meta">
+                    <span id="energySolarUnits" class="legend-units">350 หน่วย/ด.</span>
+                    <span id="energySolarDaily" class="legend-daily">(~11.7 หน่วย/วัน)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 2: Solar Export (if surplus) -->
+              <div id="energyExportItem" class="energy-legend-item export-item hidden">
+                <div class="legend-icon-badge export-badge">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C7.89936 2 4.3752 4.46819 2.83209 8M2 4.5L2.5 8.5L6.5 7.5"/><path d="M14.7257 10.0603C14.6268 9.29765 13.7528 8.06543 12.1812 8.0654C10.3551 8.06537 9.58672 9.07867 9.43081 9.58532C9.18758 10.263 9.23622 11.6563 11.3766 11.8082C14.0522 11.9982 15.124 12.3146 14.9877 13.9552C14.8513 15.5957 13.3599 15.9502 12.1812 15.9121C11.0024 15.8742 9.07398 15.3317 8.99915 13.8725M11.9941 6.49921V8.06902M11.9941 15.9023V17.4992"/></svg>
+                </div>
+                <div class="legend-details">
+                  <div class="legend-header">
+                    <span class="legend-name">ไฟส่วนเกินขายคืน</span>
+                    <strong id="energyExportPct" class="legend-pct">0%</strong>
+                  </div>
+                  <div class="legend-meta">
+                    <span id="energyExportUnits" class="legend-units">0 หน่วย/ด.</span>
+                    <span id="energyExportIncome" class="legend-income">(+฿0/ด.)</span>
+                    <span id="energyExportDaily" class="legend-daily">(~0 หน่วย/วัน)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 3: Grid Import -->
+              <div class="energy-legend-item grid-item">
+                <div class="legend-icon-badge grid-badge">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.22576 11.3294L12.224 2.34651C12.7713 1.64397 13.7972 2.08124 13.7972 3.01707V9.96994C13.7972 10.5305 14.1995 10.985 14.6958 10.985H18.0996C18.8729 10.985 19.2851 12.0149 18.7742 12.6706L11.776 21.6535C11.2287 22.356 10.2028 21.9188 10.2028 20.9829V14.0301C10.2028 13.4695 9.80048 13.015 9.3042 13.015H5.90035C5.12711 13.015 4.71494 11.9851 5.22576 11.3294Z"/></svg>
+                </div>
+                <div class="legend-details">
+                  <div class="legend-header">
+                    <span class="legend-name">ดึงจากการไฟฟ้า</span>
+                    <strong id="energyGridPct" class="legend-pct">42%</strong>
+                  </div>
+                  <div class="legend-meta">
+                    <span id="energyGridUnits" class="legend-units">250 หน่วย/ด.</span>
+                    <span id="energyGridDaily" class="legend-daily">(~8.3 หน่วย/วัน)</span>
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+          </div>
+
+          <!-- Stacked Proportion Bar -->
+          <div class="energy-stacked-bar-wrap">
+            <div class="energy-stacked-bar">
+              <div id="barSolarSegment" class="bar-segment solar-segment" style="width: 58%;" title="ใช้ไฟจากโซลาร์เซล"></div>
+              <div id="barExportSegment" class="bar-segment export-segment hidden" style="width: 0%;" title="ขายไฟส่วนเกินคืน"></div>
+              <div id="barGridSegment" class="bar-segment grid-segment" style="width: 42%;" title="ดึงจากการไฟฟ้า"></div>
+            </div>
+            <div class="energy-bar-labels">
+              <span id="barSolarLabel" class="bar-label solar">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:3px;"><path d="M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z"/><path d="M12 2V3.5M12 20.5V22M19.0708 19.0713L18.0101 18.0106M5.98926 5.98926L4.9286 4.9286M22 12H20.5M3.5 12H2M19.0713 4.92871L18.0106 5.98937M5.98975 18.0107L4.92909 19.0714"/></svg>
+                <span id="barSolarText">โซลาร์ 58%</span>
+              </span>
+              <span id="barExportLabel" class="bar-label export hidden">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:3px;"><path d="M2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C7.89936 2 4.3752 4.46819 2.83209 8M2 4.5L2.5 8.5L6.5 7.5"/><path d="M14.7257 10.0603C14.6268 9.29765 13.7528 8.06543 12.1812 8.0654C10.3551 8.06537 9.58672 9.07867 9.43081 9.58532C9.18758 10.263 9.23622 11.6563 11.3766 11.8082C14.0522 11.9982 15.124 12.3146 14.9877 13.9552C14.8513 15.5957 13.3599 15.9502 12.1812 15.9121C11.0024 15.8742 9.07398 15.3317 8.99915 13.8725M11.9941 6.49921V8.06902M11.9941 15.9023V17.4992"/></svg>
+                <span id="barExportText">ขายคืน 0%</span>
+              </span>
+              <span id="barGridLabel" class="bar-label grid">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:3px;"><path d="M5.22576 11.3294L12.224 2.34651C12.7713 1.64397 13.7972 2.08124 13.7972 3.01707V9.96994C13.7972 10.5305 14.1995 10.985 14.6958 10.985H18.0996C18.8729 10.985 19.2851 12.0149 18.7742 12.6706L11.776 21.6535C11.2287 22.356 10.2028 21.9188 10.2028 20.9829V14.0301C10.2028 13.4695 9.80048 13.015 9.3042 13.015H5.90035C5.12711 13.015 4.71494 11.9851 5.22576 11.3294Z"/></svg>
+                <span id="barGridText">การไฟฟ้า 42%</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- HERO RESULT CARD -->
       <section class="result-card">
         <div class="result-card-header">
           <div class="eyebrow">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px;"><path d="M5.22576 11.3294L12.224 2.34651C12.7713 1.64397 13.7972 2.08124 13.7972 3.01707V9.96994C13.7972 10.5305 14.1995 10.985 14.6958 10.985H18.0996C18.8729 10.985 19.2851 12.0149 18.7742 12.6706L11.776 21.6535C11.2287 22.356 10.2028 21.9188 10.2028 20.9829V14.0301C10.2028 13.4695 9.80048 13.015 9.3042 13.015H5.90035C5.12711 13.015 4.71494 11.9851 5.22576 11.3294Z"/></svg>
             สรุปความคุ้มค่าของคุณ
           </div>
           <span id="roiBadge" class="roi-status-pill">ไม่ต้องควักเนื้อเพิ่ม</span>
@@ -2426,27 +2637,49 @@ input[type=range]::-webkit-slider-thumb:hover {
         <!-- Phase Toggle Pill Bar (สลับดูช่วง 7 ปีแรก vs หลังปีที่ 7) -->
         <div id="phaseSwitchContainer" class="phase-switch-bar">
           <button id="btnPhase1" class="phase-btn active" type="button">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12C2 8.46252 2 6.69377 3.0528 5.5129C3.22119 5.32403 3.40678 5.14935 3.60746 4.99087C4.86213 4 6.74142 4 10.5 4H13.5C17.2586 4 19.1379 4 20.3925 4.99087C20.5932 5.14935 20.7788 5.32403 20.9472 5.5129C22 6.69377 22 8.46252 22 12C22 15.5375 22 17.3062 20.9472 18.4871C20.7788 18.676 20.5932 18.8506 20.3925 19.0091C19.1379 20 17.2586 20 13.5 20H10.5C6.74142 20 4.86213 20 3.60746 19.0091C3.40678 18.8506 3.22119 18.676 3.0528 18.4871C2 17.3062 2 15.5375 2 12Z"/><path d="M10 16H11.5"/><path d="M14.5 16L18 16"/><path d="M2 9H22"/></svg>
             <span id="btnPhase1Text">ช่วงผ่อน 7 ปีแรก</span>
           </button>
           <button id="btnPhase2" class="phase-btn" type="button">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12.5 20H10.5C6.74142 20 4.86213 20 3.60746 19.0091C3.40678 18.8506 3.22119 18.676 3.0528 18.4871C2 17.3062 2 15.5375 2 12C2 8.46252 2 6.69377 3.0528 5.5129C3.22119 5.32403 3.40678 5.14935 3.60746 4.99087C4.86213 4 6.74142 4 10.5 4H13.5C17.2586 4 19.1379 4 20.3925 4.99087C20.5932 5.14935 20.7788 5.32403 20.9472 5.5129C21.8957 6.57684 21.9897 8.11799 21.999 11"/>
+              <path d="M2 9H22"/>
+              <path d="M22 14L16 20M22 20L16 14"/>
+            </svg>
             <span id="btnPhase2Text">หลังปีที่ 7 (ปลดหนี้)</span>
           </button>
         </div>
 
-        <!-- Main Hero Highlight: กระเป๋าเงินสุทธิต่อเดือน -->
+        <!-- Main Hero Highlight: Twin Column (ยอดจ่ายจริง vs ส่วนต่างลด/เพิ่ม) -->
         <div class="hero-highlight">
-          <div class="hero-highlight-label">
-            <span id="heroLabel">ส่วนต่างต่อเดือนเทียบกับค่าไฟเดิม (ช่วงผ่อน 7 ปี)</span>
-          </div>
-          <div class="hero-highlight-val-row">
-            <div class="hero-highlight-val">
-              <span id="heroNetMonthly">—</span>
+          <span id="heroTrendPill" class="trend-pill gain hero-floating-pill">↓ 14%</span>
+
+          <div class="hero-twin-grid">
+            <!-- Col 1: ยอดจ่ายจริงต่อเดือน -->
+            <div class="hero-col hero-col-pay">
+              <div class="hero-col-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                <span id="heroPayLabel">ยอดจ่ายจริงต่อเดือน</span>
+              </div>
+              <div class="hero-col-val" id="heroPayMonthly">—</div>
+              <div id="heroPaySub" class="hero-col-sub">ค่าไฟใหม่ + ค่างวดผ่อน</div>
             </div>
-            <span id="heroTrendPill" class="trend-pill gain">↓ ประหยัด 14%</span>
+
+            <!-- Divider -->
+            <div class="hero-col-divider"></div>
+
+            <!-- Col 2: ส่วนต่างลด หรือ ส่วนต่างเพิ่ม -->
+            <div class="hero-col hero-col-save">
+              <div class="hero-col-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <span id="heroSaveLabel">ส่วนต่างลด</span>
+              </div>
+              <div class="hero-col-val save-val gain" id="heroSaveMonthly">—</div>
+              <div id="heroSaveSub" class="hero-col-sub">เทียบค่าไฟเดิม</div>
+            </div>
           </div>
-          <div id="heroSubnote" class="hero-highlight-note">เดิมจ่าย ฿3,500/ด. ➔ ยอดใหม่รวมค่างวด ฿3,071/ด.</div>
+
+          <div id="heroSubnote" class="hero-highlight-note">เดิมจ่าย ฿3,500/ด. ➔ จ่ายจริงลดเหลือ ฿3,071/ด. (ประหยัด ฿429/ด.)</div>
         </div>
 
         <!-- Single Comparison Gauge Bar (Bullet Target Chart) -->
@@ -2474,35 +2707,35 @@ input[type=range]::-webkit-slider-thumb:hover {
           <div class="breakdown-title" id="breakdownTitle">ที่มาของยอดจ่ายต่อเดือน</div>
           <div class="breakdown-row header-row" id="breakdownBeforeRow">
             <span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18.6458V8.05426C4 5.20025 4 3.77325 4.87868 2.88663C5.75736 2 7.17157 2 10 2H14C16.8284 2 18.2426 2 19.1213 2.88663C20 3.77325 20 5.20025 20 8.05426V18.6458C20 20.1575 20 20.9133 19.538 21.2108C18.7831 21.6971 17.6161 20.6774 17.0291 20.3073C16.5441 20.0014 16.3017 19.8485 16.0325 19.8397C15.7417 19.8301 15.4949 19.9768 14.9709 20.3073L13.06 21.5124C12.5445 21.8374 12.2868 22 12 22C11.7132 22 11.4555 21.8374 10.94 21.5124L9.02913 20.3073C8.54415 20.0014 8.30166 19.8485 8.03253 19.8397C7.74172 19.8301 7.49493 19.9768 6.97087 20.3073C6.38395 20.6774 5.21687 21.6971 4.46195 21.2108C4 20.9133 4 20.1575 4 18.6458Z"/><path d="M11 11H8"/><path d="M14 7L8 7"/></svg>
               ค่าไฟเดิมที่เคยจ่าย
             </span>
             <strong id="breakdownOrigBill" style="color:#cbd5e1;">฿3,500</strong>
           </div>
           <div class="breakdown-row">
             <span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6h8c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7z"/></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 16.4998C6.7725 15.4011 6 13.7768 6 11.9998C6 8.68605 8.68629 5.99976 12 5.99976C15.3137 5.99976 18 8.68605 18 11.9998C18 13.7768 17.2275 15.4011 16 16.4998"/><path d="M12 11.9998V16.4998"/><path d="M9.5 18.9998H14.5"/><path d="M10.5 21.4998H13.5"/><path d="M3.5 11.9998H2.5M5.98438 5.97632L5.23438 5.23022M18.0195 5.97632L18.7695 5.23022M21.5 11.9998H20.5M12 2.49976V3.49976"/></svg>
               ค่าไฟใหม่ที่ต้องจ่าย
             </span>
             <strong id="breakdownNewBill" style="color:#34d399;">฿1,048</strong>
           </div>
           <div class="breakdown-row" id="breakdownLoanRow">
             <span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12C2 8.46252 2 6.69377 3.0528 5.5129C3.22119 5.32403 3.40678 5.14935 3.60746 4.99087C4.86213 4 6.74142 4 10.5 4H13.5C17.2586 4 19.1379 4 20.3925 4.99087C20.5932 5.14935 20.7788 5.32403 20.9472 5.5129C22 6.69377 22 8.46252 22 12C22 15.5375 22 17.3062 20.9472 18.4871C20.7788 18.676 20.5932 18.8506 20.3925 19.0091C19.1379 20 17.2586 20 13.5 20H10.5C6.74142 20 4.86213 20 3.60746 19.0091C3.40678 18.8506 3.22119 18.676 3.0528 18.4871C2 17.3062 2 15.5375 2 12Z"/><path d="M10 16H11.5"/><path d="M14.5 16L18 16"/><path d="M2 9H22"/></svg>
               ค่างวดผ่อนสินเชื่อ (7 ปี)
             </span>
             <strong id="breakdownLoan" style="color:#f87171;">฿1,417</strong>
           </div>
           <div class="breakdown-row" id="breakdownSellRow">
             <span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C7.89936 2 4.3752 4.46819 2.83209 8M2 4.5L2.5 8.5L6.5 7.5"/><path d="M14.7257 10.0603C14.6268 9.29765 13.7528 8.06543 12.1812 8.0654C10.3551 8.06537 9.58672 9.07867 9.43081 9.58532C9.18758 10.263 9.23622 11.6563 11.3766 11.8082C14.0522 11.9982 15.124 12.3146 14.9877 13.9552C14.8513 15.5957 13.3599 15.9502 12.1812 15.9121C11.0024 15.8742 9.07398 15.3317 8.99915 13.8725M11.9941 6.49921V8.06902M11.9941 15.9023V17.4992"/></svg>
               หักเงินที่ได้จากการขายไฟคืน
             </span>
-            <strong id="breakdownSell" style="color:#f59e0b;">-฿231</strong>
+            <strong id="breakdownSell" style="color:#ca8a04;">-฿231</strong>
           </div>
           <div class="breakdown-row total-row" id="breakdownTotalRow">
             <span id="breakdownTotalLabel">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 14L8.5 17.5L19 6.5"/></svg>
               รวมภาระจ่ายจริงในแต่ละเดือน
             </span>
             <strong id="breakdownTotalVal" style="color:#38bdf8;">฿2,234</strong>
@@ -2510,8 +2743,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         </div>
 
         <!-- Investment & ROI Analysis Header -->
-        <div class="card-section-title">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        <div class="card-section-title ">
           การวิเคราะห์ความคุ้มค่าและการลงทุน
         </div>
 
@@ -2519,7 +2751,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         <div class="payback-card">
           <div class="payback-col">
             <small>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8V12L14 14"/></svg>
               ระยะเวลาคืนทุนจริง
               <span class="info-tip" aria-label="วิธีคำนวณระยะเวลาคืนทุน">?
                 <span class="tip-box">
@@ -2533,9 +2765,13 @@ input[type=range]::-webkit-slider-thumb:hover {
             <div id="payback" class="payback-num">—</div>
             <span id="paybacknote" class="subtext">จากเงินประหยัดสะสม</span>
           </div>
+
+          <!-- Divider (Center Dashed) -->
+          <div class="payback-col-divider"></div>
+
           <div class="payback-col">
             <small>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 14V17"/><path d="M13 9V17"/><path d="M18 5V17"/><path d="M21 21H10C6.70017 21 5.05025 21 4.02513 19.9749C3 18.9497 3 17.2998 3 14V3"/></svg>
               ผลตอบแทน (ROI)
               <span class="info-tip" aria-label="วิธีคำนวณ ROI">?
                 <span class="tip-box">
@@ -2581,96 +2817,6 @@ input[type=range]::-webkit-slider-thumb:hover {
           <span id="paybacknote"></span>
           <span id="beforebill"></span>
           <span id="sellIncome"></span>
-        </div>
-      </section>
-
-      <!-- ENERGY CONSUMPTION MIX CHART SECTION (SOLAR VS GRID) -->
-      <section class="chart-section energy-section" id="energySection">
-        <div class="charthead">
-          <div class="energy-title-row">
-            <h3>สัดส่วนการใช้ไฟ: Solar vs การไฟฟ้า</h3>
-            <span id="solarCoveragePill" class="energy-pill">Solar ผลิตจ่าย 58%</span>
-          </div>
-          <p>แหล่งที่มาของไฟฟ้าที่ใช้จริงต่อเดือน (หน่วย / kWh)</p>
-        </div>
-
-        <div class="energy-card">
-          <div class="energy-visual-row">
-            <div class="energy-donut-wrap">
-              <svg id="energyDonutChart" viewBox="0 0 160 160" class="energy-donut-svg" role="img" aria-label="กราฟวงกลมสัดส่วนการใช้ไฟ Solar เทียบการไฟฟ้า"></svg>
-            </div>
-
-            <div class="energy-legend-list">
-              <!-- Item 1: Solar Self-consumption -->
-              <div class="energy-legend-item solar-item">
-                <div class="legend-icon-badge solar-badge">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                </div>
-                <div class="legend-details">
-                  <div class="legend-header">
-                    <span class="legend-name">ใช้ไฟจาก Solar</span>
-                    <strong id="energySolarPct" class="legend-pct">58%</strong>
-                  </div>
-                  <div class="legend-meta">
-                    <span id="energySolarUnits" class="legend-units">350 หน่วย/ด.</span>
-                    <span id="energySolarDaily" class="legend-daily">(~11.7 หน่วย/วัน)</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Item 2: Grid Import -->
-              <div class="energy-legend-item grid-item">
-                <div class="legend-icon-badge grid-badge">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                </div>
-                <div class="legend-details">
-                  <div class="legend-header">
-                    <span class="legend-name">ดึงจากการไฟฟ้า</span>
-                    <strong id="energyGridPct" class="legend-pct">42%</strong>
-                  </div>
-                  <div class="legend-meta">
-                    <span id="energyGridUnits" class="legend-units">250 หน่วย/ด.</span>
-                    <span id="energyGridDaily" class="legend-daily">(~8.3 หน่วย/วัน)</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Item 3: Solar Export (if surplus) -->
-              <div id="energyExportItem" class="energy-legend-item export-item hidden">
-                <div class="legend-icon-badge export-badge">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                </div>
-                <div class="legend-details">
-                  <div class="legend-header">
-                    <span class="legend-name">ไฟส่วนเกินขายคืน</span>
-                    <strong id="energyExportIncome" class="legend-pct">+฿0/ด.</strong>
-                  </div>
-                  <div class="legend-meta">
-                    <span id="energyExportUnits" class="legend-units">0 หน่วย/ด.</span>
-                    <span class="legend-sub">ส่งออกมิเตอร์</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Stacked Proportion Bar -->
-          <div class="energy-stacked-bar-wrap">
-            <div class="energy-stacked-bar">
-              <div id="barSolarSegment" class="bar-segment solar-segment" style="width: 58%;" title="ใช้ไฟจาก Solar"></div>
-              <div id="barGridSegment" class="bar-segment grid-segment" style="width: 42%;" title="ดึงจากการไฟฟ้า"></div>
-            </div>
-            <div class="energy-bar-labels">
-              <span id="barSolarLabel" class="bar-label solar">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:3px;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                <span id="barSolarText">Solar 58%</span>
-              </span>
-              <span id="barGridLabel" class="bar-label grid">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:3px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                <span id="barGridText">การไฟฟ้า 42%</span>
-              </span>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -2830,7 +2976,7 @@ function update() {
   $('breakdownSellRow').classList.remove('hidden');
   if ($('sell').checked && sellIncomeMonthly > 0) {
     $('breakdownSell').textContent = '-' + fmt(sellIncomeMonthly);
-    $('breakdownSell').style.color = '#f59e0b';
+    $('breakdownSell').style.color = '#ca8a04';
   } else {
     $('breakdownSell').textContent = '฿0';
     $('breakdownSell').style.color = '#94a3b8';
@@ -2846,6 +2992,40 @@ function update() {
   // Global or scoped state for phase view (1: ช่วงผ่อน, 2: ปลดหนี้แล้ว)
   let activePhase = window._activePhase || 1;
   window._activePhase = activePhase;
+
+  function renderCompareBar(payVal, labelText, badgeText, badgeClass) {
+    const defaultMax = bill > 0 ? (bill / 0.75) : 4000;
+    const maxVal = Math.max(defaultMax, payVal * 1.08);
+
+    const markerPosPct = maxVal > 0 ? Math.min(95, Math.max(10, (bill / maxVal) * 100)) : 75;
+    if ($('singleMarker')) $('singleMarker').style.left = markerPosPct + '%';
+
+    const barWidthPct = maxVal > 0 ? Math.min(100, Math.max(4, (payVal / maxVal) * 100)) : 0;
+    $('barFillAfter').style.width = barWidthPct + '%';
+
+    if ($('markerLabel')) $('markerLabel').textContent = `ค่าไฟเดิม ${fmt(bill)}`;
+    $('barAfterLabel').textContent = labelText;
+    $('barAfterVal').textContent = fmt(payVal);
+
+    // Bar color: green (<80%), orange (80-100%), red (>100% of baseline)
+    $('barFillAfter').classList.remove('safe', 'warn', 'danger');
+    if (payVal > bill) {
+      $('barFillAfter').classList.add('danger');
+      $('barAfterVal').style.color = '#f87171';
+    } else if (payVal >= bill * 0.80) {
+      $('barFillAfter').classList.add('warn');
+      $('barAfterVal').style.color = '#fb923c';
+    } else {
+      $('barFillAfter').classList.add('safe');
+      $('barAfterVal').style.color = '#34d399';
+    }
+
+    if ($('savePercentBadge')) {
+      $('savePercentBadge').textContent = badgeText;
+      $('savePercentBadge').style.background = badgeClass === 'danger' ? 'rgba(239, 68, 68, 0.2)' : '';
+      $('savePercentBadge').style.color = badgeClass === 'danger' ? '#f87171' : '';
+    }
+  }
 
   if (isLoan) {
     $('phaseSwitchContainer').classList.remove('hidden');
@@ -2866,64 +3046,43 @@ function update() {
     $('phase2NetPay').textContent = fmt(actualOutAfterLoan) + '/ด.';
     $('phase2Note').textContent = `ประหยัดเต็มที่ ${fmt(bill - actualOutAfterLoan)}/ด.`;
 
-    function renderCompareBar(payVal, labelText, badgeText, badgeClass) {
-      const defaultMax = bill > 0 ? (bill / 0.75) : 4000;
-      const maxVal = Math.max(defaultMax, payVal * 1.08);
-
-      const markerPosPct = maxVal > 0 ? Math.min(95, Math.max(10, (bill / maxVal) * 100)) : 75;
-      if ($('singleMarker')) $('singleMarker').style.left = markerPosPct + '%';
-
-      const barWidthPct = maxVal > 0 ? Math.min(100, Math.max(4, (payVal / maxVal) * 100)) : 0;
-      $('barFillAfter').style.width = barWidthPct + '%';
-
-      if ($('markerLabel')) $('markerLabel').textContent = `ค่าไฟเดิม ${fmt(bill)}`;
-      $('barAfterLabel').textContent = labelText;
-      $('barAfterVal').textContent = fmt(payVal);
-
-      // Bar color: green (<80%), orange (80-100%), red (>100% of baseline)
-      $('barFillAfter').classList.remove('safe', 'warn', 'danger');
-      if (payVal > bill) {
-        $('barFillAfter').classList.add('danger');
-        $('barAfterVal').style.color = '#f87171';
-      } else if (payVal >= bill * 0.80) {
-        $('barFillAfter').classList.add('warn');
-        $('barAfterVal').style.color = '#fb923c';
-      } else {
-        $('barFillAfter').classList.add('safe');
-        $('barAfterVal').style.color = '#34d399';
-      }
-
-      if ($('savePercentBadge')) {
-        $('savePercentBadge').textContent = badgeText;
-        $('savePercentBadge').style.background = badgeClass === 'danger' ? 'rgba(239, 68, 68, 0.2)' : '';
-        $('savePercentBadge').style.color = badgeClass === 'danger' ? '#f87171' : '';
-      }
-    }
-
     if (activePhase === 1) {
       // Phase 1 (ช่วงผ่อน)
       $('breakdownLoanRow').classList.remove('hidden');
       $('breakdownLoan').textContent = '+' + fmt(monthlyPayment);
       $('breakdownLoan').style.color = '#f87171';
-      $('breakdownTotalLabel').innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ภาระจ่ายจริงรวมเดือนนี้`;
+      $('breakdownTotalLabel').innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 14L8.5 17.5L19 6.5"/></svg> ภาระจ่ายจริงรวมเดือนนี้`;
       $('breakdownTotalVal').textContent = fmt(actualOutDuringLoan);
       $('breakdownTitle').textContent = `แจกแจงภาระจ่ายจริงช่วงผ่อน ${loanYears} ปี`;
 
-      // Header เป็นส่วนต่าง ตัวเลขใหญ่เป็นยอดส่วนต่าง
-      $('heroLabel').textContent = `ส่วนต่างต่อเดือนเทียบกับค่าไฟเดิม (ช่วงผ่อน ${loanYears} ปี)`;
-      $('heroNetMonthly').innerHTML = fmt(Math.abs(diffFromOrig)) + '<span class="unit">/เดือน</span>';
+      // Twin Column Hero update
+      if ($('heroPayLabel')) $('heroPayLabel').textContent = 'ยอดจ่ายจริงต่อเดือน';
+      if ($('heroPayMonthly')) $('heroPayMonthly').innerHTML = fmt(actualOutDuringLoan) + '<span class="unit">/ด.</span>';
+      if ($('heroPaySub')) $('heroPaySub').textContent = `ค่าไฟใหม่ + ค่างวดผ่อน ${loanYears} ปี`;
 
       const changePct = bill > 0 ? Math.round(Math.abs(diffFromOrig / bill) * 100) : 0;
-      if ($('heroTrendPill')) {
+      if ($('heroSaveMonthly')) {
+        $('heroSaveMonthly').innerHTML = fmt(Math.abs(diffFromOrig)) + '<span class="unit">/ด.</span>';
         if (diffFromOrig >= 0) {
-          $('heroTrendPill').className = 'trend-pill gain';
-          $('heroTrendPill').textContent = `↓ ประหยัด ${changePct}%`;
+          $('heroSaveMonthly').className = 'hero-col-val save-val gain';
+          if ($('heroSaveLabel')) $('heroSaveLabel').textContent = 'ส่วนต่างลด';
+          if ($('heroSaveSub')) $('heroSaveSub').textContent = `เทียบค่าไฟเดิม ${fmt(bill)}`;
+          if ($('heroTrendPill')) {
+            $('heroTrendPill').className = 'trend-pill gain hero-floating-pill';
+            $('heroTrendPill').textContent = `↓ ${changePct}%`;
+          }
+          if ($('heroSubnote')) $('heroSubnote').textContent = `เดิมจ่าย ${fmt(bill)}/ด. ➔ จ่ายจริงลดเหลือ ${fmt(actualOutDuringLoan)}/ด. (ประหยัด ${fmt(diffFromOrig)}/ด.)`;
         } else {
-          $('heroTrendPill').className = 'trend-pill loss';
-          $('heroTrendPill').textContent = `↑ จ่ายเพิ่ม ${changePct}%`;
+          $('heroSaveMonthly').className = 'hero-col-val save-val loss';
+          if ($('heroSaveLabel')) $('heroSaveLabel').textContent = 'ส่วนต่างเพิ่ม';
+          if ($('heroSaveSub')) $('heroSaveSub').textContent = `เทียบค่าไฟเดิม ${fmt(bill)}`;
+          if ($('heroTrendPill')) {
+            $('heroTrendPill').className = 'trend-pill loss hero-floating-pill';
+            $('heroTrendPill').textContent = `↑ ${changePct}%`;
+          }
+          if ($('heroSubnote')) $('heroSubnote').textContent = `เดิมจ่าย ${fmt(bill)}/ด. ➔ ช่วงผ่อนจ่ายรวม ${fmt(actualOutDuringLoan)}/ด. (สะสมสินทรัพย์)`;
         }
       }
-      $('heroSubnote').textContent = `เดิมจ่าย ฿${Math.round(bill).toLocaleString()}/ด. ➔ ยอดใหม่รวมค่างวด ฿${Math.round(actualOutDuringLoan).toLocaleString()}/ด.`;
 
       if ($('roiBadge')) {
         const isSafe = diffFromOrig >= 0;
@@ -2946,20 +3105,29 @@ function update() {
       $('breakdownLoanRow').classList.remove('hidden');
       $('breakdownLoan').textContent = '฿0';
       $('breakdownLoan').style.color = '#94a3b8';
-      $('breakdownTotalLabel').innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ภาระจ่ายจริงหลังปลดหนี้`;
+      $('breakdownTotalLabel').innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 14L8.5 17.5L19 6.5"/></svg> ภาระจ่ายจริงหลังปลดหนี้`;
       $('breakdownTotalVal').textContent = fmt(actualOutAfterLoan);
       $('breakdownTitle').textContent = `แจกแจงภาระจ่ายจริงหลังปีที่ ${loanYears} (ปลดหนี้แล้ว)`;
 
       const gainAfter = bill - actualOutAfterLoan;
       const gainPct = bill > 0 ? Math.round((gainAfter / bill) * 100) : 0;
-      $('heroLabel').textContent = `ส่วนต่างต่อเดือนเทียบกับค่าไฟเดิม (หลังปลดหนี้)`;
-      $('heroNetMonthly').innerHTML = fmt(gainAfter) + '<span class="unit">/เดือน</span>';
+
+      if ($('heroPayLabel')) $('heroPayLabel').textContent = 'ยอดจ่ายจริงต่อเดือน';
+      if ($('heroPayMonthly')) $('heroPayMonthly').innerHTML = fmt(actualOutAfterLoan) + '<span class="unit">/ด.</span>';
+      if ($('heroPaySub')) $('heroPaySub').textContent = 'ค่าไฟใหม่ (ปลดหนี้แล้ว)';
+
+      if ($('heroSaveLabel')) $('heroSaveLabel').textContent = 'ส่วนต่างลด';
+      if ($('heroSaveMonthly')) {
+        $('heroSaveMonthly').className = 'hero-col-val save-val gain';
+        $('heroSaveMonthly').innerHTML = fmt(gainAfter) + '<span class="unit">/ด.</span>';
+      }
+      if ($('heroSaveSub')) $('heroSaveSub').textContent = `เทียบค่าไฟเดิม ${fmt(bill)}`;
 
       if ($('heroTrendPill')) {
-        $('heroTrendPill').className = 'trend-pill gain';
-        $('heroTrendPill').textContent = `↓ ประหยัด ${gainPct}%`;
+        $('heroTrendPill').className = 'trend-pill gain hero-floating-pill';
+        $('heroTrendPill').textContent = `↓ ${gainPct}%`;
       }
-      $('heroSubnote').textContent = `เดิมจ่าย ฿${Math.round(bill).toLocaleString()}/ด. ➔ ยอดใหม่จ่ายจริงเหลือ ฿${Math.round(actualOutAfterLoan).toLocaleString()}/ด.`;
+      if ($('heroSubnote')) $('heroSubnote').textContent = `เดิมจ่าย ${fmt(bill)}/ด. ➔ จ่ายจริงเหลือ ${fmt(actualOutAfterLoan)}/ด. (ประหยัดเต็มๆ ${fmt(gainAfter)}/ด.)`;
 
       if ($('roiBadge')) {
         $('roiBadge').textContent = 'กำไรเนื้อๆ ปลดหนี้แล้ว';
@@ -2979,7 +3147,7 @@ function update() {
     $('phaseSwitchContainer').classList.add('hidden');
     $('breakdownLoanRow').classList.add('hidden');
     $('breakdownTotalRow').classList.remove('hidden');
-    $('breakdownTotalLabel').innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ภาระจ่ายจริงหลังติดตั้ง`;
+    $('breakdownTotalLabel').innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 14L8.5 17.5L19 6.5"/></svg> ภาระจ่ายจริงหลังติดตั้ง`;
     $('breakdownTotalVal').textContent = fmt(actualOutAfterLoan);
     $('breakdownTitle').textContent = 'แจกแจงภาระจ่ายจริงหลังติดตั้ง';
 
@@ -2993,14 +3161,23 @@ function update() {
     $('phase2Note').textContent = 'สัญญาซื้อขาย 20 ปี';
 
     const cashGainPct = bill > 0 ? Math.round((totalMonthlyGain / bill) * 100) : 0;
-    $('heroLabel').textContent = 'ส่วนต่างต่อเดือนเทียบกับค่าไฟเดิม (หลังติดตั้ง)';
-    $('heroNetMonthly').innerHTML = fmt(totalMonthlyGain) + '<span class="unit">/เดือน</span>';
+
+    if ($('heroPayLabel')) $('heroPayLabel').textContent = 'ยอดจ่ายจริงต่อเดือน';
+    if ($('heroPayMonthly')) $('heroPayMonthly').innerHTML = fmt(actualOutAfterLoan) + '<span class="unit">/ด.</span>';
+    if ($('heroPaySub')) $('heroPaySub').textContent = 'ค่าไฟการไฟฟ้าหลังติดตั้ง';
+
+    if ($('heroSaveLabel')) $('heroSaveLabel').textContent = 'ส่วนต่างลด';
+    if ($('heroSaveMonthly')) {
+      $('heroSaveMonthly').className = 'hero-col-val save-val gain';
+      $('heroSaveMonthly').innerHTML = fmt(totalMonthlyGain) + '<span class="unit">/ด.</span>';
+    }
+    if ($('heroSaveSub')) $('heroSaveSub').textContent = `เทียบค่าไฟเดิม ${fmt(bill)}`;
 
     if ($('heroTrendPill')) {
-      $('heroTrendPill').className = 'trend-pill gain';
-      $('heroTrendPill').textContent = `↓ ประหยัด ${cashGainPct}%`;
+      $('heroTrendPill').className = 'trend-pill gain hero-floating-pill';
+      $('heroTrendPill').textContent = `↓ ${cashGainPct}%`;
     }
-    $('heroSubnote').textContent = `เดิมจ่าย ฿${Math.round(bill).toLocaleString()}/ด. ➔ ยอดใหม่จ่ายจริงเหลือ ฿${Math.round(actualOutAfterLoan).toLocaleString()}/ด.`;
+    if ($('heroSubnote')) $('heroSubnote').textContent = `เดิมจ่าย ${fmt(bill)}/ด. ➔ จ่ายจริงเหลือ ${fmt(actualOutAfterLoan)}/ด. (ประหยัดทันที ${fmt(totalMonthlyGain)}/ด.)`;
 
     if ($('roiBadge')) {
       $('roiBadge').textContent = 'ประหยัดทันที';
@@ -3102,22 +3279,49 @@ function update() {
 }
 
 function renderEnergyMix(units, selfMonthly, gridMonthly, exportMonthly, saving, afterBill, sellIncomeMonthly) {
-  const safeUnits = Math.max(0.1, units);
-  const solarPct = Math.min(100, Math.max(0, (selfMonthly / safeUnits) * 100));
-  const gridPct = Math.max(0, 100 - solarPct);
-  const roundSolar = Math.round(solarPct);
+  const isSelling = $('sell') && $('sell').checked && exportMonthly > 0.5;
+
+  let selfPct = 0;
+  let exportPct = 0;
+  let gridPct = 0;
+  let totalFlow = units;
+
+  if (isSelling) {
+    totalFlow = selfMonthly + exportMonthly + gridMonthly;
+    const safeTotal = Math.max(0.1, totalFlow);
+    selfPct = (selfMonthly / safeTotal) * 100;
+    exportPct = (exportMonthly / safeTotal) * 100;
+    gridPct = Math.max(0, 100 - selfPct - exportPct);
+  } else {
+    const safeUnits = Math.max(0.1, units);
+    selfPct = Math.min(100, Math.max(0, (selfMonthly / safeUnits) * 100));
+    exportPct = 0;
+    gridPct = Math.max(0, 100 - selfPct);
+  }
+
+  const roundSelf = Math.round(selfPct);
+  const roundExport = Math.round(exportPct);
   const roundGrid = Math.round(gridPct);
+  const totalSolarPct = selfPct + exportPct;
+  const roundTotalSolar = Math.round(totalSolarPct);
 
   // Update badge
   if ($('solarCoveragePill')) {
-    $('solarCoveragePill').textContent = `Solar ผลิตจ่าย ${roundSolar}%`;
-    $('solarCoveragePill').style.background = roundSolar >= 50 ? 'rgba(5, 150, 105, 0.12)' : 'rgba(245, 158, 11, 0.14)';
-    $('solarCoveragePill').style.color = roundSolar >= 50 ? '#059669' : '#b45309';
-    $('solarCoveragePill').style.borderColor = roundSolar >= 50 ? 'rgba(5, 150, 105, 0.28)' : 'rgba(245, 158, 11, 0.28)';
+    if (isSelling) {
+      $('solarCoveragePill').textContent = `โซลาร์ รวม ${roundTotalSolar}% (ใช้ ${roundSelf}% • ขาย ${roundExport}%)`;
+      $('solarCoveragePill').style.background = 'rgba(234, 179, 8, 0.14)';
+      $('solarCoveragePill').style.color = '#a16207';
+      $('solarCoveragePill').style.borderColor = 'rgba(234, 179, 8, 0.35)';
+    } else {
+      $('solarCoveragePill').textContent = `โซลาร์ ผลิตจ่าย ${roundSelf}%`;
+      $('solarCoveragePill').style.background = roundSelf >= 50 ? 'rgba(5, 150, 105, 0.12)' : 'rgba(245, 158, 11, 0.14)';
+      $('solarCoveragePill').style.color = roundSelf >= 50 ? '#059669' : '#b45309';
+      $('solarCoveragePill').style.borderColor = roundSelf >= 50 ? 'rgba(5, 150, 105, 0.28)' : 'rgba(245, 158, 11, 0.28)';
+    }
   }
 
   // Update legends
-  if ($('energySolarPct')) $('energySolarPct').textContent = roundSolar + '%';
+  if ($('energySolarPct')) $('energySolarPct').textContent = roundSelf + '%';
   if ($('energySolarUnits')) $('energySolarUnits').textContent = Math.round(selfMonthly).toLocaleString('en-US') + ' หน่วย/ด.';
   if ($('energySolarDaily')) $('energySolarDaily').textContent = `(~${(selfMonthly / 30).toFixed(1)} หน่วย/วัน)`;
 
@@ -3127,27 +3331,55 @@ function renderEnergyMix(units, selfMonthly, gridMonthly, exportMonthly, saving,
 
   // Export legend item
   if ($('energyExportItem')) {
-    if (exportMonthly > 0.5 && $('sell') && $('sell').checked) {
+    if (isSelling) {
       $('energyExportItem').classList.remove('hidden');
+      if ($('energyExportPct')) $('energyExportPct').textContent = roundExport + '%';
       if ($('energyExportUnits')) $('energyExportUnits').textContent = Math.round(exportMonthly).toLocaleString('en-US') + ' หน่วย/ด.';
-      if ($('energyExportIncome')) $('energyExportIncome').textContent = '+฿' + Math.round(sellIncomeMonthly).toLocaleString('en-US') + '/ด.';
+      if ($('energyExportIncome')) $('energyExportIncome').textContent = '(+฿' + Math.round(sellIncomeMonthly).toLocaleString('en-US') + '/ด.)';
+      if ($('energyExportDaily')) $('energyExportDaily').textContent = `(~${(exportMonthly / 30).toFixed(1)} หน่วย/วัน)`;
     } else {
       $('energyExportItem').classList.add('hidden');
     }
   }
 
   // Update stacked progress bar
-  if ($('barSolarSegment')) $('barSolarSegment').style.width = solarPct + '%';
-  if ($('barGridSegment')) $('barGridSegment').style.width = gridPct + '%';
+  if ($('barSolarSegment')) {
+    $('barSolarSegment').style.width = selfPct + '%';
+    $('barSolarSegment').title = `ใช้ไฟจากโซลาร์เซล: ${roundSelf}% (${Math.round(selfMonthly).toLocaleString('en-US')} หน่วย)`;
+  }
+  if ($('barExportSegment')) {
+    if (isSelling) {
+      $('barExportSegment').classList.remove('hidden');
+      $('barExportSegment').style.width = exportPct + '%';
+      $('barExportSegment').title = `ขายไฟคืน: ${roundExport}% (${Math.round(exportMonthly).toLocaleString('en-US')} หน่วย)`;
+    } else {
+      $('barExportSegment').classList.add('hidden');
+      $('barExportSegment').style.width = '0%';
+    }
+  }
+  if ($('barGridSegment')) {
+    $('barGridSegment').style.width = gridPct + '%';
+    $('barGridSegment').title = `ดึงจากการไฟฟ้า: ${roundGrid}% (${Math.round(gridMonthly).toLocaleString('en-US')} หน่วย)`;
+  }
+
+  // Bar labels
   if ($('barSolarText')) {
-    $('barSolarText').textContent = `Solar ${roundSolar}% (${Math.round(selfMonthly).toLocaleString('en-US')} หน่วย)`;
-  } else if ($('barSolarLabel')) {
-    $('barSolarLabel').textContent = `Solar ${roundSolar}% (${Math.round(selfMonthly).toLocaleString('en-US')} หน่วย)`;
+    $('barSolarText').textContent = isSelling 
+      ? `โซลาร์ ใช้เอง ${roundSelf}% (${Math.round(selfMonthly).toLocaleString('en-US')} น.)` 
+      : `โซลาร์ ${roundSelf}% (${Math.round(selfMonthly).toLocaleString('en-US')} หน่วย)`;
+  }
+  if ($('barExportLabel') && $('barExportText')) {
+    if (isSelling) {
+      $('barExportLabel').classList.remove('hidden');
+      $('barExportText').textContent = `ขายคืน ${roundExport}% (${Math.round(exportMonthly).toLocaleString('en-US')} น.)`;
+    } else {
+      $('barExportLabel').classList.add('hidden');
+    }
   }
   if ($('barGridText')) {
-    $('barGridText').textContent = `การไฟฟ้า ${roundGrid}% (${Math.round(gridMonthly).toLocaleString('en-US')} หน่วย)`;
-  } else if ($('barGridLabel')) {
-    $('barGridLabel').textContent = `การไฟฟ้า ${roundGrid}% (${Math.round(gridMonthly).toLocaleString('en-US')} หน่วย)`;
+    $('barGridText').textContent = isSelling
+      ? `การไฟฟ้า ${roundGrid}% (${Math.round(gridMonthly).toLocaleString('en-US')} น.)`
+      : `การไฟฟ้า ${roundGrid}% (${Math.round(gridMonthly).toLocaleString('en-US')} หน่วย)`;
   }
 
   // Render SVG Donut
@@ -3155,13 +3387,35 @@ function renderEnergyMix(units, selfMonthly, gridMonthly, exportMonthly, saving,
   if (donutSvg) {
     const r = 58;
     const C = 2 * Math.PI * r; // ~364.425
-    const solarStroke = (solarPct / 100) * C;
+    const selfStroke = (selfPct / 100) * C;
+    const exportStroke = (exportPct / 100) * C;
+    const exportStartAngle = -90 + (selfPct / 100) * 360;
+
+    let centerHtml = '';
+    if (isSelling) {
+      centerHtml = `
+        <text x="80" y="68" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="23" fill="#0f172a">${roundTotalSolar}%</text>
+        <text x="80" y="85" text-anchor="middle" font-family="'Prompt', sans-serif" font-weight="600" font-size="11" fill="#ea580c">โซลาร์รวม (ใช้+ขาย)</text>
+        <text x="80" y="100" text-anchor="middle" font-family="'Prompt', sans-serif" font-weight="600" font-size="10.5" fill="#ca8a04">+฿${Math.round(sellIncomeMonthly).toLocaleString('en-US')}/ด.</text>
+        <text x="80" y="114" text-anchor="middle" font-family="'Prompt', sans-serif" font-weight="500" font-size="9" fill="#94a3b8">รวม ${Math.round(totalFlow).toLocaleString('en-US')} น./ด.</text>
+      `;
+    } else {
+      centerHtml = `
+        <text x="80" y="73" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="24" fill="#0f172a">${roundSelf}%</text>
+        <text x="80" y="91" text-anchor="middle" font-family="'Prompt', sans-serif" font-weight="600" font-size="11.5" fill="#d97706">ใช้จาก Solar</text>
+        <text x="80" y="106" text-anchor="middle" font-family="'Prompt', sans-serif" font-weight="500" font-size="9.5" fill="#94a3b8">รวม ${Math.round(units).toLocaleString('en-US')} หน่วย/ด.</text>
+      `;
+    }
 
     donutSvg.innerHTML = `
       <defs>
         <linearGradient id="solarDonutGrad" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stop-color="#ea580c"/>
-          <stop offset="100%" stop-color="#f59e0b"/>
+          <stop offset="100%" stop-color="#f97316"/>
+        </linearGradient>
+        <linearGradient id="exportDonutGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f59e0b"/>
+          <stop offset="100%" stop-color="#eab308"/>
         </linearGradient>
         <linearGradient id="gridDonutGrad" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stop-color="#38bdf8"/>
@@ -3170,13 +3424,17 @@ function renderEnergyMix(units, selfMonthly, gridMonthly, exportMonthly, saving,
       </defs>
       <!-- Base circle: Grid -->
       <circle cx="80" cy="80" r="${r}" fill="none" stroke="url(#gridDonutGrad)" stroke-width="18" opacity="0.95"/>
-      <!-- Solar Arc: Starts at top (12 o'clock), clockwise -->
+      <!-- Solar Self-use Arc: Starts at top (12 o'clock), clockwise -->
       <circle cx="80" cy="80" r="${r}" fill="none" stroke="url(#solarDonutGrad)" stroke-width="18"
-              stroke-dasharray="${solarStroke.toFixed(2)} ${C.toFixed(2)}"
+              stroke-dasharray="${selfStroke.toFixed(2)} ${C.toFixed(2)}"
               transform="rotate(-90 80 80)"/>
-      <text x="80" y="73" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="24" fill="#0f172a">${roundSolar}%</text>
-      <text x="80" y="91" text-anchor="middle" font-family="'Prompt', sans-serif" font-weight="600" font-size="11.5" fill="#d97706">ใช้จาก Solar</text>
-      <text x="80" y="106" text-anchor="middle" font-family="'Prompt', sans-serif" font-weight="500" font-size="9.5" fill="#94a3b8">รวม ${Math.round(units).toLocaleString('en-US')} หน่วย/ด.</text>
+      ${isSelling && exportStroke > 0 ? `
+      <!-- Solar Export Arc: Starts immediately after Self-use Arc, clockwise -->
+      <circle cx="80" cy="80" r="${r}" fill="none" stroke="url(#exportDonutGrad)" stroke-width="18"
+              stroke-dasharray="${exportStroke.toFixed(2)} ${C.toFixed(2)}"
+              transform="rotate(${exportStartAngle.toFixed(2)} 80 80)"/>
+      ` : ''}
+      ${centerHtml}
     `;
   }
 }
@@ -3450,9 +3708,9 @@ $('shade').addEventListener('input', () => {
 });
 
 // Bill input and slider synchronization
-function setBillValue(val) {
+function setBillValue(val, syncInput = true) {
   val = Math.max(100, Math.round(Number(val) || 0));
-  $('bill').value = val;
+  if (syncInput && $('bill')) $('bill').value = val;
   if ($('billSlider')) $('billSlider').value = Math.min(25000, Math.max(1000, val));
   if ($('billDisplay')) $('billDisplay').textContent = val.toLocaleString();
   
@@ -3478,7 +3736,7 @@ if ($('billSlider')) {
 
 if ($('bill')) {
   $('bill').addEventListener('input', () => {
-    setBillValue($('bill').value);
+    setBillValue($('bill').value, false);
   });
 }
 
@@ -3496,6 +3754,7 @@ if ($('bill')) {
   $('bill').addEventListener('blur', () => {
     $('billEditWrap').classList.add('hidden');
     $('billDisplay').classList.remove('hidden');
+    setBillValue($('bill').value || 3500, true);
   });
   $('bill').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
