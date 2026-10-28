@@ -1,0 +1,2567 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARUN — Solar ROI Calculator | เครื่องมือคำนวณความคุ้มค่าโซลาร์เซลล์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font-body: 'Prompt', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Prompt', sans-serif;
+  
+  --bg-app: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-card-subtle: #f1f5f9;
+  --border-light: #e2e8f0;
+  --border-focus: #ea580c;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  
+  /* 2 Primary Solar & Energy Colors */
+  --solar-primary: #ea580c; /* Warm Solar Orange */
+  --solar-amber: #f59e0b;   /* Sun Amber */
+  --solar-gradient: linear-gradient(135deg, #ea580c 0%, #f59e0b 100%);
+  --eco-primary: #059669;   /* Clean Emerald Green */
+  --eco-light: #ecfdf5;
+  
+  --dark-surface: #0f172a;
+  --dark-surface-elevated: #1e293b;
+  --dark-border: rgba(234, 88, 12, 0.25);
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-glow: 0 0 25px rgba(234, 88, 12, 0.15);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  line-height: 1.5;
+  padding: 32px 16px 80px;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Ambient solar aura background */
+body::before {
+  content: "";
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 480px;
+  background: radial-gradient(ellipse 60% 40% at 50% 20%, rgba(234, 88, 12, 0.08), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================
+   LOGO & BRAND HEADER (Strictly Centered)
+   ========================================= */
+.brand-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 8px auto 20px;
+}
+
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid var(--border-light);
+  padding: 4px 14px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--solar-primary);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 32px;
+  letter-spacing: 7px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+  text-align: center;
+  margin: 0 auto 12px;
+}
+
+.brand span {
+  color: var(--solar-primary);
+  margin-left: 2px;
+}
+
+.intro {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 36px;
+}
+
+.intro h1 {
+  font-size: clamp(22px, 3.5vw, 28px);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+
+.intro p {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Layout container: 2 columns on desktop */
+.app-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media (min-width: 960px) {
+  .app-layout {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .sticky-sidebar {
+    position: sticky;
+    top: 24px;
+  }
+}
+
+/* =========================================
+   BORDERLESS / CARDLESS FORM FLOW
+   ========================================= */
+.form-section {
+  margin-bottom: 30px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.form-section:last-of-type {
+  border-bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.step-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: var(--solar-gradient);
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 800;
+  font-family: var(--font-display);
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.2px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.field-desc {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-top: 6px;
+  line-height: 1.45;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: #fff;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.input-group:focus-within {
+  border-color: var(--solar-primary);
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15);
+}
+
+.input-group input[type=number] {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  outline: none;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  background: transparent;
+  min-width: 0;
+}
+
+.input-group .unit-badge {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-card-subtle);
+  padding: 11px 16px;
+  border-left: 1px solid var(--border-light);
+  white-space: nowrap;
+}
+
+/* System Size Selector (Segmented Tabs / Chips) */
+.choices {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 10px 0 16px;
+}
+
+.chip {
+  border: 1.5px solid var(--border-light);
+  background: #fff;
+  color: var(--text-secondary);
+  padding: 12px 10px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.chip span.chip-kw {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.chip span.chip-note {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.chip-badge {
+  position: absolute;
+  top: -8px;
+  background: var(--solar-primary);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  box-shadow: 0 2px 5px rgba(234, 88, 12, 0.3);
+}
+
+.chip {
+  position: relative;
+}
+
+/* Breakdown Box */
+.breakdown-box {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.breakdown-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  color: #e2e8f0;
+  gap: 12px;
+}
+
+.breakdown-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.breakdown-row svg {
+  flex-shrink: 0;
+}
+
+.breakdown-row strong {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.breakdown-row.header-row {
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+  margin-bottom: 2px;
+  color: #94a3b8;
+}
+
+.breakdown-row.total-row {
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+  font-weight: 700;
+  color: #fff;
+}
+
+.breakdown-row.total-row strong {
+  font-size: 15px;
+}
+
+.chip:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--solar-primary);
+  outline-offset: 2px;
+}
+
+.chip.active {
+  background: #0f172a;
+  color: #fff;
+  border-color: #0f172a;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+}
+
+.chip.active span.chip-kw {
+  color: var(--solar-amber);
+}
+
+.chip.active span.chip-note {
+  color: #94a3b8;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* Modern Toggle Line (Borderless row style) */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--bg-card-subtle);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  margin-bottom: 12px;
+}
+
+.toggle-row:last-child {
+  margin-bottom: 0;
+}
+
+.toggle-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toggle-info label {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggle-sub {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Stepper Counter for Battery */
+.stepper-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #fff;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.stepper-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.stepper-label {
+  display: flex;
+  flex-direction: column;
+}
+
+.stepper-label strong {
+  font-size: 13.5px;
+  color: var(--text-primary);
+}
+
+.stepper-label small {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.stepper-ctrl {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+  padding: 4px 6px;
+}
+
+.stepper-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 0;
+  background: #fff;
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.15s ease;
+}
+
+.stepper-btn:hover {
+  background: var(--solar-primary);
+  color: #fff;
+}
+
+.stepper-btn:focus-visible {
+  outline: 2px solid var(--solar-primary);
+  outline-offset: 2px;
+}
+
+.stepper-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: transparent;
+  color: var(--text-light);
+  box-shadow: none;
+}
+
+.stepper-val {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 28px;
+  text-align: center;
+}
+
+.stepper-price-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-light);
+}
+
+.stepper-price-row label {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.stepper-price-row .input-group {
+  max-width: 180px;
+  margin-left: auto;
+}
+
+.stepper-price-row .input-group input {
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.stepper-price-row .unit-badge {
+  padding: 8px 10px;
+  font-size: 11.5px;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.slider-switch {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #cbd5e1;
+  transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 999px;
+}
+
+.slider-switch:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.switch input:focus-visible + .slider-switch {
+  outline: 2px solid var(--solar-primary);
+  outline-offset: 2px;
+}
+
+input:checked + .slider-switch {
+  background: var(--solar-primary);
+}
+
+input:checked + .slider-switch:before {
+  transform: translateX(20px);
+}
+
+/* Advanced Accordion */
+.advanced-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  border: 1px solid var(--border-light);
+  background: #fff;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 13px;
+  margin-top: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.advanced-toggle:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: var(--text-primary);
+}
+
+.advanced-toggle:focus-visible {
+  outline: 2px solid var(--solar-primary);
+  outline-offset: 2px;
+}
+
+.advanced-toggle svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.25s ease;
+}
+
+.advanced-toggle.open svg {
+  transform: rotate(180deg);
+}
+
+.advanced-box {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.adv-preset-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+
+.adv-preset-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 10px 6px;
+  border: 1px solid var(--border-light);
+  background: #fff;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.adv-preset-btn .p-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.adv-preset-btn .p-sub {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+.adv-preset-btn:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.adv-preset-btn.active {
+  border-color: var(--solar-primary);
+  background: #fff7ed;
+  color: var(--solar-primary);
+}
+
+.adv-preset-btn.active .p-title {
+  color: var(--solar-primary);
+}
+
+.adv-help-text {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.range-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rangehead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.rangehead label {
+  margin: 0;
+  font-weight: 500;
+}
+
+.rangehead strong {
+  color: var(--solar-primary);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  background: #fff;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border-light);
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: #cbd5e1;
+  outline: none;
+  margin: 4px 0;
+  cursor: pointer;
+}
+
+input[type=range]:focus-visible {
+  outline: 2px solid var(--solar-primary);
+  outline-offset: 4px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--solar-primary);
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  background: var(--solar-amber);
+}
+
+/* =========================================
+   RIGHT COLUMN: HERO RESULTS & METRICS (DARK CARD)
+   ========================================= */
+.result-card {
+  background: linear-gradient(155deg, #0f172a 0%, #1e293b 100%);
+  color: white;
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  border: 1px solid var(--dark-border);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.result-card::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(234, 88, 12, 0.15), transparent 70%);
+  pointer-events: none;
+}
+
+.result-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--solar-amber);
+  font-weight: 800;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+}
+
+.roi-status-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: rgba(5, 150, 105, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(5, 150, 105, 0.3);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.35);
+  transition: all 0.25s ease;
+}
+
+.roi-status-pill.warning {
+  background: rgba(234, 88, 12, 0.2) !important;
+  color: #fb923c !important;
+  border-color: rgba(234, 88, 12, 0.45) !important;
+  box-shadow: 0 0 14px rgba(234, 88, 12, 0.4) !important;
+}
+
+.roi-status-pill.danger {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #f87171 !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.5) !important;
+}
+
+.bar-fill-after.danger {
+  background: linear-gradient(90deg, #ef4444 0%, #f87171 100%) !important;
+  box-shadow: 0 0 10px rgba(248, 113, 113, 0.5) !important;
+}
+
+/* Hero primary highlight */
+.hero-highlight {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hero-highlight-label {
+  font-size: 13px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-highlight-val-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero-highlight-val {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 5vw, 44px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  color: #ffffff;
+}
+
+.hero-highlight-val span.unit {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: normal;
+  margin-left: 4px;
+  color: #94a3b8;
+}
+
+/* Trend Pill (KPI Indicator like Modern Dashboard) */
+.trend-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  line-height: 1.2;
+}
+
+.trend-pill.gain {
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.trend-pill.loss {
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.hero-highlight-note {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Secondary Metrics Grid */
+.biggrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.metric-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+
+.metric-card small {
+  display: block;
+  color: #94a3b8;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.metric-card strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(19px, 2.3vw, 22px);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.metric-card strong.green {
+  color: #34d399;
+}
+
+.metric-card em {
+  display: block;
+  font-size: 11px;
+  font-style: normal;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* Phase Pill Switcher */
+.phase-switch-bar {
+  display: flex;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.phase-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 0;
+  background: transparent;
+  color: #94a3b8;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.phase-btn:hover {
+  color: #fff;
+}
+
+.phase-btn.active {
+  background: var(--solar-primary);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(234, 88, 12, 0.4);
+}
+
+/* Payback & ROI Card (2 Columns) */
+.payback-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.payback-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.payback-col:last-child {
+  border-left: 1px dashed rgba(255, 255, 255, 0.15);
+  padding-left: 14px;
+}
+
+.payback-col small {
+  font-size: 11.5px;
+  color: #94a3b8;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.payback-col small svg {
+  color: var(--solar-amber);
+}
+
+.payback-col .payback-num {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+
+.payback-col .payback-num span.unit {
+  font-size: 13.5px;
+  color: #94a3b8;
+  margin-left: 4px;
+  font-weight: 500;
+}
+
+.payback-col span.subtext {
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* Tooltip trigger & balloon */
+.info-tip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: help;
+  position: relative;
+  margin-left: auto;
+  line-height: 1;
+}
+
+.info-tip:hover {
+  background: var(--solar-primary);
+  color: #fff;
+}
+
+.info-tip .tip-box {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: -10px;
+  width: 250px;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 11px;
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.45;
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.6);
+  z-index: 50;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translateY(4px);
+}
+
+.info-tip .tip-box strong {
+  color: #38bdf8;
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11.5px;
+}
+
+.info-tip .tip-box code {
+  display: block;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 3px 6px;
+  border-radius: 4px;
+  margin: 4px 0;
+  color: #f59e0b;
+  font-family: var(--font-display);
+  font-size: 10.5px;
+}
+
+.info-tip:hover .tip-box {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Single Comparison Gauge Bar (Bullet / Target Chart) */
+.single-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0 16px;
+}
+
+.single-bar-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 12.5px;
+}
+
+.single-bar-meta .target-title {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.single-bar-meta .target-val {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  transition: color 0.25s ease;
+}
+
+.single-bar-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 24px; /* เผื่อที่ให้ Marker Label ด้านล่าง */
+}
+
+.single-bar-track {
+  position: relative;
+  width: 100%;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.single-bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  transition: width 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+}
+
+.single-bar-fill.safe {
+  background: linear-gradient(90deg, #059669 0%, #34d399 100%);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.45);
+}
+
+.single-bar-fill.warn {
+  background: linear-gradient(90deg, #ea580c 0%, #fb923c 100%);
+  box-shadow: 0 0 12px rgba(251, 146, 60, 0.45);
+}
+
+.single-bar-fill.danger {
+  background: linear-gradient(90deg, #dc2626 0%, #f87171 100%);
+  box-shadow: 0 0 12px rgba(248, 113, 113, 0.55);
+}
+
+/* เส้นขีดอ้างอิงค่าไฟเดิม (Dynamic position) */
+.single-bar-marker {
+  position: absolute;
+  top: -3px;
+  left: 75%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 5;
+  transition: left 0.35s ease;
+}
+
+.single-bar-marker .marker-line {
+  width: 2px;
+  height: 20px;
+  background: #ffffff;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  border-radius: 2px;
+}
+
+.single-bar-marker .marker-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #cbd5e1;
+  white-space: nowrap;
+  margin-top: 5px;
+  letter-spacing: 0.2px;
+}
+
+/* Mini stat boxes */
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.mini {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+
+.mini span {
+  display: block;
+  font-size: 11.5px;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.mini strong {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* Loan summary banner inside result */
+.loan-banner {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: rgba(234, 88, 12, 0.1);
+  border: 1px solid rgba(234, 88, 12, 0.25);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  color: #fed7aa;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.loan-banner strong {
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 13.5px;
+}
+
+/* =========================================
+   CHART SECTION (CLEAN BORDERLESS)
+   ========================================= */
+.chart-section {
+  padding-top: 10px;
+}
+
+.charthead {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.charthead h3 {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.charthead p {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+#chart-container {
+  position: relative;
+  width: 100%;
+  background: #fff;
+  padding: 14px 10px 8px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+}
+
+#chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* Notice disclaimer */
+.notice {
+  font-size: 12px;
+  color: var(--text-light);
+  line-height: 1.7;
+  margin: 32px 4px 0;
+  text-align: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  body {
+    padding: 20px 14px 50px;
+  }
+  .choices {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .biggrid {
+    grid-template-columns: 1fr;
+  }
+  .result-card {
+    padding: 20px 16px;
+  }
+  .hero-highlight {
+    padding: 16px;
+  }
+}
+</style>
+</head>
+<body>
+
+<main id="arun" class="wrap">
+  <!-- LOGO & BRAND (Centered as required) -->
+  <div class="brand-container">
+    <div class="brand">ARUN<span>.</span></div>
+    <div class="brand-badge">
+      โครงการสนับสนุนภาครัฐ 50,000 บาท • ดอกเบี้ยพิเศษ 2.5% ผ่อน 7 ปี
+    </div>
+  </div>
+
+  <div class="app-layout">
+    <!-- LEFT COLUMN: INPUT CONTROLS (BORDERLESS / CARDLESS) -->
+    <div class="config-column">
+      <!-- Section 1: Bill -->
+      <div class="form-section">
+        <div class="section-head">
+          <span class="step-pill">1</span>
+          <span class="section-title">ข้อมูลการใช้ไฟฟ้าปัจจุบัน</span>
+        </div>
+
+        <div class="field">
+          <label for="bill">ค่าไฟเฉลี่ยต่อเดือนในปัจจุบัน</label>
+          <div class="input-group">
+            <input id="bill" type="number" min="100" step="50" value="3500" inputmode="numeric">
+            <span class="unit-badge">บาท/เดือน</span>
+          </div>
+          <span class="field-desc">ดูจากบิลค่าไฟล่าสุด หรือประมาณการค่าไฟเฉลี่ยต่อเดือนของบ้าน</span>
+        </div>
+      </div>
+
+      <!-- Section 2: Solar System Sizing -->
+      <div class="form-section">
+        <div class="section-head">
+          <span class="step-pill">2</span>
+          <span class="section-title">ขนาดระบบ Solar Cell</span>
+        </div>
+
+        <label id="packageLabel">เลือกขนาดการติดตั้ง (ระบบเลือกขนาดที่คุ้มสุดให้อัตโนมัติ)</label>
+        <div class="choices" role="radiogroup" aria-labelledby="packageLabel">
+          <button id="chip5" class="chip active" data-kw="5" type="button" role="radio" aria-checked="true">
+            <span class="chip-badge" id="badge5">แนะนำสำหรับคุณ</span>
+            <span class="chip-kw">5 kW</span>
+            <span class="chip-note">เหมาะกับค่าไฟ 2,500–5,000 บ. (แอร์ 2-3 ตัว)</span>
+          </button>
+          <button id="chip10" class="chip" data-kw="10" type="button" role="radio" aria-checked="false">
+            <span class="chip-badge hidden" id="badge10">แนะนำสำหรับคุณ</span>
+            <span class="chip-kw">10 kW</span>
+            <span class="chip-note">เหมาะกับค่าไฟ 6,000 บ. ขึ้นไป (แอร์ 4+ ตัว / มี EV)</span>
+          </button>
+        </div>
+
+        <!-- Custom inputs displayed in stepper-box style like loan/battery options -->
+        <div class="stepper-box" style="margin-top: 14px;">
+          <div class="stepper-top">
+            <div class="stepper-label">
+              <strong>ขนาดกำลังติดตั้ง</strong>
+              <small>กด + หรือ − เพื่อเพิ่มลดขนาดทีละ 1 kW (1–30 kW)</small>
+            </div>
+            <div class="stepper-ctrl">
+              <button id="kwMinus" class="stepper-btn" type="button" aria-label="ลดขนาดติดตั้ง">−</button>
+              <span id="kwVal" class="stepper-val">5 kW</span>
+              <button id="kwPlus" class="stepper-btn" type="button" aria-label="เพิ่มขนาดติดตั้ง">+</button>
+            </div>
+            <input id="kw" type="hidden" value="5">
+          </div>
+
+          <div class="stepper-price-row">
+            <label for="price">ราคาประเมินรวมอุปกรณ์ &amp; ติดตั้ง:</label>
+            <div class="input-group" style="max-width:170px; margin-left:auto;">
+              <input id="price" type="number" min="0" step="1000" value="150000">
+              <span class="unit-badge">บาท</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Government Scheme Benefits (สิทธิประโยชน์โครงการภาครัฐ) -->
+      <div class="form-section">
+        <div class="section-head">
+          <span class="step-pill">3</span>
+          <span class="section-title">สิทธิประโยชน์โครงการภาครัฐ & ตัวเลือกเสริม</span>
+        </div>
+
+        <!-- 1. Subsidy 50,000 THB -->
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <label for="subsidy">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--solar-primary)" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              เงินสมทบภาครัฐ 50,000 บาท
+            </label>
+            <span class="toggle-sub">โครงการสนับสนุน 50,000 บาทต่อครัวเรือน (หักค่าติดตั้งทันที)</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="subsidy" checked aria-label="หักเงินสนับสนุนจากภาครัฐ 50,000 บาท">
+            <span class="slider-switch"></span>
+          </label>
+        </div>
+
+        <!-- 2. Loan Financing (กู้หรือไม่กู้) -->
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <label for="loan">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--solar-primary)" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="12" y2="16"/></svg>
+              ต้องการขอสินเชื่อดอกเบี้ยต่ำ (ผ่อนชำระ)
+            </label>
+            <span class="toggle-sub">สินเชื่อโครงการสนับสนุน 2.5% ต่อปี ไม่ต้องใช้เงินก้อน ผ่อนสบายเทียบกับค่าไฟที่ลด</span>
+          </div>
+          <label class="switch">
+            <input id="loan" type="checkbox" checked aria-label="ต้องการขอสินเชื่อผ่อนชำระ">
+            <span class="slider-switch"></span>
+          </label>
+        </div>
+
+        <!-- Loan options (สไตล์ Stepper Box สวยงามประหยัดพื้นที่เหมือนแบตเตอรี่) -->
+        <div id="loanopts" class="stepper-box">
+          <div class="stepper-top">
+            <div class="stepper-label">
+              <strong>ระยะเวลาผ่อนชำระ</strong>
+              <small>กด + หรือ − เพื่อเพิ่มลดระยะเวลา (1–15 ปี)</small>
+            </div>
+            <div class="stepper-ctrl">
+              <button id="loanYearsMinus" class="stepper-btn" type="button" aria-label="ลดจำนวนปีผ่อน">−</button>
+              <span id="loanYearsVal" class="stepper-val">7 ปี</span>
+              <button id="loanYearsPlus" class="stepper-btn" type="button" aria-label="เพิ่มจำนวนปีผ่อน">+</button>
+            </div>
+            <input id="loanYears" type="hidden" value="7">
+          </div>
+
+          <div class="stepper-price-row">
+            <label for="loanRate">อัตราดอกเบี้ยต่อปี (% ต่อปี Flat):</label>
+            <div class="input-group" style="max-width:140px; margin-left:auto;">
+              <input id="loanRate" type="number" min="0" max="20" step="0.1" value="2.5">
+              <span class="unit-badge">% ต่อปี</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Grid Sell (ขายไฟคืน 2.20 บ./หน่วย) - ลำดับที่ 3 default ปิด -->
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <label for="sell">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--solar-primary)" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              ขายไฟฟ้าส่วนเกินคืน (2.20 บาท/หน่วย)
+            </label>
+            <span class="toggle-sub">ส่งกระแสไฟที่เหลือใช้ช่วงกลางวันขายคืนเข้าการไฟฟ้า (โครงการโซลาร์ภาคประชาชน 20 ปี)</span>
+          </div>
+          <label class="switch">
+            <input id="sell" type="checkbox" aria-label="รวมรายได้จากการขายไฟคืนเข้าระบบ">
+            <span class="slider-switch"></span>
+          </label>
+        </div>
+
+        <!-- 4. Optional Battery -->
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <label for="battery">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--solar-primary)" stroke-width="2"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg>
+              ติดตั้งแบตเตอรี่สำรอง (Energy Storage)
+            </label>
+            <span class="toggle-sub">สำหรับกักเก็บไฟไว้ใช้ช่วงค่ำหรือกลางคืน</span>
+          </div>
+          <label class="switch">
+            <input id="battery" type="checkbox" aria-label="ติดตั้งแบตเตอรี่สำรอง">
+            <span class="slider-switch"></span>
+          </label>
+        </div>
+
+        <!-- Stepper counter for battery (ประหยัดพื้นที่ สไตล์ - qty + พร้อมช่องแก้ไขราคา) -->
+        <div id="batteryopts" class="stepper-box hidden">
+          <div class="stepper-top">
+            <div class="stepper-label">
+              <strong>จำนวนแบตเตอรี่สำรอง</strong>
+              <small>กด + หรือ − เพื่อเพิ่มลดจำนวนชุด</small>
+            </div>
+            <div class="stepper-ctrl">
+              <button id="bqtyMinus" class="stepper-btn" type="button" aria-label="ลดจำนวนแบตเตอรี่">−</button>
+              <span id="bqtyVal" class="stepper-val">1</span>
+              <button id="bqtyPlus" class="stepper-btn" type="button" aria-label="เพิ่มจำนวนแบตเตอรี่">+</button>
+            </div>
+            <input id="bqty" type="hidden" value="1">
+          </div>
+
+          <div class="stepper-price-row">
+            <label for="bcap">ความจุต่อชุด:</label>
+            <div class="input-group" style="max-width:140px;">
+              <input id="bcap" type="number" min="1" max="50" step="0.5" value="5">
+              <span class="unit-badge">kWh</span>
+            </div>
+            <label for="bprice" style="margin-left:auto;">ราคาต่อชุด:</label>
+            <div class="input-group" style="max-width:150px;">
+              <input id="bprice" type="number" min="0" step="5000" value="100000">
+              <span class="unit-badge">บาท</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hidden input for subsidy calculation compatibility -->
+        <input id="subamount" type="hidden" value="50000">
+        <input id="sellprice" type="hidden" value="2.2">
+        <input id="maint" type="hidden" value="1500">
+        <input id="ft" type="hidden" value="0.1623">
+
+        <!-- Advanced accordion button -->
+        <button id="advbtn" class="advanced-toggle" type="button" aria-expanded="false" aria-controls="advanced">
+          <span>ปรับสมมติฐานพฤติกรรม &amp; สภาพบ้าน (ขั้นสูง)</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+
+        <div id="advanced" class="advanced-box hidden">
+          <!-- 1. Day usage -->
+          <div class="range-item">
+            <div class="rangehead">
+              <label for="day">สัดส่วนการใช้ไฟช่วงกลางวัน (06:00 - 18:00)</label>
+              <strong id="dayval">30%</strong>
+            </div>
+            
+            <!-- Quick Preset for Lifestyle -->
+            <div class="adv-preset-group" role="group" aria-label="เลือกไลฟ์สไตล์การใช้ไฟกลางวัน">
+              <button type="button" class="adv-preset-btn active" data-day-preset="30">
+                <span class="p-title">ทำงานนอกบ้าน</span>
+                <span class="p-sub">30% (ตู้เย็น / Standby)</span>
+              </button>
+              <button type="button" class="adv-preset-btn" data-day-preset="50">
+                <span class="p-title">WFH / คนอยู่บ้าน</span>
+                <span class="p-sub">50% (เปิดแอร์ 1 เครื่อง)</span>
+              </button>
+              <button type="button" class="adv-preset-btn" data-day-preset="75">
+                <span class="p-title">ร้านค้า / ออฟฟิศ</span>
+                <span class="p-sub">75% (เปิดแอร์ทั้งวัน)</span>
+              </button>
+            </div>
+
+            <input id="day" type="range" min="10" max="100" value="30" aria-valuemin="10" aria-valuemax="100" aria-valuenow="30" aria-valuetext="30 เปอร์เซ็นต์">
+            <span class="adv-help-text">เลื่อนปรับละเอียดได้ตามพฤติกรรมการเปิดแอร์/เครื่องใช้ไฟฟ้าช่วงกลางวัน</span>
+          </div>
+
+          <!-- 2. Shade & Roof conditions -->
+          <div class="range-item">
+            <div class="rangehead">
+              <label for="shade">สภาพแดดและร่มเงาบนหลังคา</label>
+              <strong id="shadeval">5% (สูญเสีย)</strong>
+            </div>
+
+            <!-- Quick Preset for Roof shading -->
+            <div class="adv-preset-group" role="group" aria-label="เลือกสภาพแดดและร่มเงาบนหลังคา">
+              <button type="button" class="adv-preset-btn active" data-shade-preset="5">
+                <span class="p-title">แดดจัด หลังคาโล่ง</span>
+                <span class="p-sub">สูญเสีย 5% (มาตรฐาน)</span>
+              </button>
+              <button type="button" class="adv-preset-btn" data-shade-preset="15">
+                <span class="p-title">มีเงาบังบางช่วง</span>
+                <span class="p-sub">สูญเสีย 15% (มีตึก/ต้นไม้)</span>
+              </button>
+              <button type="button" class="adv-preset-btn" data-shade-preset="25">
+                <span class="p-title">ร่มเงาบังเยอะ</span>
+                <span class="p-sub">สูญเสีย 25% (ทิศรับแดดน้อย)</span>
+              </button>
+            </div>
+
+            <input id="shade" type="range" min="0" max="30" value="5" aria-valuemin="0" aria-valuemax="30" aria-valuenow="5" aria-valuetext="5 เปอร์เซ็นต์">
+            <span class="adv-help-text">เผื่อการสูญเสียในสายไฟ ฝุ่นเกาะแผง และเงาจากสิ่งปลูกสร้างรอบบ้าน</span>
+          </div>
+
+          <!-- 3. Solar Yield -->
+          <div class="range-item">
+            <div class="rangehead">
+              <label for="yield">ชั่วโมงแดดเฉลี่ยต่อวัน (Peak Sun Hours)</label>
+              <strong id="yieldval">4.2 ชม./วัน</strong>
+            </div>
+            <input id="yield" type="range" min="2.5" max="5.5" step=".1" value="4.2" aria-valuemin="2.5" aria-valuemax="5.5" aria-valuenow="4.2" aria-valuetext="4.2 ชั่วโมงต่อวัน">
+            <span class="adv-help-text">เฉลี่ยตลอดทั้งปีของไทยประมาณ 4.0 - 4.5 ชม./วัน<br>เฉลี่ยตามฤดูของไทย: ฤดูร้อน ~4.8-5.2 ชม. / ฤดูฝน ~3.2-3.6 ชม. / ฤดูหนาว ~4.2-4.5 ชม.</span>
+          </div>
+
+          <!-- 4. Panel degradation -->
+          <div class="range-item">
+            <div class="rangehead">
+              <label for="deg">การเสื่อมประสิทธิภาพของแผงต่อปี</label>
+              <strong id="degval">0.5%</strong>
+            </div>
+            <input id="deg" type="range" min="0" max="1.5" step=".1" value=".5" aria-valuemin="0" aria-valuemax="1.5" aria-valuenow="0.5" aria-valuetext="0.5 เปอร์เซ็นต์ต่อปี">
+            <span class="adv-help-text">แผงเกรด Tier 1 สากลเสื่อมเฉลี่ยไม่เกิน 0.4% - 0.5% ต่อปี (รับประกัน 25-30 ปี)</span>
+          </div>
+
+          <!-- 5. Future electricity tariff growth -->
+          <div class="range-item">
+            <div class="rangehead">
+              <label for="ftfuture">คาดการณ์ค่าไฟปรับขึ้นเฉลี่ยต่อปี</label>
+              <strong id="ftfutureval">2.0%</strong>
+            </div>
+            <input id="ftfuture" type="range" min="0" max="8" step=".5" value="2" aria-valuemin="0" aria-valuemax="8" aria-valuenow="2" aria-valuetext="2 เปอร์เซ็นต์ต่อปี">
+            <span class="adv-help-text">อัตราเงินเฟ้อและแนวโน้มค่า Ft ค่าไฟเฉลี่ยประเทศไทยในระยะยาว</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: STICKY RESULTS DASHBOARD (DISTINCT HIGHLIGHTED CARD) -->
+    <div class="sticky-sidebar">
+      <!-- HERO RESULT CARD -->
+      <section class="result-card">
+        <div class="result-card-header">
+          <div class="eyebrow">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            สรุปความคุ้มค่าของคุณ
+          </div>
+          <span id="roiBadge" class="roi-status-pill">ไม่ต้องควักเนื้อเพิ่ม</span>
+        </div>
+
+        <!-- Phase Toggle Pill Bar (สลับดูช่วง 7 ปีแรก vs หลังปีที่ 7) -->
+        <div id="phaseSwitchContainer" class="phase-switch-bar">
+          <button id="btnPhase1" class="phase-btn active" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            <span id="btnPhase1Text">ช่วงผ่อน 7 ปีแรก</span>
+          </button>
+          <button id="btnPhase2" class="phase-btn" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="btnPhase2Text">หลังปีที่ 7 (ปลดหนี้)</span>
+          </button>
+        </div>
+
+        <!-- Main Hero Highlight: กระเป๋าเงินสุทธิต่อเดือน -->
+        <div class="hero-highlight">
+          <div class="hero-highlight-label">
+            <span id="heroLabel">ส่วนต่างต่อเดือนเทียบกับค่าไฟเดิม (ช่วงผ่อน 7 ปี)</span>
+          </div>
+          <div class="hero-highlight-val-row">
+            <div class="hero-highlight-val">
+              <span id="heroNetMonthly">—</span>
+            </div>
+            <span id="heroTrendPill" class="trend-pill gain">↓ ประหยัด 14%</span>
+          </div>
+          <div id="heroSubnote" class="hero-highlight-note">เดิมจ่าย ฿3,500/ด. ➔ ยอดใหม่รวมค่างวด ฿3,071/ด.</div>
+        </div>
+
+        <!-- Monthly Breakdown Clarification (อยู่ติดกับสรุปทันที) -->
+        <div class="breakdown-box">
+          <div class="breakdown-title" id="breakdownTitle">ที่มาของยอดจ่ายต่อเดือน</div>
+          <div class="breakdown-row header-row" id="breakdownBeforeRow">
+            <span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              ค่าไฟเดิมที่เคยจ่าย
+            </span>
+            <strong id="breakdownOrigBill" style="color:#cbd5e1;">฿3,500</strong>
+          </div>
+          <div class="breakdown-row">
+            <span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6h8c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7z"/></svg>
+              ค่าไฟใหม่ที่ต้องจ่าย
+            </span>
+            <strong id="breakdownNewBill" style="color:#34d399;">฿1,048</strong>
+          </div>
+          <div class="breakdown-row" id="breakdownLoanRow">
+            <span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              ค่างวดผ่อนสินเชื่อ (7 ปี)
+            </span>
+            <strong id="breakdownLoan" style="color:#f87171;">฿1,417</strong>
+          </div>
+          <div class="breakdown-row" id="breakdownSellRow">
+            <span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              หักเงินที่ได้จากการขายไฟคืน
+            </span>
+            <strong id="breakdownSell" style="color:#f59e0b;">-฿231</strong>
+          </div>
+          <div class="breakdown-row total-row" id="breakdownTotalRow">
+            <span id="breakdownTotalLabel">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              รวมภาระจ่ายจริงในแต่ละเดือน
+            </span>
+            <strong id="breakdownTotalVal" style="color:#38bdf8;">฿2,234</strong>
+          </div>
+        </div>
+
+        <!-- Single Comparison Gauge Bar (Bullet Target Chart) -->
+        <div class="compare-box">
+          <div class="compare-head">
+            <span>เปรียบเทียบค่าใช้จ่ายต่อเดือน</span>
+            <span id="savePercentBadge" class="save-tag">ประหยัด —%</span>
+          </div>
+          <div class="single-bar-container">
+            <div class="single-bar-meta">
+              <span id="barAfterLabel" class="target-title">ยอดจ่ายจริงรวมค่างวด:</span>
+              <strong id="barAfterVal" class="target-val" style="color:#34d399;">฿2,234</strong>
+            </div>
+            <div class="single-bar-wrapper">
+              <div class="single-bar-track">
+                <div id="barFillAfter" class="single-bar-fill safe" style="width: 55%;"></div>
+              </div>
+              <div id="singleMarker" class="single-bar-marker">
+                <div class="marker-line"></div>
+                <span id="markerLabel" class="marker-label">ค่าไฟเดิม ฿3,500</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payback & ROI Card (2 Columns: คืนทุนจริง + ROI ผลตอบแทน) -->
+        <div class="payback-card">
+          <div class="payback-col">
+            <small>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              ระยะเวลาคืนทุนจริง
+              <span class="info-tip" aria-label="วิธีคำนวณระยะเวลาคืนทุน">?
+                <span class="tip-box">
+                  <strong>วิธีคำนวณระยะเวลาคืนทุน (Payback)</strong>
+                  คำนวณจากกระแสเงินสดสะสมแบบปีต่อปี:
+                  <code>เงินลงทุนสุทธิ ÷ ผลประโยชน์รายปีสุทธิ</code>
+                  โดยคิดรวมอัตราการเสื่อมของแผง (0.5%/ปี), ค่าไฟปรับขึ้น (2%/ปี) และหักค่าบำรุงรักษาแล้ว จุดที่กระแสเงินสดสะสมเปลี่ยนจากติดลบเป็นบวก คือปีที่คืนทุน
+                </span>
+              </span>
+            </small>
+            <div id="payback" class="payback-num">—</div>
+            <span id="paybacknote" class="subtext">จากเงินประหยัดสะสม</span>
+          </div>
+          <div class="payback-col">
+            <small>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              ผลตอบแทน (ROI)
+              <span class="info-tip" aria-label="วิธีคำนวณ ROI">?
+                <span class="tip-box">
+                  <strong>วิธีคำนวณผลตอบแทนรายปี (ROI)</strong>
+                  คำนวณเทียบอัตราผลตอบแทนต่อเงินลงทุน:
+                  <code>(ประหยัดค่าไฟ + ขายไฟคืนต่อปี) ÷ เงินลงทุนสุทธิ × 100</code>
+                  เช่น ลงทุน ฿100,000 ประหยัดได้ ฿10,700/ปี คิดเป็นผลตอบแทน 10.7% ต่อปี (ชนะดอกเบี้ยเงินฝาก)
+                </span>
+              </span>
+            </small>
+            <div id="roiPercent" class="payback-num">—</div>
+            <span class="subtext">กำไรเฉลี่ยต่อปีจากเงินลงทุน</span>
+          </div>
+        </div>
+
+        <!-- 2 Big Metrics: เงินลงทุนสุทธิ & กำไรสะสม 20 ปี (ไม่ซ้ำซ้อน ชัดเจน) -->
+        <div class="biggrid">
+          <div class="metric-card">
+            <small>เงินลงทุนสุทธิ</small>
+            <strong id="net">฿100,000</strong>
+            <em id="netNote">หักเงินสนับสนุน 50,000 บาทแล้ว</em>
+          </div>
+          <div class="metric-card">
+            <small>กำไรสุทธิสะสม 20 ปี</small>
+            <strong id="net20" class="green" style="font-size: clamp(18px, 2.2vw, 21px);">—</strong>
+            <em>หลังหักต้นทุนติดตั้งทั้งหมด</em>
+          </div>
+        </div>
+
+        <div class="hidden">
+          <div id="phase1Card"><span id="phase1Title"></span><span id="phase1NetPay"></span><span id="phase1Note"></span></div>
+          <div id="phase2Card"><span id="phase2Title"></span><span id="phase2NetPay"></span><span id="phase2Note"></span></div>
+        </div>
+
+        <!-- Hidden Loan Banner (kept for backward compat) -->
+        <div id="loanBanner" class="loan-banner hidden">
+          <span>ค่างวดสินเชื่อ:</span>
+          <strong id="loanMonthly">—</strong>
+        </div>
+        <div class="hidden">
+          <span id="savings"></span>
+          <span id="netNote"></span>
+          <span id="paybacknote"></span>
+          <span id="beforebill"></span>
+          <span id="sellIncome"></span>
+        </div>
+      </section>
+
+      <!-- CASH FLOW CHART SECTION (Clean borderless) -->
+      <section class="chart-section">
+        <div class="charthead">
+          <h3>กราฟกำไรและเงินเก็บสะสม 20 ปี</h3>
+          <p>จำลองกระแสเงินสดสะสม (โซนสีเขียวเหนือเส้น 0 บาทคือกำไรสุทธิเข้ากระเป๋า)</p>
+        </div>
+
+        <div id="chart-container">
+          <svg id="chart" viewBox="0 0 520 260" role="img" aria-label="กราฟเส้นกระแสเงินสดสะสม 20 ปี"></svg>
+        </div>
+
+        <!-- Hidden compat elements for original JS references -->
+        <div class="hidden">
+          <span id="chartpay"></span>
+          <span id="chartpaynote"></span>
+          <span id="chart20"></span>
+          <span id="mBefore"></span>
+          <span id="mAfter"></span>
+          <span id="mNet"></span>
+          <span id="selfunits"></span>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <p class="notice">
+    <strong>หมายเหตุ:</strong> การคำนวณข้างต้นเป็นการประมาณการเบื้องต้นตามเงื่อนไขโครงการโซลาร์ภาคประชาชน 2569–2570 เงินสนับสนุนภาครัฐ 50,000 บาท ราคารับซื้อไฟคืน 2.20 บาท/หน่วย นาน 20 ปี และสินเชื่อดอกเบี้ย 2.5% ผ่อน 7 ปี (ออมสิน/ธ.ก.ส./ธอส.) ผลผลิตจริงอาจแตกต่างตามสภาพแดด ทิศทางหลังคา และพฤติกรรมการใช้ไฟ
+  </p>
+</main>
+
+<script>
+(()=>{
+const root = document.getElementById('arun');
+if (root.dataset.ready) return;
+root.dataset.ready = '1';
+
+const $ = id => document.getElementById(id);
+const num = id => Math.max(0, Number($(id).value) || 0);
+const fmt = n => '฿' + Math.round(n).toLocaleString('en-US');
+const fmtUnit = n => Math.round(n).toLocaleString('en-US') + ' หน่วย/เดือน';
+
+function baseRate(u, rate) {
+  u = Math.max(0, u);
+  let e = 0;
+  if (rate === '11') {
+    e += Math.min(u, 15) * 2.3488;
+    e += Math.max(0, Math.min(u - 15, 10)) * 2.9882;
+    e += Math.max(0, Math.min(u - 25, 175)) * 3;
+    e += Math.max(0, Math.min(u - 200, 200)) * 4.1584;
+    e += Math.max(0, u - 400) * 4.3583;
+  } else {
+    e += Math.min(u, 150) * 3.2484;
+    e += Math.max(0, Math.min(u - 150, 250)) * 4.2218;
+    e += Math.max(0, u - 400) * 4.4217;
+  }
+  return e;
+}
+
+function billFor(units, rate, ft) {
+  const service = rate === '11' ? 8.19 : 24.62;
+  return (baseRate(units, rate) + units * ft + service) * 1.07;
+}
+
+function invertBill(target, rate, ft) {
+  let lo = 0, hi = 5000;
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2;
+    if (billFor(mid, rate, ft) < target) lo = mid;
+    else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+
+function update() {
+  const kw = Math.min(30, Math.max(1, num('kw') || 5));
+  const price = num('price');
+  const battery = $('battery').checked ? num('bqty') * num('bprice') : 0;
+  const grant = $('subsidy').checked ? num('subamount') : 0;
+  const net = Math.max(0, price + battery - grant);
+
+  const bill = num('bill');
+  const ft = num('ft');
+  const rate = '12'; // อัตรา 1.2 มาตรฐานบ้านทั่วไป (เกิน 150 หน่วย)
+  const units = invertBill(bill, rate, ft);
+
+  const day = num('day') / 100;
+  const shade = num('shade') / 100;
+  const y = num('yield');
+  const deg = num('deg') / 100;
+  const rise = num('ftfuture') / 100;
+
+  const gen = kw * y * 365 * (1 - shade);
+  const dayUseTarget = units * 12 * day;
+  const selfDay = Math.min(gen * day, dayUseTarget);
+  const surplusDay = Math.max(0, gen - selfDay); // ไฟส่วนเกินกลางวันที่เหลือชาร์จเข้าแบตเตอรี่หรือขายคืน
+
+  // Battery Energy Storage Calculation
+  let selfNight = 0;
+  let exportUnits = surplusDay;
+
+  if ($('battery').checked) {
+    const bqty = Math.max(1, num('bqty'));
+    const bcap = Math.max(0.5, num('bcap') || 5); // ความจุต่อชุด (kWh) เช่น 5 kWh
+    const roundTripEff = 0.90; // ประสิทธิภาพชาร์จ-จ่ายไฟ 90%
+    const dod = 0.90; // Depth of Discharge 90%
+    const totalBatAnnual = bqty * bcap * 365 * dod * roundTripEff; // หน่วยไฟที่แบตเตอรี่จ่ายได้ต่อปี
+    
+    // ชาร์จไฟจากส่วนเกินกลางวัน
+    const batChargedAnnual = Math.min(surplusDay, totalBatAnnual);
+    const nightDemandAnnual = units * 12 * (1 - day); // ปริมาณการใช้ไฟช่วงกลางคืนต่อปี
+    
+    // แบตเตอรี่จ่ายไฟทดแทนค่าไฟกลางคืนจริง
+    selfNight = Math.min(batChargedAnnual, nightDemandAnnual);
+    
+    // ไฟที่ยังเหลือเกินจากชาร์จแบตเต็ม ส่งไปขายคืนเข้าระบบ
+    exportUnits = Math.max(0, surplusDay - (batChargedAnnual / roundTripEff));
+  }
+
+  const selfTotal = selfDay + selfNight;
+  const selfMonthly = selfTotal / 12;
+
+  const afterBill = billFor(Math.max(0, units - selfMonthly), rate, ft);
+  const saving = Math.max(0, bill - afterBill);
+  const sellIncomeMonthly = $('sell').checked ? (exportUnits * num('sellprice')) / 12 : 0;
+
+  // Loan calculation
+  let monthlyPayment = 0;
+  let isLoan = $('loan').checked && net > 0;
+  let loanYears = Math.max(1, num('loanYears') || 7);
+
+  if (isLoan) {
+    const loanRate = (num('loanRate') || 2.5) / 100;
+    const totalInterest = net * loanRate * loanYears;
+    const totalPay = net + totalInterest;
+    const totalMonths = loanYears * 12;
+    monthlyPayment = totalPay / totalMonths;
+
+    $('loanBanner').classList.remove('hidden');
+    $('loanMonthly').textContent = '฿' + Math.round(monthlyPayment).toLocaleString('en-US') + ` /ด. (${totalMonths} งวด ดอกเบี้ย ${(loanRate * 100).toFixed(1)}%)`;
+  } else {
+    $('loanBanner').classList.add('hidden');
+  }
+
+  // 1. Breakdown Rows (สูตรแจกแจงแบบคณิตศาสตร์เข้าใจง่าย 100%)
+  $('breakdownOrigBill').textContent = fmt(bill);
+  $('breakdownNewBill').textContent = fmt(afterBill);
+
+  $('breakdownSellRow').classList.remove('hidden');
+  if ($('sell').checked && sellIncomeMonthly > 0) {
+    $('breakdownSell').textContent = '-' + fmt(sellIncomeMonthly);
+    $('breakdownSell').style.color = '#f59e0b';
+  } else {
+    $('breakdownSell').textContent = '฿0';
+    $('breakdownSell').style.color = '#94a3b8';
+  }
+
+  // 2. 2-Phase Milestones (ช่วง 7 ปีแรก vs หลังปีที่ 7)
+  const totalMonthlyGain = saving + sellIncomeMonthly;
+  const netMonthlyDuringLoan = totalMonthlyGain - monthlyPayment; // เงินเหลือสุทธิต่อเดือนช่วงผ่อน
+  const actualOutDuringLoan = afterBill + monthlyPayment - sellIncomeMonthly; // จ่ายจริงรวมค่างวด
+  const actualOutAfterLoan = Math.max(0, afterBill - sellIncomeMonthly); // จ่ายจริงหลังผ่อนหมด
+  const diffFromOrig = bill - actualOutDuringLoan; // ยอดที่จ่ายถูกกว่าเดิม
+
+  // Global or scoped state for phase view (1: ช่วงผ่อน, 2: ปลดหนี้แล้ว)
+  let activePhase = window._activePhase || 1;
+  window._activePhase = activePhase;
+
+  if (isLoan) {
+    $('phaseSwitchContainer').classList.remove('hidden');
+    $('btnPhase1Text').textContent = `ช่วงผ่อน ${loanYears} ปีแรก`;
+    $('btnPhase2Text').textContent = `หลังปีที่ ${loanYears} (ปลดหนี้)`;
+
+    $('phase1Title').textContent = `ปีที่ 1–${loanYears} (ช่วงผ่อน)`;
+    $('phase1NetPay').textContent = fmt(actualOutDuringLoan) + '/ด.';
+    if (diffFromOrig >= 0) {
+      $('phase1Note').textContent = `ถูกกว่าเดิม ${fmt(diffFromOrig)}/ด.`;
+      $('phase1NetPay').className = 'green';
+    } else {
+      $('phase1Note').textContent = `จ่ายเพิ่ม ${fmt(Math.abs(diffFromOrig))}/ด.`;
+      $('phase1NetPay').className = '';
+    }
+
+    $('phase2Title').textContent = `ปีที่ ${loanYears + 1}+ (ปลดหนี้แล้ว)`;
+    $('phase2NetPay').textContent = fmt(actualOutAfterLoan) + '/ด.';
+    $('phase2Note').textContent = `ประหยัดเต็มที่ ${fmt(bill - actualOutAfterLoan)}/ด.`;
+
+    function renderCompareBar(payVal, labelText, badgeText, badgeClass) {
+      const defaultMax = bill > 0 ? (bill / 0.75) : 4000;
+      const maxVal = Math.max(defaultMax, payVal * 1.08);
+
+      const markerPosPct = maxVal > 0 ? Math.min(95, Math.max(10, (bill / maxVal) * 100)) : 75;
+      if ($('singleMarker')) $('singleMarker').style.left = markerPosPct + '%';
+
+      const barWidthPct = maxVal > 0 ? Math.min(100, Math.max(4, (payVal / maxVal) * 100)) : 0;
+      $('barFillAfter').style.width = barWidthPct + '%';
+
+      if ($('markerLabel')) $('markerLabel').textContent = `ค่าไฟเดิม ${fmt(bill)}`;
+      $('barAfterLabel').textContent = labelText;
+      $('barAfterVal').textContent = fmt(payVal);
+
+      // Bar color: green (<80%), orange (80-100%), red (>100% of baseline)
+      $('barFillAfter').classList.remove('safe', 'warn', 'danger');
+      if (payVal > bill) {
+        $('barFillAfter').classList.add('danger');
+        $('barAfterVal').style.color = '#f87171';
+      } else if (payVal >= bill * 0.80) {
+        $('barFillAfter').classList.add('warn');
+        $('barAfterVal').style.color = '#fb923c';
+      } else {
+        $('barFillAfter').classList.add('safe');
+        $('barAfterVal').style.color = '#34d399';
+      }
+
+      $('savePercentBadge').textContent = badgeText;
+      $('savePercentBadge').style.background = badgeClass === 'danger' ? 'rgba(239, 68, 68, 0.2)' : '';
+      $('savePercentBadge').style.color = badgeClass === 'danger' ? '#f87171' : '';
+    }
+
+    if (activePhase === 1) {
+      // Phase 1 (ช่วงผ่อน)
+      $('breakdownLoanRow').classList.remove('hidden');
+      $('breakdownLoan').textContent = '+' + fmt(monthlyPayment);
+      $('breakdownLoan').style.color = '#f87171';
+      $('breakdownTotalLabel').innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ภาระจ่ายจริงรวมเดือนนี้`;
+      $('breakdownTotalVal').textContent = fmt(actualOutDuringLoan);
+      $('breakdownTitle').textContent = `แจกแจงภาระจ่ายจริงช่วงผ่อน ${loanYears} ปี`;
+
+      // Header เป็นส่วนต่าง ตัวเลขใหญ่เป็นยอดส่วนต่าง
+      $('heroLabel').textContent = `ส่วนต่างต่อเดือนเทียบกับค่าไฟเดิม (ช่วงผ่อน ${loanYears} ปี)`;
+      $('heroNetMonthly').innerHTML = fmt(Math.abs(diffFromOrig)) + '<span class="unit">/เดือน</span>';
+
+      const changePct = bill > 0 ? Math.round(Math.abs(diffFromOrig / bill) * 100) : 0;
+      if ($('heroTrendPill')) {
+        if (diffFromOrig >= 0) {
+          $('heroTrendPill').className = 'trend-pill gain';
+          $('heroTrendPill').textContent = `↓ ประหยัด ${changePct}%`;
+        } else {
+          $('heroTrendPill').className = 'trend-pill loss';
+          $('heroTrendPill').textContent = `↑ จ่ายเพิ่ม ${changePct}%`;
+        }
+      }
+      $('heroSubnote').textContent = `เดิมจ่าย ฿${Math.round(bill).toLocaleString()}/ด. ➔ ยอดใหม่รวมค่างวด ฿${Math.round(actualOutDuringLoan).toLocaleString()}/ด.`;
+
+      if ($('roiBadge')) {
+        const isSafe = diffFromOrig >= 0;
+        $('roiBadge').textContent = isSafe ? 'ผ่อนสบาย จ่ายรวมถูกลง' : 'ผ่อนสะสมสินทรัพย์';
+        $('roiBadge').classList.toggle('warning', !isSafe);
+        $('roiBadge').classList.remove('danger');
+        $('roiBadge').style.background = isSafe ? 'rgba(5, 150, 105, 0.2)' : 'rgba(234, 88, 12, 0.2)';
+        $('roiBadge').style.borderColor = isSafe ? 'rgba(5, 150, 105, 0.3)' : 'rgba(234, 88, 12, 0.45)';
+        $('roiBadge').style.color = isSafe ? '#34d399' : '#fb923c';
+        $('roiBadge').style.boxShadow = isSafe ? '0 0 12px rgba(52, 211, 153, 0.35)' : '0 0 14px rgba(234, 88, 12, 0.4)';
+      }
+
+      // Comparison Bar update: Dynamic Bullet Target Chart (ปรับ max และตำแหน่งเส้นขีดตามค่าไฟจริง)
+      const savePct = bill > 0 ? Math.round(Math.max(0, (diffFromOrig / bill) * 100)) : 0;
+      const badgeText = diffFromOrig >= 0 ? 'ประหยัด ' + savePct + '%' : 'จ่ายเพิ่ม ' + fmt(Math.abs(diffFromOrig)) + '/ด.';
+      const badgeClass = diffFromOrig >= 0 ? 'safe' : 'danger';
+      renderCompareBar(actualOutDuringLoan, 'ยอดจ่ายจริงรวมค่างวด:', badgeText, badgeClass);
+    } else {
+      // Phase 2 (ปลดหนี้แล้ว)
+      $('breakdownLoanRow').classList.remove('hidden');
+      $('breakdownLoan').textContent = '฿0';
+      $('breakdownLoan').style.color = '#94a3b8';
+      $('breakdownTotalLabel').innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ภาระจ่ายจริงหลังปลดหนี้`;
+      $('breakdownTotalVal').textContent = fmt(actualOutAfterLoan);
+      $('breakdownTitle').textContent = `แจกแจงภาระจ่ายจริงหลังปีที่ ${loanYears} (ปลดหนี้แล้ว)`;
+
+      const gainAfter = bill - actualOutAfterLoan;
+      const gainPct = bill > 0 ? Math.round((gainAfter / bill) * 100) : 0;
+      $('heroLabel').textContent = `ส่วนต่างต่อเดือนเทียบกับค่าไฟเดิม (หลังปลดหนี้)`;
+      $('heroNetMonthly').innerHTML = fmt(gainAfter) + '<span class="unit">/เดือน</span>';
+
+      if ($('heroTrendPill')) {
+        $('heroTrendPill').className = 'trend-pill gain';
+        $('heroTrendPill').textContent = `↓ ประหยัด ${gainPct}%`;
+      }
+      $('heroSubnote').textContent = `เดิมจ่าย ฿${Math.round(bill).toLocaleString()}/ด. ➔ ยอดใหม่จ่ายจริงเหลือ ฿${Math.round(actualOutAfterLoan).toLocaleString()}/ด.`;
+
+      if ($('roiBadge')) {
+        $('roiBadge').textContent = 'กำไรเนื้อๆ ปลดหนี้แล้ว';
+        $('roiBadge').classList.remove('danger');
+        $('roiBadge').style.background = 'rgba(5, 150, 105, 0.2)';
+        $('roiBadge').style.borderColor = 'rgba(5, 150, 105, 0.3)';
+        $('roiBadge').style.color = '#34d399';
+        $('roiBadge').style.boxShadow = '0 0 12px rgba(52, 211, 153, 0.35)';
+      }
+
+      // Comparison Bar update
+      const savePct = bill > 0 ? Math.round(Math.max(0, (gainAfter / bill) * 100)) : 0;
+      renderCompareBar(actualOutAfterLoan, 'ยอดจ่ายจริงการไฟฟ้า:', 'ประหยัด ' + savePct + '%', 'safe');
+    }
+  } else {
+    // Cash mode
+    $('phaseSwitchContainer').classList.add('hidden');
+    $('breakdownLoanRow').classList.add('hidden');
+    $('breakdownTotalRow').classList.remove('hidden');
+    $('breakdownTotalLabel').innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ภาระจ่ายจริงหลังติดตั้ง`;
+    $('breakdownTotalVal').textContent = fmt(actualOutAfterLoan);
+    $('breakdownTitle').textContent = 'แจกแจงภาระจ่ายจริงหลังติดตั้ง';
+
+    $('phase1Title').textContent = 'ค่าไฟใหม่หลังติดตั้ง';
+    $('phase1NetPay').textContent = fmt(actualOutAfterLoan) + '/ด.';
+    $('phase1Note').textContent = `ประหยัดไป ${fmt(saving)}/ด.`;
+    $('phase1NetPay').className = 'green';
+
+    $('phase2Title').textContent = 'รายได้ขายไฟคืน';
+    $('phase2NetPay').textContent = $('sell').checked ? fmt(sellIncomeMonthly) + '/ด.' : '฿0/ด.';
+    $('phase2Note').textContent = 'สัญญาซื้อขาย 20 ปี';
+
+    const cashGainPct = bill > 0 ? Math.round((totalMonthlyGain / bill) * 100) : 0;
+    $('heroLabel').textContent = 'ส่วนต่างต่อเดือนเทียบกับค่าไฟเดิม (หลังติดตั้ง)';
+    $('heroNetMonthly').innerHTML = fmt(totalMonthlyGain) + '<span class="unit">/เดือน</span>';
+
+    if ($('heroTrendPill')) {
+      $('heroTrendPill').className = 'trend-pill gain';
+      $('heroTrendPill').textContent = `↓ ประหยัด ${cashGainPct}%`;
+    }
+    $('heroSubnote').textContent = `เดิมจ่าย ฿${Math.round(bill).toLocaleString()}/ด. ➔ ยอดใหม่จ่ายจริงเหลือ ฿${Math.round(actualOutAfterLoan).toLocaleString()}/ด.`;
+
+    if ($('roiBadge')) {
+      $('roiBadge').textContent = 'ประหยัดทันที';
+      $('roiBadge').classList.remove('danger');
+      $('roiBadge').style.background = 'rgba(5, 150, 105, 0.2)';
+      $('roiBadge').style.borderColor = 'rgba(5, 150, 105, 0.3)';
+      $('roiBadge').style.color = '#34d399';
+      $('roiBadge').style.boxShadow = '0 0 12px rgba(52, 211, 153, 0.35)';
+    }
+
+    // Comparison Bar update
+    const savePct = bill > 0 ? Math.round(Math.max(0, (totalMonthlyGain / bill) * 100)) : 0;
+    renderCompareBar(actualOutAfterLoan, 'ยอดจ่ายจริงหลังติดตั้ง:', 'ประหยัด ' + savePct + '%', 'safe');
+  }
+
+  let cumulative = -net;
+  let payback = null;
+  let values = [{ year: 0, value: cumulative }];
+  let net20 = 0;
+
+  for (let yr = 1; yr <= 20; yr++) {
+    const factor = Math.pow(1 + rise, yr - 1) * Math.pow(1 - deg, yr - 1);
+    const cash = saving * 12 * factor + ($('sell').checked ? exportUnits * num('sellprice') * Math.pow(1 - deg, yr - 1) : 0) - num('maint');
+    const prev = cumulative;
+    cumulative += cash;
+    values.push({ year: yr, value: cumulative });
+    if (payback === null && cumulative >= 0 && cash > 0) {
+      payback = (yr - 1) + Math.max(0, -prev) / cash;
+    }
+    if (yr === 20) net20 = cumulative;
+  }
+
+  // Update UI values
+  $('net').textContent = fmt(net);
+  if ($('netNote')) $('netNote').textContent = $('subsidy').checked ? 'หักเงินสนับสนุน 50,000 บาทแล้ว' : 'ยอดลงทุนเต็ม (ไม่หักเงินสนับสนุน)';
+  
+  // Calculate Annual ROI %
+  const annualGain = (saving + sellIncomeMonthly) * 12;
+  const annualROI = net > 0 ? (annualGain / net) * 100 : 0;
+  if ($('roiPercent')) {
+    $('roiPercent').innerHTML = annualROI.toFixed(1) + '<span class="unit">% ต่อปี</span>';
+  }
+
+  if (payback === null) {
+    $('payback').innerHTML = 'เกิน 20 ปี';
+  } else {
+    $('payback').innerHTML = payback.toFixed(1) + '<span class="unit">ปี</span>';
+  }
+
+  if ($('savings')) $('savings').textContent = fmt(saving);
+  if ($('beforebill')) $('beforebill').textContent = fmt(bill);
+  if ($('afterbill')) $('afterbill').textContent = fmt(afterBill);
+  if ($('selfunits')) $('selfunits').textContent = fmtUnit(selfMonthly);
+  if ($('sellIncome')) $('sellIncome').textContent = $('sell').checked && sellIncomeMonthly > 0 ? fmt(sellIncomeMonthly) + ' /ด.' : 'ไม่ขายไฟคืน';
+  $('net20').textContent = fmt(net20);
+
+  // Bill comparison bar
+  if ($('billBarAfter') && $('billBarSave') && $('savePercentBadge')) {
+    const compareBase = bill;
+    const effectiveSaving = isLoan ? Math.max(0, bill - actualOutDuringLoan) : saving;
+    const savePercent = compareBase > 0 ? Math.min(100, Math.max(0, (effectiveSaving / compareBase) * 100)) : 0;
+    const afterPercent = Math.max(0, 100 - savePercent);
+    $('billBarAfter').style.width = afterPercent + '%';
+    $('billBarSave').style.width = savePercent + '%';
+    $('savePercentBadge').textContent = 'ประหยัด ' + Math.round(savePercent) + '%';
+  }
+
+  // Sliders display & accessibility attributes
+  $('dayval').textContent = num('day') + '%';
+  $('day').setAttribute('aria-valuenow', num('day'));
+  $('day').setAttribute('aria-valuetext', num('day') + ' เปอร์เซ็นต์');
+
+  $('shadeval').textContent = num('shade') + '%';
+  $('shade').setAttribute('aria-valuenow', num('shade'));
+  $('shade').setAttribute('aria-valuetext', num('shade') + ' เปอร์เซ็นต์');
+
+  $('yieldval').textContent = y.toFixed(1) + ' ชม./วัน';
+  $('yield').setAttribute('aria-valuenow', y.toFixed(1));
+  $('yield').setAttribute('aria-valuetext', y.toFixed(1) + ' ชั่วโมงแดดต่อวัน');
+
+  const degVal = Number($('deg').value).toFixed(1);
+  $('degval').textContent = degVal + '%';
+  $('deg').setAttribute('aria-valuenow', degVal);
+  $('deg').setAttribute('aria-valuetext', degVal + ' เปอร์เซ็นต์ต่อปี');
+
+  const ftFutureVal = Number($('ftfuture').value).toFixed(1);
+  $('ftfutureval').textContent = ftFutureVal + '%';
+  $('ftfuture').setAttribute('aria-valuenow', ftFutureVal);
+  $('ftfuture').setAttribute('aria-valuetext', ftFutureVal + ' เปอร์เซ็นต์ต่อปี');
+
+  draw(values);
+}
+
+function draw(values) {
+  const svg = $('chart');
+  const W = 520, H = 260, L = 64, R = 20, T = 20, B = 38;
+  const iw = W - L - R, ih = H - T - B;
+
+  let min = Math.min(...values.map(d => d.value), 0);
+  let max = Math.max(...values.map(d => d.value), 0);
+  if (max - min < 1) { max = 1; min = -1; }
+  const pad = (max - min) * 0.12;
+  min -= pad;
+  max += pad;
+
+  const x = v => L + (v / 20) * iw;
+  const y = v => T + ((max - v) / (max - min)) * ih;
+  const money = v => (Math.round(v / 1000) >= 0 ? '+' : '') + Math.round(v / 1000) + 'k';
+
+  let out = `
+    <defs>
+      <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#059669" stop-opacity="0.22"/>
+        <stop offset="50%" stop-color="#ea580c" stop-opacity="0.08"/>
+        <stop offset="100%" stop-color="#ea580c" stop-opacity="0.0"/>
+      </linearGradient>
+      <filter id="lineGlow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#ea580c" flood-opacity="0.25"/>
+      </filter>
+    </defs>
+  `;
+
+  // Horizontal Grid Lines & Y-axis labels
+  for (let i = 0; i < 5; i++) {
+    const val = min + ((max - min) * i) / 4;
+    const yy = y(val);
+    out += `
+      <line x1="${L}" y1="${yy}" x2="${W - R}" y2="${yy}" stroke="#f1f5f9" stroke-width="1.2"/>
+      <text x="${L - 10}" y="${yy + 4}" text-anchor="end" font-size="11" font-family="'Plus Jakarta Sans', sans-serif" font-weight="500" fill="#94a3b8">${money(val)}</text>
+    `;
+  }
+
+  // Zero Breakeven Reference Line
+  const yZero = y(0);
+  out += `
+    <line x1="${L}" y1="${yZero}" x2="${W - R}" y2="${yZero}" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <text x="${W - R}" y="${yZero - 6}" text-anchor="end" font-size="11" font-family="'Prompt', sans-serif" font-weight="600" fill="#64748b">จุดคุ้มทุน (0 ฿)</text>
+  `;
+
+  // X-axis Year labels
+  [0, 5, 10, 15, 20].forEach(v => {
+    out += `<text x="${x(v)}" y="${H - 12}" text-anchor="middle" font-size="11" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" fill="#64748b">ปี ${v}</text>`;
+  });
+
+  // Area under curve
+  const pointsStr = values.map(d => `${x(d.year)},${y(d.value)}`).join(' ');
+  const areaPoints = `${x(0)},${y(0)} ${pointsStr} ${x(20)},${y(0)}`;
+  out += `<polygon points="${areaPoints}" fill="url(#areaGrad)"/>`;
+
+  // Main Polyline
+  out += `<polyline points="${pointsStr}" fill="none" stroke="#ea580c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" filter="url(#lineGlow)"/>`;
+
+  // Initial investment dot (Year 0)
+  out += `<circle cx="${x(0)}" cy="${y(values[0].value)}" r="4.5" fill="#ea580c" stroke="#fff" stroke-width="2"/>`;
+
+  // Breakeven Point cross-calculation
+  let cross = null;
+  for (let i = 1; i < values.length; i++) {
+    if (values[i - 1].value < 0 && values[i].value >= 0) {
+      cross = values[i - 1].year + (-values[i - 1].value) / (values[i].value - values[i - 1].value);
+      break;
+    }
+  }
+
+  if (cross !== null) {
+    const xx = x(cross);
+    const yy = y(0);
+    const tx = Math.min(W - R - 48, Math.max(L + 48, xx));
+    out += `
+      <circle cx="${xx}" cy="${yy}" r="7" fill="#059669" opacity="0.3"/>
+      <circle cx="${xx}" cy="${yy}" r="4.5" fill="#fff" stroke="#059669" stroke-width="3"/>
+      <rect x="${tx - 44}" y="${Math.max(T + 2, yy - 32)}" width="88" height="24" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+      <text x="${tx}" y="${Math.max(T + 17, yy - 17)}" text-anchor="middle" font-size="11" font-family="'Prompt', sans-serif" font-weight="600" fill="#34d399">คืนทุน ${cross.toFixed(1)} ปี</text>
+    `;
+  }
+
+  out += `<text x="${(L + W - R) / 2}" y="${H - 1}" text-anchor="middle" font-size="11" font-family="'Prompt', sans-serif" fill="#94a3b8">ระยะเวลาหลังติดตั้ง (ปี)</text>`;
+  svg.innerHTML = out;
+}
+
+// Event Listeners
+$('advbtn').addEventListener('click', () => {
+  const isOpen = !$('advanced').classList.contains('hidden');
+  $('advanced').classList.toggle('hidden');
+  $('advbtn').classList.toggle('open', !isOpen);
+  $('advbtn').setAttribute('aria-expanded', !isOpen);
+  $('advbtn').querySelector('span').textContent = isOpen ? 'ปรับสมมติฐานการคำนวณขั้นสูง (Advanced)' : 'ซ่อนการคำนวณขั้นสูง';
+});
+
+$('battery').addEventListener('change', () => {
+  $('batteryopts').classList.toggle('hidden', !$('battery').checked);
+  update();
+});
+
+// Battery stepper controls (- qty +)
+if ($('bqtyMinus') && $('bqtyPlus')) {
+  $('bqtyMinus').addEventListener('click', () => {
+    let q = Math.max(1, (Number($('bqty').value) || 1) - 1);
+    $('bqty').value = q;
+    $('bqtyVal').textContent = q;
+    $('bqtyMinus').disabled = (q <= 1);
+    update();
+  });
+
+  $('bqtyPlus').addEventListener('click', () => {
+    let q = Math.min(20, (Number($('bqty').value) || 1) + 1);
+    $('bqty').value = q;
+    $('bqtyVal').textContent = q;
+    $('bqtyMinus').disabled = (q <= 1);
+    update();
+  });
+}
+
+// Loan years stepper controls (- years +)
+if ($('loanYearsMinus') && $('loanYearsPlus')) {
+  $('loanYearsMinus').addEventListener('click', () => {
+    let y = Math.max(1, (Number($('loanYears').value) || 7) - 1);
+    $('loanYears').value = y;
+    $('loanYearsVal').textContent = y + ' ปี';
+    $('loanYearsMinus').disabled = (y <= 1);
+    $('loanYearsPlus').disabled = (y >= 15);
+    update();
+  });
+
+  $('loanYearsPlus').addEventListener('click', () => {
+    let y = Math.min(15, (Number($('loanYears').value) || 7) + 1);
+    $('loanYears').value = y;
+    $('loanYearsVal').textContent = y + ' ปี';
+    $('loanYearsMinus').disabled = (y <= 1);
+    $('loanYearsPlus').disabled = (y >= 15);
+    update();
+  });
+}
+
+$('subsidy').addEventListener('change', update);
+$('sell').addEventListener('change', update);
+if ($('loan')) {
+  $('loan').addEventListener('change', () => {
+    $('loanopts').classList.toggle('hidden', !$('loan').checked);
+    update();
+  });
+}
+
+// Helper to set kW and sync UI
+function setKw(k, autoUpdatePrice = true) {
+  k = Math.round(Math.min(30, Math.max(1, k)));
+  $('kw').value = k;
+  if ($('kwVal')) $('kwVal').textContent = k + ' kW';
+  if ($('kwMinus')) $('kwMinus').disabled = (k <= 1);
+  if ($('kwPlus')) $('kwPlus').disabled = (k >= 30);
+
+  document.querySelectorAll('[data-kw]').forEach(x => {
+    const isMatch = x.dataset.kw !== '0' && Number(x.dataset.kw) === k;
+    x.classList.toggle('active', isMatch);
+    x.setAttribute('aria-checked', isMatch ? 'true' : 'false');
+  });
+
+  if (autoUpdatePrice) {
+    const prices = { 1: 55000, 2: 85000, 3: 110000, 4: 130000, 5: 150000, 6: 170000, 7: 185000, 8: 200000, 9: 215000, 10: 230000 };
+    if (prices[k]) {
+      $('price').value = prices[k];
+    } else {
+      // Linear rate ~23,000/kW for larger systems
+      $('price').value = Math.round((k * 23000) / 1000) * 1000;
+    }
+  }
+}
+
+// Stepper controls for Solar kW
+if ($('kwMinus') && $('kwPlus')) {
+  $('kwMinus').addEventListener('click', () => {
+    let current = Number($('kw').value) || 5;
+    setKw(current - 1, true);
+    update();
+  });
+
+  $('kwPlus').addEventListener('click', () => {
+    let current = Number($('kw').value) || 5;
+    setKw(current + 1, true);
+    update();
+  });
+}
+
+// Solar size chips
+document.querySelectorAll('[data-kw]').forEach(b => {
+  b.addEventListener('click', () => {
+    const kwVal = b.dataset.kw;
+    if (kwVal !== '0') {
+      const k = Number(kwVal);
+      setKw(k, false);
+      const prices = { 5: 150000, 10: 230000 };
+      if (prices[k]) $('price').value = prices[k];
+    }
+    update();
+  });
+});
+
+$('kw').addEventListener('input', () => {
+  setKw(Number($('kw').value), true);
+  update();
+});
+
+document.querySelectorAll('#arun input, #arun select').forEach(el => {
+  if (!['battery', 'sell', 'kw', 'subsidy', 'loan'].includes(el.id)) {
+    el.addEventListener('input', update);
+    el.addEventListener('change', update);
+  }
+});
+
+// Phase Switcher buttons (ช่วงผ่อน vs หลังปลดหนี้)
+if ($('btnPhase1') && $('btnPhase2')) {
+  $('btnPhase1').addEventListener('click', () => {
+    window._activePhase = 1;
+    $('btnPhase1').classList.add('active');
+    $('btnPhase2').classList.remove('active');
+    update();
+  });
+  $('btnPhase2').addEventListener('click', () => {
+    window._activePhase = 2;
+    $('btnPhase2').classList.add('active');
+    $('btnPhase1').classList.remove('active');
+    update();
+  });
+}
+
+// Lifestyle & Roof Preset click handlers
+document.querySelectorAll('[data-day-preset]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const val = Number(btn.dataset.dayPreset);
+    $('day').value = val;
+    document.querySelectorAll('[data-day-preset]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    update();
+  });
+});
+
+$('day').addEventListener('input', () => {
+  const currentVal = Number($('day').value);
+  document.querySelectorAll('[data-day-preset]').forEach(b => {
+    b.classList.toggle('active', Number(b.dataset.dayPreset) === currentVal);
+  });
+});
+
+document.querySelectorAll('[data-shade-preset]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const val = Number(btn.dataset.shadePreset);
+    $('shade').value = val;
+    document.querySelectorAll('[data-shade-preset]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    update();
+  });
+});
+
+$('shade').addEventListener('input', () => {
+  const currentVal = Number($('shade').value);
+  document.querySelectorAll('[data-shade-preset]').forEach(b => {
+    b.classList.toggle('active', Number(b.dataset.shadePreset) === currentVal);
+  });
+});
+
+// Bill input auto recommend size
+$('bill').addEventListener('input', () => {
+  const b = num('bill');
+  const isLarge = b >= 5500;
+  if ($('badge5') && $('badge10')) {
+    $('badge5').classList.toggle('hidden', isLarge);
+    $('badge10').classList.toggle('hidden', !isLarge);
+  }
+});
+
+update();
+})();
+</script>
+</body>
+</html>
