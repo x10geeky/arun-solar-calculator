@@ -738,6 +738,245 @@ input:checked + .slider-switch:before {
   color: var(--solar-primary);
 }
 
+/* =========================================
+   CUSTOM BILL & DAY-NIGHT SLIDERS
+   ========================================= */
+.bill-display-box {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 16px 18px 14px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+}
+
+.bill-amount-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.bill-amount-display {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 5vw, 44px);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: -1px;
+  cursor: pointer;
+  border-bottom: 2px dashed rgba(234, 88, 12, 0.4);
+  padding-bottom: 2px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.bill-amount-display:hover {
+  color: var(--solar-primary);
+  border-bottom-color: var(--solar-primary);
+}
+
+.bill-unit-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.bill-input-edit-wrap {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+
+.bill-inline-input {
+  width: 140px;
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--solar-primary);
+  border: 2px solid var(--solar-primary);
+  border-radius: 8px;
+  padding: 2px 8px;
+  outline: none;
+  background: #fff7ed;
+  box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.15);
+}
+
+.bill-slider-wrap {
+  position: relative;
+  padding: 6px 0 2px;
+}
+
+.solar-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  outline: none;
+  margin: 8px 0 4px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+.solar-slider:focus-visible {
+  outline: 2px solid var(--solar-primary);
+  outline-offset: 4px;
+}
+
+.solar-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3.5px solid var(--solar-primary);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(234, 88, 12, 0.4), 0 0 0 2px rgba(255, 255, 255, 0.8);
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.solar-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 3px 10px rgba(234, 88, 12, 0.55), 0 0 0 4px rgba(234, 88, 12, 0.15);
+}
+
+.solar-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3.5px solid var(--solar-primary);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(234, 88, 12, 0.4);
+}
+
+.slider-ticks {
+  position: relative;
+  width: 100%;
+  height: 18px;
+  margin-top: 6px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.slider-ticks span {
+  position: absolute;
+  top: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, font-weight 0.15s ease;
+}
+
+.slider-ticks span:hover,
+.slider-ticks span.active {
+  color: var(--solar-primary);
+  font-weight: 700;
+}
+
+/* Day:Night Ratio Box */
+.daynight-box {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-sm);
+}
+
+.daynight-ratio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.daynight-label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.daynight-badge-val {
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  font-weight: 700;
+  background: #f8fafc;
+  border: 1px solid var(--border-light);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.daynight-badge-val .d-sun {
+  color: var(--solar-primary);
+}
+
+.daynight-badge-val .d-moon {
+  color: #7c3aed;
+}
+
+.daynight-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 14px;
+}
+
+.daynight-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.daynight-icon.moon {
+  color: #7c3aed;
+  background: #f3e8ff;
+}
+
+.daynight-icon.sun {
+  color: var(--solar-amber);
+  background: #fef3c7;
+}
+
+.daynight-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ea580c 0%, #fbbf24 30%, #c4b5fd 65%, #8b5cf6 100%);
+  outline: none;
+  cursor: pointer;
+}
+
+.daynight-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3.5px solid var(--solar-primary);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease;
+}
+
+.daynight-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
 .adv-help-text {
   font-size: 11px;
   color: #64748b;
@@ -1042,6 +1281,22 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 /* Payback & ROI Card (2 Columns) */
+.card-section-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 18px 0 10px;
+}
+
+.card-section-title svg {
+  color: var(--solar-primary);
+}
+
 .payback-card {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1358,6 +1613,239 @@ input[type=range]::-webkit-slider-thumb:hover {
   overflow: visible;
 }
 
+/* =========================================
+   ENERGY CONSUMPTION MIX SECTION (SOLAR VS GRID)
+   ========================================= */
+.energy-section {
+  padding-top: 6px;
+}
+
+.energy-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.energy-pill {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  background: rgba(245, 158, 11, 0.14);
+  color: #b45309;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  white-space: nowrap;
+}
+
+.energy-card {
+  position: relative;
+  width: 100%;
+  background: #ffffff;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.energy-visual-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.energy-donut-wrap {
+  width: 132px;
+  height: 132px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.energy-donut-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.energy-legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.energy-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: #f8fafc;
+  border-radius: var(--radius-md);
+  border: 1px solid #f1f5f9;
+}
+
+.legend-icon-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.legend-icon-badge.solar-badge {
+  background: #fef3c7;
+  color: #ea580c;
+}
+
+.legend-icon-badge.grid-badge {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.legend-icon-badge.export-badge {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.legend-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-indicator.solar-dot {
+  background: linear-gradient(135deg, #f59e0b, #ea580c);
+  box-shadow: 0 0 6px rgba(234, 88, 12, 0.35);
+}
+
+.legend-indicator.grid-dot {
+  background: linear-gradient(135deg, #38bdf8, #0284c7);
+  box-shadow: 0 0 6px rgba(2, 132, 199, 0.35);
+}
+
+.legend-indicator.export-dot {
+  background: linear-gradient(135deg, #34d399, #059669);
+  box-shadow: 0 0 6px rgba(5, 150, 105, 0.35);
+}
+
+.legend-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.legend-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.legend-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.legend-pct {
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.solar-item .legend-pct { color: #d97706; }
+.grid-item .legend-pct { color: #0284c7; }
+.export-item .legend-pct { color: #059669; }
+
+.legend-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.legend-units {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.legend-daily {
+  font-size: 10.5px;
+  color: var(--text-light);
+}
+
+.legend-sub {
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+.energy-stacked-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-light);
+}
+
+.energy-stacked-bar {
+  height: 12px;
+  width: 100%;
+  background: #f1f5f9;
+  border-radius: 9999px;
+  overflow: hidden;
+  display: flex;
+}
+
+.bar-segment {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.bar-segment.solar-segment {
+  background: linear-gradient(90deg, #ea580c 0%, #f59e0b 100%);
+}
+
+.bar-segment.grid-segment {
+  background: linear-gradient(90deg, #38bdf8 0%, #0284c7 100%);
+}
+
+.energy-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.bar-label.solar {
+  color: #d97706;
+}
+
+.bar-label.grid {
+  color: #0284c7;
+}
+
+@media (max-width: 440px) {
+  .energy-visual-row {
+    flex-direction: column;
+    text-align: center;
+  }
+  .energy-donut-wrap {
+    margin: 0 auto;
+  }
+}
+
 /* Notice disclaimer */
 .notice {
   font-size: 12px;
@@ -1418,20 +1906,90 @@ input[type=range]::-webkit-slider-thumb:hover {
   <div class="app-layout">
     <!-- LEFT COLUMN: INPUT CONTROLS (BORDERLESS / CARDLESS) -->
     <div class="config-column">
-      <!-- Section 1: Bill -->
+      <!-- Section 1: Bill & Usage Behavior -->
       <div class="form-section">
         <div class="section-head">
           <span class="step-pill">1</span>
           <span class="section-title">ข้อมูลการใช้ไฟฟ้าปัจจุบัน</span>
         </div>
 
-        <div class="field">
-          <label for="bill">ค่าไฟเฉลี่ยต่อเดือนในปัจจุบัน</label>
-          <div class="input-group">
-            <input id="bill" type="number" min="100" step="50" value="3500" inputmode="numeric">
-            <span class="unit-badge">บาท/เดือน</span>
+        <!-- 1.1 ยอดค่าไฟเฉลี่ยต่อเดือน (Slider + Display) -->
+        <div class="bill-display-box">
+          <label style="font-size: 13.5px; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 8px;">
+            ค่าไฟเฉลี่ยต่อเดือนในปัจจุบัน
+          </label>
+          
+          <div class="bill-amount-row">
+            <span id="billDisplay" class="bill-amount-display" title="คลิกเพื่อพิมพ์ตัวเลขเอง">3,500</span>
+            <span class="bill-unit-text">บาท / เดือน</span>
+            
+            <div id="billEditWrap" class="bill-input-edit-wrap hidden">
+              <input id="bill" type="number" min="500" max="50000" step="100" value="3500" class="bill-inline-input" inputmode="numeric">
+            </div>
           </div>
-          <span class="field-desc">ดูจากบิลค่าไฟล่าสุด หรือประมาณการค่าไฟเฉลี่ยต่อเดือนของบ้าน</span>
+
+          <div class="bill-slider-wrap">
+            <input id="billSlider" class="solar-slider" type="range" min="1000" max="25000" step="100" value="3500" aria-label="เลื่อนปรับค่าไฟเฉลี่ยต่อเดือน">
+            <div class="slider-ticks">
+              <span data-bill-tick="1000" style="left: 0;">1,000</span>
+              <span data-bill-tick="5000" style="left: calc(12px + (100% - 24px) * 0.1667); transform: translateX(-50%);">5,000</span>
+              <span data-bill-tick="10000" style="left: calc(12px + (100% - 24px) * 0.3750); transform: translateX(-50%);">10,000</span>
+              <span data-bill-tick="15000" style="left: calc(12px + (100% - 24px) * 0.5833); transform: translateX(-50%);">15,000</span>
+              <span data-bill-tick="20000" style="left: calc(12px + (100% - 24px) * 0.7917); transform: translateX(-50%);">20,000</span>
+              <span data-bill-tick="25000" style="right: 0;">25,000</span>
+            </div>
+          </div>
+          <span class="adv-help-text" style="display:block; margin-top:8px;">*ผลการประหยัดเป็นการประมาณการจากค่าไฟเฉลี่ย อาจแตกต่างกันตามพฤติกรรมการใช้ไฟจริง</span>
+        </div>
+
+        <!-- 1.2 สัดส่วนการใช้ไฟ กลางวัน : กลางคืน -->
+        <div class="daynight-box">
+          <div class="daynight-ratio-header">
+            <div class="daynight-label">สัดส่วนการใช้ไฟ กลางวัน : กลางคืน</div>
+            <div class="daynight-badge-val" id="daynightRatioText">
+              <span class="d-sun">กลางวัน <strong id="dayPctText">20%</strong></span>
+              <span>:</span>
+              <span class="d-moon"><strong id="nightPctText">80%</strong> กลางคืน</span>
+            </div>
+          </div>
+
+          <!-- Slider: Left is Sun (Day heavy), Right is Moon (Night heavy) -->
+          <div class="daynight-slider-row">
+            <div class="daynight-icon sun" title="เน้นใช้ไฟกลางวัน">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </div>
+            
+            <input id="day" class="daynight-slider" type="range" min="10" max="90" step="5" value="80" aria-valuemin="10" aria-valuemax="90" aria-valuenow="20" aria-valuetext="กลางวัน 20 เปอร์เซ็นต์, กลางคืน 80 เปอร์เซ็นต์">
+            
+            <div class="daynight-icon moon" title="เน้นใช้ไฟกลางคืน">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </div>
+          </div>
+
+          <!-- Quick Lifestyle Preset Cards (เรียง กลางวัน : กลางคืน จากซ้ายไปขวา Step ละ 15%) -->
+          <div class="adv-preset-group" role="group" aria-label="เลือกไลฟ์สไตล์สัดส่วนการใช้ไฟ">
+            <button type="button" class="adv-preset-btn" data-day-preset="80">
+              <span class="p-title">80:20</span>
+              <span class="p-sub">ออฟฟิศ / ร้านค้า</span>
+            </button>
+            <button type="button" class="adv-preset-btn" data-day-preset="65">
+              <span class="p-title">65:35</span>
+              <span class="p-sub">เปิดแอร์กลางวัน</span>
+            </button>
+            <button type="button" class="adv-preset-btn" data-day-preset="50">
+              <span class="p-title">50:50</span>
+              <span class="p-sub">WFH / มีคนอยู่บ้าน</span>
+            </button>
+            <button type="button" class="adv-preset-btn" data-day-preset="35">
+              <span class="p-title">35:65</span>
+              <span class="p-sub">อยู่บ้านช่วงเย็น</span>
+            </button>
+            <button type="button" class="adv-preset-btn active" data-day-preset="20">
+              <span class="p-title">20:80</span>
+              <span class="p-sub">ทำงานนอกบ้าน</span>
+            </button>
+          </div>
+          <span class="adv-help-text" style="display:block; margin-top:8px;">*เลื่อนไปทางซ้าย (แดดกลางวัน) เมื่อบ้านเปิดแอร์หรือเครื่องใช้ไฟฟ้าตอนกลางวันมากขึ้น ยิ่งใช้กลางวันเยอะ โซลาร์ยิ่งคืนทุนไว</span>
         </div>
       </div>
 
@@ -1609,39 +2167,12 @@ input[type=range]::-webkit-slider-thumb:hover {
 
         <!-- Advanced accordion button -->
         <button id="advbtn" class="advanced-toggle" type="button" aria-expanded="false" aria-controls="advanced">
-          <span>ปรับสมมติฐานพฤติกรรม &amp; สภาพบ้าน (ขั้นสูง)</span>
+          <span>ปรับสมมติฐานทางเทคนิค &amp; สภาพบ้าน (ขั้นสูง)</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
 
         <div id="advanced" class="advanced-box hidden">
-          <!-- 1. Day usage -->
-          <div class="range-item">
-            <div class="rangehead">
-              <label for="day">สัดส่วนการใช้ไฟช่วงกลางวัน (06:00 - 18:00)</label>
-              <strong id="dayval">30%</strong>
-            </div>
-            
-            <!-- Quick Preset for Lifestyle -->
-            <div class="adv-preset-group" role="group" aria-label="เลือกไลฟ์สไตล์การใช้ไฟกลางวัน">
-              <button type="button" class="adv-preset-btn active" data-day-preset="30">
-                <span class="p-title">ทำงานนอกบ้าน</span>
-                <span class="p-sub">30% (ตู้เย็น / Standby)</span>
-              </button>
-              <button type="button" class="adv-preset-btn" data-day-preset="50">
-                <span class="p-title">WFH / คนอยู่บ้าน</span>
-                <span class="p-sub">50% (เปิดแอร์ 1 เครื่อง)</span>
-              </button>
-              <button type="button" class="adv-preset-btn" data-day-preset="75">
-                <span class="p-title">ร้านค้า / ออฟฟิศ</span>
-                <span class="p-sub">75% (เปิดแอร์ทั้งวัน)</span>
-              </button>
-            </div>
-
-            <input id="day" type="range" min="10" max="100" value="30" aria-valuemin="10" aria-valuemax="100" aria-valuenow="30" aria-valuetext="30 เปอร์เซ็นต์">
-            <span class="adv-help-text">เลื่อนปรับละเอียดได้ตามพฤติกรรมการเปิดแอร์/เครื่องใช้ไฟฟ้าช่วงกลางวัน</span>
-          </div>
-
-          <!-- 2. Shade & Roof conditions -->
+          <!-- 1. Shade & Roof conditions -->
           <div class="range-item">
             <div class="rangehead">
               <label for="shade">สภาพแดดและร่มเงาบนหลังคา</label>
@@ -1739,7 +2270,27 @@ input[type=range]::-webkit-slider-thumb:hover {
           <div id="heroSubnote" class="hero-highlight-note">เดิมจ่าย ฿3,500/ด. ➔ ยอดใหม่รวมค่างวด ฿3,071/ด.</div>
         </div>
 
-        <!-- Monthly Breakdown Clarification (อยู่ติดกับสรุปทันที) -->
+        <!-- Single Comparison Gauge Bar (Bullet Target Chart) -->
+        <div class="compare-box">
+         
+          <div class="single-bar-container">
+            <div class="single-bar-meta">
+              <span id="barAfterLabel" class="target-title">ยอดจ่ายจริงรวมค่างวด:</span>
+              <strong id="barAfterVal" class="target-val" style="color:#34d399;">฿2,234</strong>
+            </div>
+            <div class="single-bar-wrapper">
+              <div class="single-bar-track">
+                <div id="barFillAfter" class="single-bar-fill safe" style="width: 55%;"></div>
+              </div>
+              <div id="singleMarker" class="single-bar-marker">
+                <div class="marker-line"></div>
+                <span id="markerLabel" class="marker-label">ค่าไฟเดิม ฿3,500</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Monthly Breakdown Clarification (ที่มาของยอดจ่ายต่อเดือน) -->
         <div class="breakdown-box">
           <div class="breakdown-title" id="breakdownTitle">ที่มาของยอดจ่ายต่อเดือน</div>
           <div class="breakdown-row header-row" id="breakdownBeforeRow">
@@ -1779,27 +2330,10 @@ input[type=range]::-webkit-slider-thumb:hover {
           </div>
         </div>
 
-        <!-- Single Comparison Gauge Bar (Bullet Target Chart) -->
-        <div class="compare-box">
-          <div class="compare-head">
-            <span>เปรียบเทียบค่าใช้จ่ายต่อเดือน</span>
-            <span id="savePercentBadge" class="save-tag">ประหยัด —%</span>
-          </div>
-          <div class="single-bar-container">
-            <div class="single-bar-meta">
-              <span id="barAfterLabel" class="target-title">ยอดจ่ายจริงรวมค่างวด:</span>
-              <strong id="barAfterVal" class="target-val" style="color:#34d399;">฿2,234</strong>
-            </div>
-            <div class="single-bar-wrapper">
-              <div class="single-bar-track">
-                <div id="barFillAfter" class="single-bar-fill safe" style="width: 55%;"></div>
-              </div>
-              <div id="singleMarker" class="single-bar-marker">
-                <div class="marker-line"></div>
-                <span id="markerLabel" class="marker-label">ค่าไฟเดิม ฿3,500</span>
-              </div>
-            </div>
-          </div>
+        <!-- Investment & ROI Analysis Header -->
+        <div class="card-section-title">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          การวิเคราะห์ความคุ้มค่าและการลงทุน
         </div>
 
         <!-- Payback & ROI Card (2 Columns: คืนทุนจริง + ROI ผลตอบแทน) -->
@@ -1871,8 +2405,98 @@ input[type=range]::-webkit-slider-thumb:hover {
         </div>
       </section>
 
+      <!-- ENERGY CONSUMPTION MIX CHART SECTION (SOLAR VS GRID) -->
+      <section class="chart-section energy-section" id="energySection">
+        <div class="charthead">
+          <div class="energy-title-row">
+            <h3>สัดส่วนการใช้ไฟ: Solar vs การไฟฟ้า</h3>
+            <span id="solarCoveragePill" class="energy-pill">Solar ผลิตจ่าย 58%</span>
+          </div>
+          <p>แหล่งที่มาของไฟฟ้าที่ใช้จริงต่อเดือน (หน่วย / kWh)</p>
+        </div>
+
+        <div class="energy-card">
+          <div class="energy-visual-row">
+            <div class="energy-donut-wrap">
+              <svg id="energyDonutChart" viewBox="0 0 160 160" class="energy-donut-svg" role="img" aria-label="กราฟวงกลมสัดส่วนการใช้ไฟ Solar เทียบการไฟฟ้า"></svg>
+            </div>
+
+            <div class="energy-legend-list">
+              <!-- Item 1: Solar Self-consumption -->
+              <div class="energy-legend-item solar-item">
+                <div class="legend-icon-badge solar-badge">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                </div>
+                <div class="legend-details">
+                  <div class="legend-header">
+                    <span class="legend-name">ใช้ไฟจาก Solar</span>
+                    <strong id="energySolarPct" class="legend-pct">58%</strong>
+                  </div>
+                  <div class="legend-meta">
+                    <span id="energySolarUnits" class="legend-units">350 หน่วย/ด.</span>
+                    <span id="energySolarDaily" class="legend-daily">(~11.7 หน่วย/วัน)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 2: Grid Import -->
+              <div class="energy-legend-item grid-item">
+                <div class="legend-icon-badge grid-badge">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <div class="legend-details">
+                  <div class="legend-header">
+                    <span class="legend-name">ดึงจากการไฟฟ้า</span>
+                    <strong id="energyGridPct" class="legend-pct">42%</strong>
+                  </div>
+                  <div class="legend-meta">
+                    <span id="energyGridUnits" class="legend-units">250 หน่วย/ด.</span>
+                    <span id="energyGridDaily" class="legend-daily">(~8.3 หน่วย/วัน)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 3: Solar Export (if surplus) -->
+              <div id="energyExportItem" class="energy-legend-item export-item hidden">
+                <div class="legend-icon-badge export-badge">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </div>
+                <div class="legend-details">
+                  <div class="legend-header">
+                    <span class="legend-name">ไฟส่วนเกินขายคืน</span>
+                    <strong id="energyExportIncome" class="legend-pct">+฿0/ด.</strong>
+                  </div>
+                  <div class="legend-meta">
+                    <span id="energyExportUnits" class="legend-units">0 หน่วย/ด.</span>
+                    <span class="legend-sub">ส่งออกมิเตอร์</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stacked Proportion Bar -->
+          <div class="energy-stacked-bar-wrap">
+            <div class="energy-stacked-bar">
+              <div id="barSolarSegment" class="bar-segment solar-segment" style="width: 58%;" title="ใช้ไฟจาก Solar"></div>
+              <div id="barGridSegment" class="bar-segment grid-segment" style="width: 42%;" title="ดึงจากการไฟฟ้า"></div>
+            </div>
+            <div class="energy-bar-labels">
+              <span id="barSolarLabel" class="bar-label solar">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:3px;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <span id="barSolarText">Solar 58%</span>
+              </span>
+              <span id="barGridLabel" class="bar-label grid">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:3px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <span id="barGridText">การไฟฟ้า 42%</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- CASH FLOW CHART SECTION (Clean borderless) -->
-      <section class="chart-section">
+      <section class="chart-section" id="cashflowSection">
         <div class="charthead">
           <h3>กราฟกำไรและเงินเก็บสะสม 20 ปี</h3>
           <p>จำลองกระแสเงินสดสะสม (โซนสีเขียวเหนือเส้น 0 บาทคือกำไรสุทธิเข้ากระเป๋า)</p>
@@ -1944,6 +2568,10 @@ function invertBill(target, rate, ft) {
   return (lo + hi) / 2;
 }
 
+function getDayPercent() {
+  return Math.min(90, Math.max(10, 100 - num('day')));
+}
+
 function update() {
   const kw = Math.min(30, Math.max(1, num('kw') || 5));
   const price = num('price');
@@ -1956,7 +2584,8 @@ function update() {
   const rate = '12'; // อัตรา 1.2 มาตรฐานบ้านทั่วไป (เกิน 150 หน่วย)
   const units = invertBill(bill, rate, ft);
 
-  const day = num('day') / 100;
+  const dayPercent = getDayPercent();
+  const day = dayPercent / 100;
   const shade = num('shade') / 100;
   const y = num('yield');
   const deg = num('deg') / 100;
@@ -2002,7 +2631,8 @@ function update() {
   let loanYears = Math.max(1, num('loanYears') || 7);
 
   if (isLoan) {
-    const loanRate = (num('loanRate') || 2.5) / 100;
+    const rawLoanRate = $('loanRate') ? $('loanRate').value.trim() : '';
+    const loanRate = (rawLoanRate === '' ? 2.5 : Math.max(0, Number(rawLoanRate) || 0)) / 100;
     const totalInterest = net * loanRate * loanYears;
     const totalPay = net + totalInterest;
     const totalMonths = loanYears * 12;
@@ -2084,9 +2714,11 @@ function update() {
         $('barAfterVal').style.color = '#34d399';
       }
 
-      $('savePercentBadge').textContent = badgeText;
-      $('savePercentBadge').style.background = badgeClass === 'danger' ? 'rgba(239, 68, 68, 0.2)' : '';
-      $('savePercentBadge').style.color = badgeClass === 'danger' ? '#f87171' : '';
+      if ($('savePercentBadge')) {
+        $('savePercentBadge').textContent = badgeText;
+        $('savePercentBadge').style.background = badgeClass === 'danger' ? 'rgba(239, 68, 68, 0.2)' : '';
+        $('savePercentBadge').style.color = badgeClass === 'danger' ? '#f87171' : '';
+      }
     }
 
     if (activePhase === 1) {
@@ -2258,9 +2890,12 @@ function update() {
   }
 
   // Sliders display & accessibility attributes
-  $('dayval').textContent = num('day') + '%';
-  $('day').setAttribute('aria-valuenow', num('day'));
-  $('day').setAttribute('aria-valuetext', num('day') + ' เปอร์เซ็นต์');
+  const nightPercent = 100 - dayPercent;
+  if ($('dayPctText')) $('dayPctText').textContent = dayPercent + '%';
+  if ($('nightPctText')) $('nightPctText').textContent = nightPercent + '%';
+  if ($('dayval')) $('dayval').textContent = dayPercent + '%';
+  $('day').setAttribute('aria-valuenow', dayPercent);
+  $('day').setAttribute('aria-valuetext', `กลางวัน ${dayPercent} เปอร์เซ็นต์, กลางคืน ${nightPercent} เปอร์เซ็นต์`);
 
   $('shadeval').textContent = num('shade') + '%';
   $('shade').setAttribute('aria-valuenow', num('shade'));
@@ -2281,6 +2916,90 @@ function update() {
   $('ftfuture').setAttribute('aria-valuetext', ftFutureVal + ' เปอร์เซ็นต์ต่อปี');
 
   draw(values);
+
+  const gridMonthly = Math.max(0, units - selfMonthly);
+  const exportMonthly = exportUnits / 12;
+  renderEnergyMix(units, selfMonthly, gridMonthly, exportMonthly, saving, afterBill, sellIncomeMonthly);
+}
+
+function renderEnergyMix(units, selfMonthly, gridMonthly, exportMonthly, saving, afterBill, sellIncomeMonthly) {
+  const safeUnits = Math.max(0.1, units);
+  const solarPct = Math.min(100, Math.max(0, (selfMonthly / safeUnits) * 100));
+  const gridPct = Math.max(0, 100 - solarPct);
+  const roundSolar = Math.round(solarPct);
+  const roundGrid = Math.round(gridPct);
+
+  // Update badge
+  if ($('solarCoveragePill')) {
+    $('solarCoveragePill').textContent = `Solar ผลิตจ่าย ${roundSolar}%`;
+    $('solarCoveragePill').style.background = roundSolar >= 50 ? 'rgba(5, 150, 105, 0.12)' : 'rgba(245, 158, 11, 0.14)';
+    $('solarCoveragePill').style.color = roundSolar >= 50 ? '#059669' : '#b45309';
+    $('solarCoveragePill').style.borderColor = roundSolar >= 50 ? 'rgba(5, 150, 105, 0.28)' : 'rgba(245, 158, 11, 0.28)';
+  }
+
+  // Update legends
+  if ($('energySolarPct')) $('energySolarPct').textContent = roundSolar + '%';
+  if ($('energySolarUnits')) $('energySolarUnits').textContent = Math.round(selfMonthly).toLocaleString('en-US') + ' หน่วย/ด.';
+  if ($('energySolarDaily')) $('energySolarDaily').textContent = `(~${(selfMonthly / 30).toFixed(1)} หน่วย/วัน)`;
+
+  if ($('energyGridPct')) $('energyGridPct').textContent = roundGrid + '%';
+  if ($('energyGridUnits')) $('energyGridUnits').textContent = Math.round(gridMonthly).toLocaleString('en-US') + ' หน่วย/ด.';
+  if ($('energyGridDaily')) $('energyGridDaily').textContent = `(~${(gridMonthly / 30).toFixed(1)} หน่วย/วัน)`;
+
+  // Export legend item
+  if ($('energyExportItem')) {
+    if (exportMonthly > 0.5 && $('sell') && $('sell').checked) {
+      $('energyExportItem').classList.remove('hidden');
+      if ($('energyExportUnits')) $('energyExportUnits').textContent = Math.round(exportMonthly).toLocaleString('en-US') + ' หน่วย/ด.';
+      if ($('energyExportIncome')) $('energyExportIncome').textContent = '+฿' + Math.round(sellIncomeMonthly).toLocaleString('en-US') + '/ด.';
+    } else {
+      $('energyExportItem').classList.add('hidden');
+    }
+  }
+
+  // Update stacked progress bar
+  if ($('barSolarSegment')) $('barSolarSegment').style.width = solarPct + '%';
+  if ($('barGridSegment')) $('barGridSegment').style.width = gridPct + '%';
+  if ($('barSolarText')) {
+    $('barSolarText').textContent = `Solar ${roundSolar}% (${Math.round(selfMonthly).toLocaleString('en-US')} หน่วย)`;
+  } else if ($('barSolarLabel')) {
+    $('barSolarLabel').textContent = `Solar ${roundSolar}% (${Math.round(selfMonthly).toLocaleString('en-US')} หน่วย)`;
+  }
+  if ($('barGridText')) {
+    $('barGridText').textContent = `การไฟฟ้า ${roundGrid}% (${Math.round(gridMonthly).toLocaleString('en-US')} หน่วย)`;
+  } else if ($('barGridLabel')) {
+    $('barGridLabel').textContent = `การไฟฟ้า ${roundGrid}% (${Math.round(gridMonthly).toLocaleString('en-US')} หน่วย)`;
+  }
+
+  // Render SVG Donut
+  const donutSvg = $('energyDonutChart');
+  if (donutSvg) {
+    const r = 58;
+    const C = 2 * Math.PI * r; // ~364.425
+    const solarStroke = (solarPct / 100) * C;
+
+    donutSvg.innerHTML = `
+      <defs>
+        <linearGradient id="solarDonutGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ea580c"/>
+          <stop offset="100%" stop-color="#f59e0b"/>
+        </linearGradient>
+        <linearGradient id="gridDonutGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#38bdf8"/>
+          <stop offset="100%" stop-color="#0284c7"/>
+        </linearGradient>
+      </defs>
+      <!-- Base circle: Grid -->
+      <circle cx="80" cy="80" r="${r}" fill="none" stroke="url(#gridDonutGrad)" stroke-width="18" opacity="0.95"/>
+      <!-- Solar Arc: Starts at top (12 o'clock), clockwise -->
+      <circle cx="80" cy="80" r="${r}" fill="none" stroke="url(#solarDonutGrad)" stroke-width="18"
+              stroke-dasharray="${solarStroke.toFixed(2)} ${C.toFixed(2)}"
+              transform="rotate(-90 80 80)"/>
+      <text x="80" y="73" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="24" fill="#0f172a">${roundSolar}%</text>
+      <text x="80" y="91" text-anchor="middle" font-family="'Prompt', sans-serif" font-weight="600" font-size="11.5" fill="#d97706">ใช้จาก Solar</text>
+      <text x="80" y="106" text-anchor="middle" font-family="'Prompt', sans-serif" font-weight="500" font-size="9.5" fill="#94a3b8">รวม ${Math.round(units).toLocaleString('en-US')} หน่วย/ด.</text>
+    `;
+  }
 }
 
 function draw(values) {
@@ -2519,7 +3238,7 @@ if ($('btnPhase1') && $('btnPhase2')) {
 document.querySelectorAll('[data-day-preset]').forEach(btn => {
   btn.addEventListener('click', () => {
     const val = Number(btn.dataset.dayPreset);
-    $('day').value = val;
+    $('day').value = 100 - val;
     document.querySelectorAll('[data-day-preset]').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     update();
@@ -2527,10 +3246,11 @@ document.querySelectorAll('[data-day-preset]').forEach(btn => {
 });
 
 $('day').addEventListener('input', () => {
-  const currentVal = Number($('day').value);
+  const currentVal = getDayPercent();
   document.querySelectorAll('[data-day-preset]').forEach(b => {
     b.classList.toggle('active', Number(b.dataset.dayPreset) === currentVal);
   });
+  update();
 });
 
 document.querySelectorAll('[data-shade-preset]').forEach(btn => {
@@ -2550,15 +3270,71 @@ $('shade').addEventListener('input', () => {
   });
 });
 
-// Bill input auto recommend size
-$('bill').addEventListener('input', () => {
-  const b = num('bill');
-  const isLarge = b >= 5500;
+// Bill input and slider synchronization
+function setBillValue(val) {
+  val = Math.max(100, Math.round(Number(val) || 0));
+  $('bill').value = val;
+  if ($('billSlider')) $('billSlider').value = Math.min(25000, Math.max(1000, val));
+  if ($('billDisplay')) $('billDisplay').textContent = val.toLocaleString();
+  
+  // Highlight matching tick
+  document.querySelectorAll('[data-bill-tick]').forEach(el => {
+    el.classList.toggle('active', Number(el.dataset.billTick) === val);
+  });
+
+  // Auto recommend system sizing
+  const isLarge = val >= 5500;
   if ($('badge5') && $('badge10')) {
     $('badge5').classList.toggle('hidden', isLarge);
     $('badge10').classList.toggle('hidden', !isLarge);
   }
+  update();
+}
+
+if ($('billSlider')) {
+  $('billSlider').addEventListener('input', () => {
+    setBillValue($('billSlider').value);
+  });
+}
+
+if ($('bill')) {
+  $('bill').addEventListener('input', () => {
+    setBillValue($('bill').value);
+  });
+}
+
+// Click to edit bill inline
+if ($('billDisplay')) {
+  $('billDisplay').addEventListener('click', () => {
+    $('billDisplay').classList.add('hidden');
+    $('billEditWrap').classList.remove('hidden');
+    $('bill').focus();
+    $('bill').select();
+  });
+}
+
+if ($('bill')) {
+  $('bill').addEventListener('blur', () => {
+    $('billEditWrap').classList.add('hidden');
+    $('billDisplay').classList.remove('hidden');
+  });
+  $('bill').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      $('bill').blur();
+    }
+  });
+}
+
+// Quick click on bill ticks
+document.querySelectorAll('[data-bill-tick]').forEach(el => {
+  el.addEventListener('click', () => {
+    const val = Number(el.dataset.billTick);
+    setBillValue(val);
+  });
 });
+
+// Sync initial bill display
+setBillValue($('bill') ? $('bill').value : 3500);
 
 update();
 })();
