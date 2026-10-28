@@ -2368,12 +2368,12 @@ input[type=range]::-webkit-slider-thumb:hover {
           </label>
         </div>
 
-        <!-- Loan options (สไตล์ Stepper Box สวยงามประหยัดพื้นที่เหมือนแบตเตอรี่) -->
+        <!-- Loan / Investment Period Options (สไตล์ Stepper Box สวยงามประหยัดพื้นที่เหมือนแบตเตอรี่) -->
         <div id="loanopts" class="stepper-box">
           <div class="stepper-top">
             <div class="stepper-label">
-              <strong>ระยะเวลาผ่อนชำระ</strong>
-              <small>กด + หรือ − เพื่อเพิ่มลดระยะเวลา (1–15 ปี)</small>
+              <strong id="loanYearsTitle">ระยะเวลาผ่อนชำระ</strong>
+              <small id="loanYearsSub">กด + หรือ − เพื่อเพิ่มลดระยะเวลา (1–15 ปี)</small>
             </div>
             <div class="stepper-ctrl">
               <button id="loanYearsMinus" class="stepper-btn" type="button" aria-label="ลดจำนวนปีผ่อน">−</button>
@@ -2383,7 +2383,7 @@ input[type=range]::-webkit-slider-thumb:hover {
             <input id="loanYears" type="hidden" value="7">
           </div>
 
-          <div class="stepper-price-row">
+          <div class="stepper-price-row" id="loanRateRow">
             <label for="loanRate">อัตราดอกเบี้ยต่อปี (% ต่อปี Flat):</label>
             <div class="input-group" style="max-width:140px; margin-left:auto;">
               <input id="loanRate" type="number" min="0" max="20" step="0.1" value="2.5">
@@ -2637,15 +2637,19 @@ input[type=range]::-webkit-slider-thumb:hover {
         <!-- Phase Toggle Pill Bar (สลับดูช่วง 7 ปีแรก vs หลังปีที่ 7) -->
         <div id="phaseSwitchContainer" class="phase-switch-bar">
           <button id="btnPhase1" class="phase-btn active" type="button">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12C2 8.46252 2 6.69377 3.0528 5.5129C3.22119 5.32403 3.40678 5.14935 3.60746 4.99087C4.86213 4 6.74142 4 10.5 4H13.5C17.2586 4 19.1379 4 20.3925 4.99087C20.5932 5.14935 20.7788 5.32403 20.9472 5.5129C22 6.69377 22 8.46252 22 12C22 15.5375 22 17.3062 20.9472 18.4871C20.7788 18.676 20.5932 18.8506 20.3925 19.0091C19.1379 20 17.2586 20 13.5 20H10.5C6.74142 20 4.86213 20 3.60746 19.0091C3.40678 18.8506 3.22119 18.676 3.0528 18.4871C2 17.3062 2 15.5375 2 12Z"/><path d="M10 16H11.5"/><path d="M14.5 16L18 16"/><path d="M2 9H22"/></svg>
+            <span id="btnPhase1Icon" style="display:inline-flex; align-items:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12C2 8.46252 2 6.69377 3.0528 5.5129C3.22119 5.32403 3.40678 5.14935 3.60746 4.99087C4.86213 4 6.74142 4 10.5 4H13.5C17.2586 4 19.1379 4 20.3925 4.99087C20.5932 5.14935 20.7788 5.32403 20.9472 5.5129C22 6.69377 22 8.46252 22 12C22 15.5375 22 17.3062 20.9472 18.4871C20.7788 18.676 20.5932 18.8506 20.3925 19.0091C19.1379 20 17.2586 20 13.5 20H10.5C6.74142 20 4.86213 20 3.60746 19.0091C3.40678 18.8506 3.22119 18.676 3.0528 18.4871C2 17.3062 2 15.5375 2 12Z"/><path d="M10 16H11.5"/><path d="M14.5 16L18 16"/><path d="M2 9H22"/></svg>
+            </span>
             <span id="btnPhase1Text">ช่วงผ่อน 7 ปีแรก</span>
           </button>
           <button id="btnPhase2" class="phase-btn" type="button">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12.5 20H10.5C6.74142 20 4.86213 20 3.60746 19.0091C3.40678 18.8506 3.22119 18.676 3.0528 18.4871C2 17.3062 2 15.5375 2 12C2 8.46252 2 6.69377 3.0528 5.5129C3.22119 5.32403 3.40678 5.14935 3.60746 4.99087C4.86213 4 6.74142 4 10.5 4H13.5C17.2586 4 19.1379 4 20.3925 4.99087C20.5932 5.14935 20.7788 5.32403 20.9472 5.5129C21.8957 6.57684 21.9897 8.11799 21.999 11"/>
-              <path d="M2 9H22"/>
-              <path d="M22 14L16 20M22 20L16 14"/>
-            </svg>
+            <span id="btnPhase2Icon" style="display:inline-flex; align-items:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12.5 20H10.5C6.74142 20 4.86213 20 3.60746 19.0091C3.40678 18.8506 3.22119 18.676 3.0528 18.4871C2 17.3062 2 15.5375 2 12C2 8.46252 2 6.69377 3.0528 5.5129C3.22119 5.32403 3.40678 5.14935 3.60746 4.99087C4.86213 4 6.74142 4 10.5 4H13.5C17.2586 4 19.1379 4 20.3925 4.99087C20.5932 5.14935 20.7788 5.32403 20.9472 5.5129C21.8957 6.57684 21.9897 8.11799 21.999 11"/>
+                <path d="M2 9H22"/>
+                <path d="M22 14L16 20M22 20L16 14"/>
+              </svg>
+            </span>
             <span id="btnPhase2Text">หลังปีที่ 7 (ปลดหนี้)</span>
           </button>
         </div>
@@ -2720,7 +2724,7 @@ input[type=range]::-webkit-slider-thumb:hover {
             <strong id="breakdownNewBill" style="color:#34d399;">฿1,048</strong>
           </div>
           <div class="breakdown-row" id="breakdownLoanRow">
-            <span>
+            <span id="breakdownLoanLabel">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12C2 8.46252 2 6.69377 3.0528 5.5129C3.22119 5.32403 3.40678 5.14935 3.60746 4.99087C4.86213 4 6.74142 4 10.5 4H13.5C17.2586 4 19.1379 4 20.3925 4.99087C20.5932 5.14935 20.7788 5.32403 20.9472 5.5129C22 6.69377 22 8.46252 22 12C22 15.5375 22 17.3062 20.9472 18.4871C20.7788 18.676 20.5932 18.8506 20.3925 19.0091C19.1379 20 17.2586 20 13.5 20H10.5C6.74142 20 4.86213 20 3.60746 19.0091C3.40678 18.8506 3.22119 18.676 3.0528 18.4871C2 17.3062 2 15.5375 2 12Z"/><path d="M10 16H11.5"/><path d="M14.5 16L18 16"/><path d="M2 9H22"/></svg>
               ค่างวดผ่อนสินเชื่อ (7 ปี)
             </span>
@@ -2771,7 +2775,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 
           <div class="payback-col">
             <small>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 14V17"/><path d="M13 9V17"/><path d="M18 5V17"/><path d="M21 21H10C6.70017 21 5.05025 21 4.02513 19.9749C3 18.9497 3 17.2998 3 14V3"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2.20004C13.3538 2.06886 12.6849 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 11.3151 21.9311 10.6462 21.8 10"/><path d="M12 9C10.8954 9 10 9.67157 10 10.5C10 11.3284 10.8954 12 12 12C13.1046 12 14 12.6716 14 13.5C14 14.3284 13.1046 15 12 15M12 9C12.8708 9 13.6116 9.4174 13.8862 10M12 9V8M12 15C11.1292 15 10.3884 14.5826 10.1138 14M12 15V16"/><path d="M16.998 7.00195L21.1739 2.82375M21.998 6.48019L21.8798 3.3887C21.8798 2.66006 21.4448 2.20607 20.6523 2.14881L17.5282 2.00195"/></svg>
               ผลตอบแทน (ROI)
               <span class="info-tip" aria-label="วิธีคำนวณ ROI">?
                 <span class="tip-box">
@@ -2806,9 +2810,9 @@ input[type=range]::-webkit-slider-thumb:hover {
           <div id="phase2Card"><span id="phase2Title"></span><span id="phase2NetPay"></span><span id="phase2Note"></span></div>
         </div>
 
-        <!-- Hidden Loan Banner (kept for backward compat) -->
-        <div id="loanBanner" class="loan-banner hidden">
-          <span>ค่างวดสินเชื่อ:</span>
+        <!-- Loan / Investment Banner -->
+        <div id="loanBanner" class="loan-banner">
+          <span id="loanBannerLabel">ค่างวดสินเชื่อ:</span>
           <strong id="loanMonthly">—</strong>
         </div>
         <div class="hidden">
@@ -2950,23 +2954,45 @@ function update() {
   const saving = Math.max(0, bill - afterBill);
   const sellIncomeMonthly = $('sell').checked ? (exportUnits * num('sellprice')) / 12 : 0;
 
-  // Loan calculation
+  // Loan / Investment Amortization calculation
   let monthlyPayment = 0;
   let isLoan = $('loan').checked && net > 0;
   let loanYears = Math.max(1, num('loanYears') || 7);
+  const totalMonths = loanYears * 12;
+  let loanRate = 0;
+  let totalInterest = 0;
 
   if (isLoan) {
     const rawLoanRate = $('loanRate') ? $('loanRate').value.trim() : '';
-    const loanRate = (rawLoanRate === '' ? 2.5 : Math.max(0, Number(rawLoanRate) || 0)) / 100;
-    const totalInterest = net * loanRate * loanYears;
+    loanRate = (rawLoanRate === '' ? 2.5 : Math.max(0, Number(rawLoanRate) || 0)) / 100;
+    totalInterest = net * loanRate * loanYears;
     const totalPay = net + totalInterest;
-    const totalMonths = loanYears * 12;
-    monthlyPayment = totalPay / totalMonths;
-
-    $('loanBanner').classList.remove('hidden');
-    $('loanMonthly').textContent = '฿' + Math.round(monthlyPayment).toLocaleString('en-US') + ` /ด. (${totalMonths} งวด ดอกเบี้ย ${(loanRate * 100).toFixed(1)}%)`;
+    monthlyPayment = totalMonths > 0 ? (totalPay / totalMonths) : 0;
   } else {
-    $('loanBanner').classList.add('hidden');
+    // โหมดซื้อสด (ไม่กู้): เฉลี่ยคืนเงินลงทุนตรงๆ ตามจำนวนปี (ดอกเบี้ย 0%)
+    monthlyPayment = totalMonths > 0 ? (net / totalMonths) : 0;
+  }
+
+  // Update Loan / Investment period stepper UI
+  if ($('loanYearsTitle')) {
+    $('loanYearsTitle').textContent = isLoan ? 'ระยะเวลาผ่อนชำระ' : 'ระยะเวลาเฉลี่ยคืนเงินลงทุน';
+  }
+  if ($('loanYearsSub')) {
+    $('loanYearsSub').textContent = isLoan 
+      ? 'กด + หรือ − เพื่อเพิ่มลดระยะเวลาผ่อน (1–15 ปี)'
+      : 'กด + หรือ − เพื่อกำหนดระยะเวลาเฉลี่ยคืนเงินออม (1–15 ปี)';
+  }
+  if ($('loanRateRow')) {
+    $('loanRateRow').classList.toggle('hidden', !isLoan);
+  }
+  if ($('loanopts')) {
+    $('loanopts').classList.remove('hidden');
+  }
+  if ($('loanYearsMinus')) {
+    $('loanYearsMinus').setAttribute('aria-label', isLoan ? 'ลดจำนวนปีผ่อน' : 'ลดจำนวนปีเฉลี่ยลงทุน');
+  }
+  if ($('loanYearsPlus')) {
+    $('loanYearsPlus').setAttribute('aria-label', isLoan ? 'เพิ่มจำนวนปีผ่อน' : 'เพิ่มจำนวนปีเฉลี่ยลงทุน');
   }
 
   // 1. Breakdown Rows (สูตรแจกแจงแบบคณิตศาสตร์เข้าใจง่าย 100%)
@@ -2984,12 +3010,12 @@ function update() {
 
   // 2. 2-Phase Milestones (ช่วง 7 ปีแรก vs หลังปีที่ 7)
   const totalMonthlyGain = saving + sellIncomeMonthly;
-  const netMonthlyDuringLoan = totalMonthlyGain - monthlyPayment; // เงินเหลือสุทธิต่อเดือนช่วงผ่อน
-  const actualOutDuringLoan = afterBill + monthlyPayment - sellIncomeMonthly; // จ่ายจริงรวมค่างวด
-  const actualOutAfterLoan = Math.max(0, afterBill - sellIncomeMonthly); // จ่ายจริงหลังผ่อนหมด
+  const netMonthlyDuringLoan = totalMonthlyGain - monthlyPayment; // เงินเหลือสุทธิต่อเดือนช่วงแรก
+  const actualOutDuringLoan = afterBill + monthlyPayment - sellIncomeMonthly; // จ่ายจริงรวมค่างวด/เฉลี่ยเงินลงทุน
+  const actualOutAfterLoan = Math.max(0, afterBill - sellIncomeMonthly); // จ่ายจริงหลังผ่อนหมด/คืนทุนครบ
   const diffFromOrig = bill - actualOutDuringLoan; // ยอดที่จ่ายถูกกว่าเดิม
 
-  // Global or scoped state for phase view (1: ช่วงผ่อน, 2: ปลดหนี้แล้ว)
+  // Global or scoped state for phase view (1: ช่วงผ่อน/ช่วงเฉลี่ยลงทุน, 2: ปลดหนี้/คืนทุนแล้ว)
   let activePhase = window._activePhase || 1;
   window._activePhase = activePhase;
 
@@ -3027,8 +3053,16 @@ function update() {
     }
   }
 
+  $('phaseSwitchContainer').classList.remove('hidden');
+
+  const creditCardIconSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12C2 8.46252 2 6.69377 3.0528 5.5129C3.22119 5.32403 3.40678 5.14935 3.60746 4.99087C4.86213 4 6.74142 4 10.5 4H13.5C17.2586 4 19.1379 4 20.3925 4.99087C20.5932 5.14935 20.7788 5.32403 20.9472 5.5129C22 6.69377 22 8.46252 22 12C22 15.5375 22 17.3062 20.9472 18.4871C20.7788 18.676 20.5932 18.8506 20.3925 19.0091C19.1379 20 17.2586 20 13.5 20H10.5C6.74142 20 4.86213 20 3.60746 19.0091C3.40678 18.8506 3.22119 18.676 3.0528 18.4871C2 17.3062 2 15.5375 2 12Z"/><path d="M10 16H11.5"/><path d="M14.5 16L18 16"/><path d="M2 9H22"/></svg>`;
+  const creditCardCancelIconSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 20H10.5C6.74142 20 4.86213 20 3.60746 19.0091C3.40678 18.8506 3.22119 18.676 3.0528 18.4871C2 17.3062 2 15.5375 2 12C2 8.46252 2 6.69377 3.0528 5.5129C3.22119 5.32403 3.40678 5.14935 3.60746 4.99087C4.86213 4 6.74142 4 10.5 4H13.5C17.2586 4 19.1379 4 20.3925 4.99087C20.5932 5.14935 20.7788 5.32403 20.9472 5.5129C21.8957 6.57684 21.9897 8.11799 21.999 11"/><path d="M2 9H22"/><path d="M22 14L16 20M22 20L16 14"/></svg>`;
+  const money01IconSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.01733 15C4.2169 15 6.00001 16.7831 6.00001 18.9827"/><path d="M18 18.9827V18.8908C18 16.742 19.742 15 21.8908 15"/><path d="M6.00001 5.01733C6.00001 7.2169 4.2169 9.00001 2.01733 9.00001"/><path d="M18 5.01733C18 7.19765 19.769 8.96876 21.9423 8.9996"/><path d="M16 5H8C5.17157 5 3.75736 5 2.87868 5.87868C2 6.75736 2 8.17157 2 11V13C2 15.8284 2 17.2426 2.87868 18.1213C3.75736 19 5.17157 19 8 19H16C18.8284 19 20.2426 19 21.1213 18.1213C22 17.2426 22 15.8284 22 13V11C22 8.17157 22 6.75736 21.1213 5.87868C20.2426 5 18.8284 5 16 5Z"/><path d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z"/></svg>`;
+  const moneyRemove01IconSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.01733 14C4.2169 14 6.00001 15.7831 6.00001 17.9827"/><path d="M6.00001 4.01733C6.00001 6.2169 4.2169 8.00001 2.01733 8.00001"/><path d="M18 4.01733C18 6.19765 19.769 7.96876 21.9423 7.9996"/><path d="M22 12.5V10C22 7.17157 22 5.75736 21.1213 4.87868C20.2426 4 18.8284 4 16 4H8C5.17157 4 3.75736 4 2.87868 4.87868C2 5.75736 2 7.17157 2 10V12C2 14.8284 2 16.2426 2.87868 17.1213C3.75736 18 5.17157 18 8 18H15"/><path d="M15 11C15 12.6569 14 12 14 12C10.3431 14 9 12.6569 9 11C9 9.34315 10.3431 8 12 8C13.6569 8 15 9.34315 15 11Z"/><path d="M22 15.5L19.75 17.75M19.75 17.75L17.5 20M19.75 17.75L17.5 15.5M19.75 17.75L22 20"/></svg>`;
+
   if (isLoan) {
-    $('phaseSwitchContainer').classList.remove('hidden');
+    if ($('btnPhase1Icon')) $('btnPhase1Icon').innerHTML = creditCardIconSvg;
+    if ($('btnPhase2Icon')) $('btnPhase2Icon').innerHTML = creditCardCancelIconSvg;
     $('btnPhase1Text').textContent = `ช่วงผ่อน ${loanYears} ปีแรก`;
     $('btnPhase2Text').textContent = `หลังปีที่ ${loanYears} (ปลดหนี้)`;
 
@@ -3045,143 +3079,160 @@ function update() {
     $('phase2Title').textContent = `ปีที่ ${loanYears + 1}+ (ปลดหนี้แล้ว)`;
     $('phase2NetPay').textContent = fmt(actualOutAfterLoan) + '/ด.';
     $('phase2Note').textContent = `ประหยัดเต็มที่ ${fmt(bill - actualOutAfterLoan)}/ด.`;
+  } else {
+    if ($('btnPhase1Icon')) $('btnPhase1Icon').innerHTML = money01IconSvg;
+    if ($('btnPhase2Icon')) $('btnPhase2Icon').innerHTML = moneyRemove01IconSvg;
+    $('btnPhase1Text').textContent = `ช่วงเฉลี่ยลงทุน ${loanYears} ปีแรก`;
+    $('btnPhase2Text').textContent = `หลังปีที่ ${loanYears} (คืนทุนครบ)`;
 
-    if (activePhase === 1) {
-      // Phase 1 (ช่วงผ่อน)
-      $('breakdownLoanRow').classList.remove('hidden');
-      $('breakdownLoan').textContent = '+' + fmt(monthlyPayment);
-      $('breakdownLoan').style.color = '#f87171';
-      $('breakdownTotalLabel').innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 14L8.5 17.5L19 6.5"/></svg> ภาระจ่ายจริงรวมเดือนนี้`;
-      $('breakdownTotalVal').textContent = fmt(actualOutDuringLoan);
-      $('breakdownTitle').textContent = `แจกแจงภาระจ่ายจริงช่วงผ่อน ${loanYears} ปี`;
+    $('phase1Title').textContent = `ปีที่ 1–${loanYears} (ช่วงเฉลี่ยลงทุน)`;
+    $('phase1NetPay').textContent = fmt(actualOutDuringLoan) + '/ด.';
+    if (diffFromOrig >= 0) {
+      $('phase1Note').textContent = `ประหยัด ${fmt(diffFromOrig)}/ด.`;
+      $('phase1NetPay').className = 'green';
+    } else {
+      $('phase1Note').textContent = `เฉลี่ยลงทุนเพิ่ม ${fmt(Math.abs(diffFromOrig))}/ด.`;
+      $('phase1NetPay').className = '';
+    }
 
-      // Twin Column Hero update
-      if ($('heroPayLabel')) $('heroPayLabel').textContent = 'ยอดจ่ายจริงต่อเดือน';
-      if ($('heroPayMonthly')) $('heroPayMonthly').innerHTML = fmt(actualOutDuringLoan) + '<span class="unit">/ด.</span>';
-      if ($('heroPaySub')) $('heroPaySub').textContent = `ค่าไฟใหม่ + ค่างวดผ่อน ${loanYears} ปี`;
+    $('phase2Title').textContent = `ปีที่ ${loanYears + 1}+ (คืนทุนครบแล้ว)`;
+    $('phase2NetPay').textContent = fmt(actualOutAfterLoan) + '/ด.';
+    $('phase2Note').textContent = `ประหยัดเต็มที่ ${fmt(bill - actualOutAfterLoan)}/ด.`;
+  }
 
-      const changePct = bill > 0 ? Math.round(Math.abs(diffFromOrig / bill) * 100) : 0;
-      if ($('heroSaveMonthly')) {
-        $('heroSaveMonthly').innerHTML = fmt(Math.abs(diffFromOrig)) + '<span class="unit">/ด.</span>';
-        if (diffFromOrig >= 0) {
-          $('heroSaveMonthly').className = 'hero-col-val save-val gain';
-          if ($('heroSaveLabel')) $('heroSaveLabel').textContent = 'ส่วนต่างลด';
-          if ($('heroSaveSub')) $('heroSaveSub').textContent = `เทียบค่าไฟเดิม ${fmt(bill)}`;
-          if ($('heroTrendPill')) {
-            $('heroTrendPill').className = 'trend-pill gain hero-floating-pill';
-            $('heroTrendPill').textContent = `↓ ${changePct}%`;
-          }
-          if ($('heroSubnote')) $('heroSubnote').textContent = `เดิมจ่าย ${fmt(bill)}/ด. ➔ จ่ายจริงลดเหลือ ${fmt(actualOutDuringLoan)}/ด. (ประหยัด ${fmt(diffFromOrig)}/ด.)`;
-        } else {
-          $('heroSaveMonthly').className = 'hero-col-val save-val loss';
-          if ($('heroSaveLabel')) $('heroSaveLabel').textContent = 'ส่วนต่างเพิ่ม';
-          if ($('heroSaveSub')) $('heroSaveSub').textContent = `เทียบค่าไฟเดิม ${fmt(bill)}`;
-          if ($('heroTrendPill')) {
-            $('heroTrendPill').className = 'trend-pill loss hero-floating-pill';
-            $('heroTrendPill').textContent = `↑ ${changePct}%`;
-          }
-          if ($('heroSubnote')) $('heroSubnote').textContent = `เดิมจ่าย ${fmt(bill)}/ด. ➔ ช่วงผ่อนจ่ายรวม ${fmt(actualOutDuringLoan)}/ด. (สะสมสินทรัพย์)`;
+  const loanSvg = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12C2 8.46252 2 6.69377 3.0528 5.5129C3.22119 5.32403 3.40678 5.14935 3.60746 4.99087C4.86213 4 6.74142 4 10.5 4H13.5C17.2586 4 19.1379 4 20.3925 4.99087C20.5932 5.14935 20.7788 5.32403 20.9472 5.5129C22 6.69377 22 8.46252 22 12C22 15.5375 22 17.3062 20.9472 18.4871C20.7788 18.676 20.5932 18.8506 20.3925 19.0091C19.1379 20 17.2586 20 13.5 20H10.5C6.74142 20 4.86213 20 3.60746 19.0091C3.40678 18.8506 3.22119 18.676 3.0528 18.4871C2 17.3062 2 15.5375 2 12Z"/><path d="M10 16H11.5"/><path d="M14.5 16L18 16"/><path d="M2 9H22"/></svg>`;
+  const cashSvg = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.01733 15C4.2169 15 6.00001 16.7831 6.00001 18.9827"/><path d="M18 18.9827V18.8908C18 16.742 19.742 15 21.8908 15"/><path d="M6.00001 5.01733C6.00001 7.2169 4.2169 9.00001 2.01733 9.00001"/><path d="M18 5.01733C18 7.19765 19.769 8.96876 21.9423 8.9996"/><path d="M16 5H8C5.17157 5 3.75736 5 2.87868 5.87868C2 6.75736 2 8.17157 2 11V13C2 15.8284 2 17.2426 2.87868 18.1213C3.75736 19 5.17157 19 8 19H16C18.8284 19 20.2426 19 21.1213 18.1213C22 17.2426 22 15.8284 22 13V11C22 8.17157 22 6.75736 21.1213 5.87868C20.2426 5 18.8284 5 16 5Z"/><path d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z"/></svg>`;
+
+  if (activePhase === 1) {
+    // Phase 1 (ช่วงผ่อน หรือ ช่วงเฉลี่ยคืนเงินลงทุน)
+    $('breakdownLoanRow').classList.remove('hidden');
+    $('breakdownLoan').textContent = '+' + fmt(monthlyPayment);
+    $('breakdownLoan').style.color = isLoan ? '#f87171' : '#f59e0b';
+    
+    if ($('breakdownLoanLabel')) {
+      $('breakdownLoanLabel').innerHTML = isLoan 
+        ? `${loanSvg} ค่างวดผ่อนสินเชื่อ (${loanYears} ปี)`
+        : `${cashSvg} เฉลี่ยคืนเงินลงทุน (${loanYears} ปี)`;
+    }
+
+    $('breakdownTotalLabel').innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 14L8.5 17.5L19 6.5"/></svg> ` + (isLoan ? 'ภาระจ่ายจริงรวมเดือนนี้' : 'ภาระรวมต่อเดือน (ค่าไฟ+เฉลี่ยลงทุน)');
+    $('breakdownTotalVal').textContent = fmt(actualOutDuringLoan);
+    $('breakdownTitle').textContent = isLoan 
+      ? `แจกแจงภาระจ่ายจริงช่วงผ่อน ${loanYears} ปี`
+      : `แจกแจงภาระช่วงเฉลี่ยคืนเงินลงทุน ${loanYears} ปี`;
+
+    // Twin Column Hero update
+    if ($('heroPayLabel')) $('heroPayLabel').textContent = isLoan ? 'ยอดจ่ายจริงต่อเดือน' : 'ยอดภาระรวมต่อเดือน';
+    if ($('heroPayMonthly')) $('heroPayMonthly').innerHTML = fmt(actualOutDuringLoan) + '<span class="unit">/ด.</span>';
+    if ($('heroPaySub')) $('heroPaySub').textContent = isLoan 
+      ? `ค่าไฟใหม่ + ค่างวดผ่อน ${loanYears} ปี`
+      : `ค่าไฟใหม่ + เฉลี่ยเงินลงทุน ${loanYears} ปี`;
+
+    const changePct = bill > 0 ? Math.round(Math.abs(diffFromOrig / bill) * 100) : 0;
+    if ($('heroSaveMonthly')) {
+      $('heroSaveMonthly').innerHTML = fmt(Math.abs(diffFromOrig)) + '<span class="unit">/ด.</span>';
+      if (diffFromOrig >= 0) {
+        $('heroSaveMonthly').className = 'hero-col-val save-val gain';
+        if ($('heroSaveLabel')) $('heroSaveLabel').textContent = 'ส่วนต่างลด';
+        if ($('heroSaveSub')) $('heroSaveSub').textContent = `เทียบค่าไฟเดิม ${fmt(bill)}`;
+        if ($('heroTrendPill')) {
+          $('heroTrendPill').className = 'trend-pill gain hero-floating-pill';
+          $('heroTrendPill').textContent = `↓ ${changePct}%`;
+        }
+        if ($('heroSubnote')) {
+          $('heroSubnote').textContent = isLoan
+            ? `เดิมจ่าย ${fmt(bill)}/ด. ➔ จ่ายจริงลดเหลือ ${fmt(actualOutDuringLoan)}/ด. (ประหยัด ${fmt(diffFromOrig)}/ด.)`
+            : `เดิมจ่าย ${fmt(bill)}/ด. ➔ ค่าไฟ+เฉลี่ยลงทุนเหลือ ${fmt(actualOutDuringLoan)}/ด. (ประหยัด ${fmt(diffFromOrig)}/ด.)`;
+        }
+      } else {
+        $('heroSaveMonthly').className = 'hero-col-val save-val loss';
+        if ($('heroSaveLabel')) $('heroSaveLabel').textContent = 'ส่วนต่างเพิ่ม';
+        if ($('heroSaveSub')) $('heroSaveSub').textContent = `เทียบค่าไฟเดิม ${fmt(bill)}`;
+        if ($('heroTrendPill')) {
+          $('heroTrendPill').className = 'trend-pill loss hero-floating-pill';
+          $('heroTrendPill').textContent = `↑ ${changePct}%`;
+        }
+        if ($('heroSubnote')) {
+          $('heroSubnote').textContent = isLoan
+            ? `เดิมจ่าย ${fmt(bill)}/ด. ➔ ช่วงผ่อนจ่ายรวม ${fmt(actualOutDuringLoan)}/ด. (สะสมสินทรัพย์)`
+            : `เดิมจ่าย ${fmt(bill)}/ด. ➔ ช่วงลงทุนจ่ายรวม ${fmt(actualOutDuringLoan)}/ด. (สะสมสินทรัพย์)`;
         }
       }
+    }
 
-      if ($('roiBadge')) {
-        const isSafe = diffFromOrig >= 0;
+    if ($('roiBadge')) {
+      const isSafe = diffFromOrig >= 0;
+      if (isLoan) {
         $('roiBadge').textContent = isSafe ? 'ผ่อนสบาย จ่ายรวมถูกลง' : 'ผ่อนสะสมสินทรัพย์';
-        $('roiBadge').classList.toggle('warning', !isSafe);
-        $('roiBadge').classList.remove('danger');
-        $('roiBadge').style.background = isSafe ? 'rgba(5, 150, 105, 0.2)' : 'rgba(234, 88, 12, 0.2)';
-        $('roiBadge').style.borderColor = isSafe ? 'rgba(5, 150, 105, 0.3)' : 'rgba(234, 88, 12, 0.45)';
-        $('roiBadge').style.color = isSafe ? '#34d399' : '#fb923c';
-        $('roiBadge').style.boxShadow = isSafe ? '0 0 12px rgba(52, 211, 153, 0.35)' : '0 0 14px rgba(234, 88, 12, 0.4)';
+      } else {
+        $('roiBadge').textContent = isSafe ? 'คืนทุนสบาย เหลือเงินประหยัด' : 'สะสมคืนเงินออม';
       }
+      $('roiBadge').classList.toggle('warning', !isSafe);
+      $('roiBadge').classList.remove('danger');
+      $('roiBadge').style.background = isSafe ? 'rgba(5, 150, 105, 0.2)' : 'rgba(234, 88, 12, 0.2)';
+      $('roiBadge').style.borderColor = isSafe ? 'rgba(5, 150, 105, 0.3)' : 'rgba(234, 88, 12, 0.45)';
+      $('roiBadge').style.color = isSafe ? '#34d399' : '#fb923c';
+      $('roiBadge').style.boxShadow = isSafe ? '0 0 12px rgba(52, 211, 153, 0.35)' : '0 0 14px rgba(234, 88, 12, 0.4)';
+    }
 
-      // Comparison Bar update: Dynamic Bullet Target Chart (ปรับ max และตำแหน่งเส้นขีดตามค่าไฟจริง)
-      const savePct = bill > 0 ? Math.round(Math.max(0, (diffFromOrig / bill) * 100)) : 0;
-      const badgeText = diffFromOrig >= 0 ? 'ประหยัด ' + savePct + '%' : 'จ่ายเพิ่ม ' + fmt(Math.abs(diffFromOrig)) + '/ด.';
-      const badgeClass = diffFromOrig >= 0 ? 'safe' : 'danger';
-      renderCompareBar(actualOutDuringLoan, 'ยอดจ่ายจริงรวมค่างวด:', badgeText, badgeClass);
-    } else {
-      // Phase 2 (ปลดหนี้แล้ว)
-      $('breakdownLoanRow').classList.remove('hidden');
-      $('breakdownLoan').textContent = '฿0';
-      $('breakdownLoan').style.color = '#94a3b8';
-      $('breakdownTotalLabel').innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 14L8.5 17.5L19 6.5"/></svg> ภาระจ่ายจริงหลังปลดหนี้`;
-      $('breakdownTotalVal').textContent = fmt(actualOutAfterLoan);
-      $('breakdownTitle').textContent = `แจกแจงภาระจ่ายจริงหลังปีที่ ${loanYears} (ปลดหนี้แล้ว)`;
+    // Comparison Bar update: Dynamic Bullet Target Chart (ปรับ max และตำแหน่งเส้นขีดตามค่าไฟจริง)
+    const savePct = bill > 0 ? Math.round(Math.max(0, (diffFromOrig / bill) * 100)) : 0;
+    const badgeText = diffFromOrig >= 0 ? 'ประหยัด ' + savePct + '%' : (isLoan ? 'จ่ายเพิ่ม ' : 'เฉลี่ยลงทุนเพิ่ม ') + fmt(Math.abs(diffFromOrig)) + '/ด.';
+    const badgeClass = diffFromOrig >= 0 ? 'safe' : 'danger';
+    renderCompareBar(actualOutDuringLoan, isLoan ? 'ยอดจ่ายจริงรวมค่างวด:' : 'ยอดค่าไฟรวมเฉลี่ยลงทุน:', badgeText, badgeClass);
 
-      const gainAfter = bill - actualOutAfterLoan;
-      const gainPct = bill > 0 ? Math.round((gainAfter / bill) * 100) : 0;
-
-      if ($('heroPayLabel')) $('heroPayLabel').textContent = 'ยอดจ่ายจริงต่อเดือน';
-      if ($('heroPayMonthly')) $('heroPayMonthly').innerHTML = fmt(actualOutAfterLoan) + '<span class="unit">/ด.</span>';
-      if ($('heroPaySub')) $('heroPaySub').textContent = 'ค่าไฟใหม่ (ปลดหนี้แล้ว)';
-
-      if ($('heroSaveLabel')) $('heroSaveLabel').textContent = 'ส่วนต่างลด';
-      if ($('heroSaveMonthly')) {
-        $('heroSaveMonthly').className = 'hero-col-val save-val gain';
-        $('heroSaveMonthly').innerHTML = fmt(gainAfter) + '<span class="unit">/ด.</span>';
-      }
-      if ($('heroSaveSub')) $('heroSaveSub').textContent = `เทียบค่าไฟเดิม ${fmt(bill)}`;
-
-      if ($('heroTrendPill')) {
-        $('heroTrendPill').className = 'trend-pill gain hero-floating-pill';
-        $('heroTrendPill').textContent = `↓ ${gainPct}%`;
-      }
-      if ($('heroSubnote')) $('heroSubnote').textContent = `เดิมจ่าย ${fmt(bill)}/ด. ➔ จ่ายจริงเหลือ ${fmt(actualOutAfterLoan)}/ด. (ประหยัดเต็มๆ ${fmt(gainAfter)}/ด.)`;
-
-      if ($('roiBadge')) {
-        $('roiBadge').textContent = 'กำไรเนื้อๆ ปลดหนี้แล้ว';
-        $('roiBadge').classList.remove('danger');
-        $('roiBadge').style.background = 'rgba(5, 150, 105, 0.2)';
-        $('roiBadge').style.borderColor = 'rgba(5, 150, 105, 0.3)';
-        $('roiBadge').style.color = '#34d399';
-        $('roiBadge').style.boxShadow = '0 0 12px rgba(52, 211, 153, 0.35)';
-      }
-
-      // Comparison Bar update
-      const savePct = bill > 0 ? Math.round(Math.max(0, (gainAfter / bill) * 100)) : 0;
-      renderCompareBar(actualOutAfterLoan, 'ยอดจ่ายจริงการไฟฟ้า:', 'ประหยัด ' + savePct + '%', 'safe');
+    // Update Loan / Investment Banner (แสดงค่าลงทุนเฉลี่ยเมื่อปิดกู้)
+    if ($('loanBanner')) $('loanBanner').classList.remove('hidden');
+    if ($('loanBannerLabel')) {
+      $('loanBannerLabel').textContent = isLoan ? 'ค่างวดสินเชื่อ:' : 'ค่าลงทุนเฉลี่ย:';
+    }
+    if ($('loanMonthly')) {
+      $('loanMonthly').textContent = isLoan
+        ? '฿' + Math.round(monthlyPayment).toLocaleString('en-US') + ` /ด. (${totalMonths} งวด ดอกเบี้ย ${(loanRate * 100).toFixed(1)}%)`
+        : '฿' + Math.round(monthlyPayment).toLocaleString('en-US') + ` /ด. (${totalMonths} เดือน ดอกเบี้ย 0%)`;
     }
   } else {
-    // Cash mode
-    $('phaseSwitchContainer').classList.add('hidden');
-    $('breakdownLoanRow').classList.add('hidden');
-    $('breakdownTotalRow').classList.remove('hidden');
-    $('breakdownTotalLabel').innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 14L8.5 17.5L19 6.5"/></svg> ภาระจ่ายจริงหลังติดตั้ง`;
+    // Phase 2 (ปลดหนี้แล้ว หรือ คืนทุนครบแล้ว)
+    $('breakdownLoanRow').classList.remove('hidden');
+    $('breakdownLoan').textContent = '฿0';
+    $('breakdownLoan').style.color = '#94a3b8';
+
+    if ($('breakdownLoanLabel')) {
+      $('breakdownLoanLabel').innerHTML = isLoan 
+        ? `${loanSvg} ค่างวดผ่อนสินเชื่อ (${loanYears} ปี)`
+        : `${cashSvg} เฉลี่ยคืนเงินลงทุน (${loanYears} ปี)`;
+    }
+
+    $('breakdownTotalLabel').innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 14L8.5 17.5L19 6.5"/></svg> ` + (isLoan ? 'ภาระจ่ายจริงหลังปลดหนี้' : 'ภาระจ่ายจริงหลังคืนทุนครบ');
     $('breakdownTotalVal').textContent = fmt(actualOutAfterLoan);
-    $('breakdownTitle').textContent = 'แจกแจงภาระจ่ายจริงหลังติดตั้ง';
+    $('breakdownTitle').textContent = isLoan 
+      ? `แจกแจงภาระจ่ายจริงหลังปีที่ ${loanYears} (ปลดหนี้แล้ว)`
+      : `แจกแจงภาระจ่ายจริงหลังปีที่ ${loanYears} (คืนทุนครบแล้ว)`;
 
-    $('phase1Title').textContent = 'ค่าไฟใหม่หลังติดตั้ง';
-    $('phase1NetPay').textContent = fmt(actualOutAfterLoan) + '/ด.';
-    $('phase1Note').textContent = `ประหยัดไป ${fmt(saving)}/ด.`;
-    $('phase1NetPay').className = 'green';
-
-    $('phase2Title').textContent = 'รายได้ขายไฟคืน';
-    $('phase2NetPay').textContent = $('sell').checked ? fmt(sellIncomeMonthly) + '/ด.' : '฿0/ด.';
-    $('phase2Note').textContent = 'สัญญาซื้อขาย 20 ปี';
-
-    const cashGainPct = bill > 0 ? Math.round((totalMonthlyGain / bill) * 100) : 0;
+    const gainAfter = bill - actualOutAfterLoan;
+    const gainPct = bill > 0 ? Math.round((gainAfter / bill) * 100) : 0;
 
     if ($('heroPayLabel')) $('heroPayLabel').textContent = 'ยอดจ่ายจริงต่อเดือน';
     if ($('heroPayMonthly')) $('heroPayMonthly').innerHTML = fmt(actualOutAfterLoan) + '<span class="unit">/ด.</span>';
-    if ($('heroPaySub')) $('heroPaySub').textContent = 'ค่าไฟการไฟฟ้าหลังติดตั้ง';
+    if ($('heroPaySub')) $('heroPaySub').textContent = isLoan ? 'ค่าไฟใหม่ (ปลดหนี้แล้ว)' : 'ค่าไฟใหม่ (คืนทุนครบแล้ว)';
 
     if ($('heroSaveLabel')) $('heroSaveLabel').textContent = 'ส่วนต่างลด';
     if ($('heroSaveMonthly')) {
       $('heroSaveMonthly').className = 'hero-col-val save-val gain';
-      $('heroSaveMonthly').innerHTML = fmt(totalMonthlyGain) + '<span class="unit">/ด.</span>';
+      $('heroSaveMonthly').innerHTML = fmt(gainAfter) + '<span class="unit">/ด.</span>';
     }
     if ($('heroSaveSub')) $('heroSaveSub').textContent = `เทียบค่าไฟเดิม ${fmt(bill)}`;
 
     if ($('heroTrendPill')) {
       $('heroTrendPill').className = 'trend-pill gain hero-floating-pill';
-      $('heroTrendPill').textContent = `↓ ${cashGainPct}%`;
+      $('heroTrendPill').textContent = `↓ ${gainPct}%`;
     }
-    if ($('heroSubnote')) $('heroSubnote').textContent = `เดิมจ่าย ${fmt(bill)}/ด. ➔ จ่ายจริงเหลือ ${fmt(actualOutAfterLoan)}/ด. (ประหยัดทันที ${fmt(totalMonthlyGain)}/ด.)`;
+    if ($('heroSubnote')) $('heroSubnote').textContent = `เดิมจ่าย ${fmt(bill)}/ด. ➔ จ่ายจริงเหลือ ${fmt(actualOutAfterLoan)}/ด. (ประหยัดเต็มๆ ${fmt(gainAfter)}/ด.)`;
 
     if ($('roiBadge')) {
-      $('roiBadge').textContent = 'ประหยัดทันที';
+      $('roiBadge').textContent = isLoan ? 'กำไรเนื้อๆ ปลดหนี้แล้ว' : 'กำไรเนื้อๆ คืนทุนครบแล้ว';
       $('roiBadge').classList.remove('danger');
+      $('roiBadge').classList.remove('warning');
       $('roiBadge').style.background = 'rgba(5, 150, 105, 0.2)';
       $('roiBadge').style.borderColor = 'rgba(5, 150, 105, 0.3)';
       $('roiBadge').style.color = '#34d399';
@@ -3189,11 +3240,24 @@ function update() {
     }
 
     // Comparison Bar update
-    const savePct = bill > 0 ? Math.round(Math.max(0, (totalMonthlyGain / bill) * 100)) : 0;
-    renderCompareBar(actualOutAfterLoan, 'ยอดจ่ายจริงหลังติดตั้ง:', 'ประหยัด ' + savePct + '%', 'safe');
+    const savePct = bill > 0 ? Math.round(Math.max(0, (gainAfter / bill) * 100)) : 0;
+    renderCompareBar(actualOutAfterLoan, 'ยอดจ่ายจริงการไฟฟ้า:', 'ประหยัด ' + savePct + '%', 'safe');
+
+    // Update Loan / Investment Banner
+    if ($('loanBanner')) $('loanBanner').classList.remove('hidden');
+    if ($('loanBannerLabel')) {
+      $('loanBannerLabel').textContent = isLoan ? 'ค่างวดสินเชื่อ:' : 'ค่าลงทุนเฉลี่ย:';
+    }
+    if ($('loanMonthly')) {
+      $('loanMonthly').textContent = isLoan
+        ? 'ปลดหนี้แล้ว (฿0 /ด.)'
+        : 'คืนทุนครบแล้ว (฿0 /ด.)';
+    }
   }
 
-  let cumulative = -net;
+  // Total capital outlay (รวมดอกเบี้ยกรณีขอสินเชื่อ / ซื้อสดไม่มีดอกเบี้ย)
+  const totalInvestmentCost = isLoan ? (net + totalInterest) : net;
+  let cumulative = -totalInvestmentCost;
   let payback = null;
   let values = [{ year: 0, value: cumulative }];
   let net20 = 0;
@@ -3212,11 +3276,21 @@ function update() {
 
   // Update UI values
   $('net').textContent = fmt(net);
-  if ($('netNote')) $('netNote').textContent = $('subsidy').checked ? 'หักเงินสนับสนุน 50,000 บาทแล้ว' : 'ยอดลงทุนเต็ม (ไม่หักเงินสนับสนุน)';
+  if ($('netNote')) {
+    if (isLoan) {
+      $('netNote').textContent = $('subsidy').checked
+        ? `หักเงินสนับสนุนแล้ว (รวมดอกเบี้ย ${loanYears} ปี = ${fmt(totalInvestmentCost)})`
+        : `ยอดลงทุนเต็ม (รวมดอกเบี้ย ${loanYears} ปี = ${fmt(totalInvestmentCost)})`;
+    } else {
+      $('netNote').textContent = $('subsidy').checked
+        ? 'หักเงินสนับสนุน 50,000 บาทแล้ว (ซื้อสด ไม่มีดอกเบี้ย)'
+        : 'ยอดลงทุนเต็ม (ซื้อสด ไม่มีดอกเบี้ย)';
+    }
+  }
   
-  // Calculate Annual ROI %
+  // Calculate Annual ROI % (เทียบกับต้นทุนรวมที่มีหรือไม่มีดอกเบี้ย)
   const annualGain = (saving + sellIncomeMonthly) * 12;
-  const annualROI = net > 0 ? (annualGain / net) * 100 : 0;
+  const annualROI = totalInvestmentCost > 0 ? (annualGain / totalInvestmentCost) * 100 : 0;
   if ($('roiPercent')) {
     $('roiPercent').innerHTML = annualROI.toFixed(1) + '<span class="unit">% ต่อปี</span>';
   }
@@ -3225,6 +3299,12 @@ function update() {
     $('payback').innerHTML = 'เกิน 20 ปี';
   } else {
     $('payback').innerHTML = payback.toFixed(1) + '<span class="unit">ปี</span>';
+  }
+
+  if ($('paybacknote')) {
+    $('paybacknote').textContent = isLoan 
+      ? `รวมดอกเบี้ย ${loanYears} ปีแล้ว (${fmt(totalInterest)})`
+      : 'ซื้อสด คืนทุนไวกว่า (0% ดอกเบี้ย)';
   }
 
   if ($('savings')) $('savings').textContent = fmt(saving);
@@ -3583,10 +3663,7 @@ if ($('loanYearsMinus') && $('loanYearsPlus')) {
 $('subsidy').addEventListener('change', update);
 $('sell').addEventListener('change', update);
 if ($('loan')) {
-  $('loan').addEventListener('change', () => {
-    $('loanopts').classList.toggle('hidden', !$('loan').checked);
-    update();
-  });
+  $('loan').addEventListener('change', update);
 }
 
 // Helper to set kW and sync UI
