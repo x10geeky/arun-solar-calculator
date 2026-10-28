@@ -46,6 +46,11 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 body {
   font-family: var(--font-body);
   background-color: var(--bg-app);
@@ -55,6 +60,7 @@ body {
   -webkit-font-smoothing: antialiased;
   position: relative;
   overflow-x: hidden;
+  max-width: 100vw;
 }
 
 /* Ambient solar aura background */
@@ -65,6 +71,7 @@ body::before {
   left: 50%;
   transform: translateX(-50%);
   width: 900px;
+  max-width: 100vw;
   height: 480px;
   background: radial-gradient(ellipse 60% 40% at 50% 20%, rgba(234, 88, 12, 0.08), transparent 70%);
   pointer-events: none;
@@ -72,6 +79,7 @@ body::before {
 }
 
 .wrap {
+  width: 100%;
   max-width: 1140px;
   margin: 0 auto;
   position: relative;
@@ -96,15 +104,17 @@ body::before {
   gap: 6px;
   background: #fff;
   border: 1px solid var(--border-light);
-  padding: 4px 14px;
+  padding: 5px 12px;
   border-radius: 9999px;
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
   color: var(--solar-primary);
-  text-transform: uppercase;
   margin-bottom: 12px;
   box-shadow: var(--shadow-sm);
+  max-width: 100%;
+  text-align: center;
+  line-height: 1.4;
 }
 
 .brand {
@@ -150,13 +160,20 @@ body::before {
 /* Layout container: 2 columns on desktop */
 .app-layout {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 32px;
+  width: 100%;
+}
+
+.config-column,
+.sticky-sidebar {
+  min-width: 0;
+  max-width: 100%;
 }
 
 @media (min-width: 960px) {
   .app-layout {
-    grid-template-columns: 1.1fr 0.9fr;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     gap: 40px;
     align-items: start;
   }
@@ -448,6 +465,8 @@ label {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex: 1;
+  min-width: 0;
 }
 
 .toggle-info label {
@@ -459,6 +478,10 @@ label {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.toggle-info label svg {
+  flex-shrink: 0;
 }
 
 .toggle-sub {
@@ -490,6 +513,7 @@ label {
 .stepper-label {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .stepper-label strong {
@@ -510,6 +534,7 @@ label {
   border: 1px solid var(--border-light);
   border-radius: 999px;
   padding: 4px 6px;
+  flex-shrink: 0;
 }
 
 .stepper-btn {
@@ -1600,17 +1625,20 @@ input[type=range]::-webkit-slider-thumb:hover {
 #chart-container {
   position: relative;
   width: 100%;
+  max-width: 100%;
   background: #fff;
   padding: 14px 10px 8px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-light);
+  overflow: hidden;
 }
 
 #chart {
   width: 100%;
+  max-width: 100%;
   height: auto;
   display: block;
-  overflow: visible;
+  overflow: hidden;
 }
 
 /* =========================================
@@ -1668,9 +1696,10 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 .energy-donut-svg {
   width: 100%;
+  max-width: 100%;
   height: 100%;
   display: block;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .energy-legend-list {
@@ -1872,10 +1901,27 @@ input[type=range]::-webkit-slider-thumb:hover {
 /* Responsive adjustments */
 @media (max-width: 640px) {
   body {
-    padding: 20px 14px 50px;
+    padding: 16px 12px 50px;
   }
   .choices {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .chip {
+    padding: 10px 6px;
+  }
+  .chip-badge {
+    font-size: 9.5px;
+    padding: 2px 6px;
+    top: -8px;
+    white-space: nowrap;
+  }
+  .chip span.chip-kw {
+    font-size: 15px;
+  }
+  .chip span.chip-note {
+    font-size: 10px;
+    line-height: 1.35;
   }
   .grid-2 {
     grid-template-columns: 1fr;
@@ -1883,11 +1929,144 @@ input[type=range]::-webkit-slider-thumb:hover {
   .biggrid {
     grid-template-columns: 1fr;
   }
+  .bill-display-box {
+    padding: 14px 12px 12px;
+  }
+  .daynight-box {
+    padding: 14px 12px;
+  }
+  .daynight-ratio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+  }
+  .daynight-label {
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .daynight-badge-val {
+    font-size: 12px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .adv-preset-group {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 2px 2px 6px;
+    margin: 6px -4px 4px;
+  }
+  .adv-preset-group::-webkit-scrollbar {
+    display: none;
+  }
+  .adv-preset-btn {
+    flex: 0 0 auto;
+    min-width: 80px;
+    padding: 8px 8px;
+    white-space: nowrap;
+  }
+  .adv-preset-btn .p-title {
+    font-size: 12.5px;
+    white-space: nowrap;
+  }
+  .adv-preset-btn .p-sub {
+    font-size: 10px;
+    white-space: nowrap;
+  }
+  .stepper-box {
+    padding: 12px 10px;
+  }
+  .stepper-top {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .stepper-label {
+    flex: 1 1 100%;
+  }
+  .stepper-ctrl {
+    margin-left: auto;
+  }
+  .stepper-price-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .stepper-price-row label {
+    font-size: 12px;
+    white-space: normal;
+  }
+  .stepper-price-row .input-group {
+    max-width: 140px;
+    margin-left: auto;
+  }
   .result-card {
-    padding: 20px 16px;
+    padding: 18px 12px;
+    border-radius: var(--radius-lg);
   }
   .hero-highlight {
-    padding: 16px;
+    padding: 14px 12px;
+  }
+  .hero-highlight-val {
+    font-size: 32px;
+  }
+  .phase-btn {
+    font-size: 11.5px;
+    padding: 7px 4px;
+    gap: 4px;
+  }
+  .breakdown-box {
+    padding: 10px 10px;
+  }
+  .breakdown-row span {
+    white-space: normal;
+    font-size: 12px;
+  }
+  .payback-card {
+    padding: 12px 8px;
+    gap: 8px;
+  }
+  .payback-col:last-child {
+    padding-left: 8px;
+  }
+  .payback-col small {
+    font-size: 10.5px;
+    white-space: nowrap;
+  }
+  .payback-col .payback-num {
+    font-size: 20px;
+  }
+  .energy-card {
+    padding: 14px 10px;
+  }
+  #chart-container {
+    padding: 12px 8px 6px;
+  }
+}
+
+@media (max-width: 440px) {
+  .brand {
+    font-size: 28px;
+    letter-spacing: 5px;
+  }
+  .brand-badge {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+  .slider-ticks {
+    font-size: 10px;
+  }
+  .slider-ticks span[data-bill-tick="15000"],
+  .slider-ticks span[data-bill-tick="20000"] {
+    display: none;
+  }
+  .hero-highlight-label {
+    font-size: 12px;
+  }
+  .hero-highlight-note {
+    font-size: 11px;
   }
 }
 </style>
@@ -1945,7 +2124,7 @@ input[type=range]::-webkit-slider-thumb:hover {
         <!-- 1.2 สัดส่วนการใช้ไฟ กลางวัน : กลางคืน -->
         <div class="daynight-box">
           <div class="daynight-ratio-header">
-            <div class="daynight-label">สัดส่วนการใช้ไฟ กลางวัน : กลางคืน</div>
+            <div class="daynight-label">สัดส่วนการใช้ไฟ</div>
             <div class="daynight-badge-val" id="daynightRatioText">
               <span class="d-sun">กลางวัน <strong id="dayPctText">20%</strong></span>
               <span>:</span>
@@ -1970,7 +2149,7 @@ input[type=range]::-webkit-slider-thumb:hover {
           <div class="adv-preset-group" role="group" aria-label="เลือกไลฟ์สไตล์สัดส่วนการใช้ไฟ">
             <button type="button" class="adv-preset-btn" data-day-preset="80">
               <span class="p-title">80:20</span>
-              <span class="p-sub">ออฟฟิศ / ร้านค้า</span>
+              <span class="p-sub">ออฟฟิศ/ร้านค้า</span>
             </button>
             <button type="button" class="adv-preset-btn" data-day-preset="65">
               <span class="p-title">65:35</span>
@@ -1978,7 +2157,7 @@ input[type=range]::-webkit-slider-thumb:hover {
             </button>
             <button type="button" class="adv-preset-btn" data-day-preset="50">
               <span class="p-title">50:50</span>
-              <span class="p-sub">WFH / มีคนอยู่บ้าน</span>
+              <span class="p-sub">WFH/อยู่บ้าน</span>
             </button>
             <button type="button" class="adv-preset-btn" data-day-preset="35">
               <span class="p-title">35:65</span>
